@@ -9,6 +9,7 @@ import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AuthModal } from './components/auth/AuthModal';
 import { CreateProjectModal } from './components/admin/CreateProjectModal';
 import { EditProjectModal } from './components/admin/EditProjectModal';
+import { JSONImporterModal } from './components/admin/JSONImporterModal';
 import { initMockAuth } from './services/auth/mockAuthProvider';
 import { initFirebaseAuth } from './services/auth/firebaseAuthProvider';
 import { repositoryAdapterSingleton } from './repositories/storageAdapter';
