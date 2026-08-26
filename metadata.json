@@ -1,0 +1,6 @@
+{
+  "name": "DubCraft Studio - Revisão de Dublagens",
+  "description": "Plataforma profissional de localização e revisão colaborativa de dublagens para jogos. Sincronização em nuvem, controle de versões de cutscenes, aprovações ponderadas e gestão de pacotes de áudio.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

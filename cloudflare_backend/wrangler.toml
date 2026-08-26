@@ -1,0 +1,9 @@
+name = "dubcraft-voting-api"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Vínculo com o banco de dados SQL Cloudflare D1
+[[d1_databases]]
+binding = "DB"
+database_name = "dubcraft_db"
+database_id = "COLOQUE_SEU_DATABASE_ID_AQUI"
