@@ -32,7 +32,7 @@ jobs:
           cache: 'npm'
 
       - name: Instalar Dependências
-        run: npm ci
+        run: npm install
 
       - name: Compilar Projeto (Vite Build)
         run: npm run build

@@ -20,13 +20,39 @@ export function generateCatalog() {
   const allDialogues = [];
 
   if (!fs.existsSync(PROJETOS_DIR)) {
-    console.warn('[Catalog] Pasta projetos não encontrada:', PROJETOS_DIR);
+    if (fs.existsSync(OUTPUT_FILE)) {
+      console.log('[Catalog] Pasta projetos não encontrada. Preservando catálogo pré-compilado.');
+      return;
+    }
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({ projects: [], dialogues: [] }, null, 2));
     return;
   }
 
-  const projectDirs = fs.readdirSync(PROJETOS_DIR)
-    .filter(name => !name.startsWith('.') && fs.statSync(path.join(PROJETOS_DIR, name)).isDirectory());
+  const projectDirs = [];
+  try {
+    const entries = fs.readdirSync(PROJETOS_DIR);
+    for (const name of entries) {
+      if (name.startsWith('.')) continue;
+      const fullPath = path.join(PROJETOS_DIR, name);
+      try {
+        if (fs.existsSync(fullPath) && fs.statSync(fullPath).isDirectory()) {
+          projectDirs.push(name);
+        }
+      } catch {}
+    }
+  } catch (err) {
+    console.warn('[Catalog] Aviso ao ler diretório de projetos:', err.message);
+  }
+
+  if (projectDirs.length === 0 && fs.existsSync(OUTPUT_FILE)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf8'));
+      if (existing.projects && existing.projects.length > 0) {
+        console.log(`[Catalog] Preservando catálogo pré-compilado (${existing.projects.length} projetos, ${existing.dialogues?.length || 0} falas).`);
+        return;
+      }
+    } catch {}
+  }
 
   for (const projectName of projectDirs) {
     const projectPath = path.join(PROJETOS_DIR, projectName);
