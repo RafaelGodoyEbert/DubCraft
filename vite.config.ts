@@ -63,9 +63,10 @@ function serveProjetosMiddleware(): Plugin {
   };
 }
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  const isProd = mode === 'production' || process.env.GITHUB_ACTIONS === 'true';
   return {
-    base: './',
+    base: isProd ? '/DubCraft/' : './',
     plugins: [react(), tailwindcss(), serveProjetosMiddleware()],
     resolve: {
       alias: {
