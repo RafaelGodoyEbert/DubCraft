@@ -138,19 +138,25 @@ export default {
         return jsonResponse({ success: true, id }, 201);
       }
 
-      // 3. POST /votes (Registrar ou atualizar voto com garantia de voto único)
+        // 3. POST /votes (Registrar ou atualizar voto com garantia de voto único e anti-fraude)
       if (request.method === 'POST' && path === '/votes') {
         const body = await request.json();
         const { proposalId, projectId, userId, value, weight = 1.0 } = body;
 
-        if (!proposalId || !userId || !value) {
+        if (!proposalId || !userId || value === undefined) {
           return jsonResponse({ error: 'Campos obrigatórios ausentes.' }, 400);
         }
+
+        // Sanitização contra manipulação via console (F12):
+        // 1. O valor do voto é forçado no servidor a ser estritamente +1 ou -1
+        const sanitizedValue = value > 0 ? 1 : -1;
+        // 2. O peso é limitado a uma faixa segura (0.5x a 5.0x no máximo para Admins)
+        const sanitizedWeight = Math.min(Math.max(Number(weight) || 1.0, 0.5), 5.0);
 
         const voteId = `${proposalId}_${userId}`;
         const now = new Date().toISOString();
 
-        // Upsert do voto no D1
+        // Upsert do voto no D1 (Garante 1 único voto por usuário mesmo com spam no console)
         await env.DB.prepare(`
           INSERT INTO votes (id, project_id, proposal_id, user_id, value, weight, updated_at)
           VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -158,7 +164,7 @@ export default {
             value = excluded.value,
             weight = excluded.weight,
             updated_at = excluded.updated_at
-        `).bind(voteId, projectId || null, proposalId, userId, value, weight, now).run();
+        `).bind(voteId, projectId || null, proposalId, userId, sanitizedValue, sanitizedWeight, now).run();
 
         // Recalcula totais da proposta
         const voteStats = await env.DB.prepare(`
