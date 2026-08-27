@@ -229,18 +229,22 @@ export function generateCatalog() {
     projects.push(project);
     allDialogues.push(...projectDialogues);
 
-    // Save individual project dialogues.json for on-demand lazy loading (~0.3MB each instead of 20MB monolithic)
+    // Save individual project dialogues in src/data/projects/<projectId>.json for Vite Code-Splitting
     try {
-      const projectDialoguesFile = path.join(projectPath, 'dialogues.json');
-      fs.writeFileSync(projectDialoguesFile, JSON.stringify(projectDialogues, null, 2), 'utf8');
-      console.log(`  ✓ [Projeto ${projectName}] Gerado dialogues.json com ${projectDialogues.length} falas -> ${projectDialoguesFile}`);
+      const dataProjectsDir = path.join(OUTPUT_DIR, 'projects');
+      if (!fs.existsSync(dataProjectsDir)) {
+        fs.mkdirSync(dataProjectsDir, { recursive: true });
+      }
+      const projectSplitFile = path.join(dataProjectsDir, `${projectId}.json`);
+      fs.writeFileSync(projectSplitFile, JSON.stringify(projectDialogues, null, 2), 'utf8');
+      console.log(`  ✓ [Projeto ${projectName}] Gerado ${projectId}.json (${projectDialogues.length} falas)`);
     } catch (e) {
-      console.warn(`  [Aviso] Falha ao salvar dialogues.json em ${projectName}:`, e.message);
+      console.warn(`  [Aviso] Falha ao salvar split JSON em ${projectName}:`, e.message);
     }
   }
 
-  // Salva o catálogo completo com todos os diálogos indexados
-  const catalog = { projects, dialogues: allDialogues };
+  // Manifesto leve para a página inicial (apenas lista de jogos e estatísticas, ~3KB)
+  const catalog = { projects, dialogues: [] };
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(catalog, null, 2), 'utf8');
 
   const elapsed = Date.now() - startTime;

@@ -75,6 +75,9 @@ const INITIAL_AUDITS: AuditLog[] = [
   },
 ];
 
+// Vite Native Code Splitting: Cada projeto gera um chunk JavaScript separado baixado sob demanda
+const projectDialogueLoaders = import.meta.glob('../data/projects/*.json');
+
 export class LocalStorageRepositoryAdapter {
   private projectsKey = 'dubcraft_live_projects_v7';
   private dialoguesKey = 'dubcraft_live_dialogues_v7';
@@ -238,63 +241,53 @@ export class LocalStorageRepositoryAdapter {
     localStorage.setItem(this.projectsKey, JSON.stringify(customProjects));
   }
 
-  // --- DIALOGUES & PERSISTENCE ---
+  // --- DIALOGUES & LAZY CODE-SPLITTING ---
   public async getDialoguesByProject(projectId: string): Promise<Dialogue[]> {
     const cleanProjectId = projectId.toLowerCase().replace(/^proj_/, '');
 
-    // 1. Prioridade máxima: Diálogos indexados no catálogo base
-    let baseForProj = this.baseDialogues.filter(
-      (d) =>
-        d.projectId === projectId ||
-        d.projectId.toLowerCase().replace(/^proj_/, '') === cleanProjectId
-    );
+    // 1. Carrega sob demanda via Code-Splitting do Vite (se ainda não estiver na memória)
+    if (!this.loadedProjectDialogues.has(projectId)) {
+      let loadedData: Dialogue[] = [];
 
-    // 2. Se não estiver embutido no catálogo base, busca sob demanda
-    if (baseForProj.length === 0 && !this.loadedProjectDialogues.has(projectId)) {
-      const allProjects = await this.getProjects();
-      const proj = allProjects.find(
-        (p) =>
-          p.id === projectId ||
-          p.slug === cleanProjectId ||
-          p.id.toLowerCase().replace(/^proj_/, '') === cleanProjectId
-      );
-      const slug = proj?.slug || cleanProjectId;
-      const realFolderName = (proj as any)?.folderName || (proj?.dubbedAudioBaseUrl ? proj.dubbedAudioBaseUrl.replace(/^\/?(projetos\/)?/, '').split('/')[0] : '');
+      const candidateKeys = [
+        `../data/projects/${projectId}.json`,
+        `../data/projects/proj_${cleanProjectId}.json`,
+        `../data/projects/${cleanProjectId}.json`,
+      ];
 
-      let fetchedDialogues: Dialogue[] = [];
-      try {
-        const candidateUrls = [
-          realFolderName ? `${baseURL}projetos/${realFolderName}/dialogues.json` : '',
-          `${baseURL}projetos/${slug}/dialogues.json`,
-          `${baseURL}projetos/Black/dialogues.json`,
-          `./projetos/${realFolderName}/dialogues.json`,
-        ].filter(Boolean);
-
-        for (const url of candidateUrls) {
+      for (const key of candidateKeys) {
+        if (projectDialogueLoaders[key]) {
           try {
-            const resp = await fetch(url);
-            if (resp.ok) {
-              const data = await resp.json();
-              if (Array.isArray(data) && data.length > 0) {
-                fetchedDialogues = data.map((d: any) => ({
-                  ...d,
-                  audioOriginalUrl: d.audioOriginalUrl ? (d.audioOriginalUrl.startsWith('http') ? d.audioOriginalUrl : `${baseURL}${d.audioOriginalUrl.replace(/^\/?/, '')}`) : undefined,
-                  audioDubladoUrl: d.audioDubladoUrl ? (d.audioDubladoUrl.startsWith('http') ? d.audioDubladoUrl : `${baseURL}${d.audioDubladoUrl.replace(/^\/?/, '')}`) : undefined,
-                }));
-                break;
-              }
+            const mod: any = await projectDialogueLoaders[key]();
+            const raw = mod.default || mod;
+            if (Array.isArray(raw)) {
+              loadedData = raw.map((d: any) => ({
+                ...d,
+                audioOriginalUrl: d.audioOriginalUrl ? (d.audioOriginalUrl.startsWith('http') ? d.audioOriginalUrl : `${baseURL}${d.audioOriginalUrl.replace(/^\/?/, '')}`) : undefined,
+                audioDubladoUrl: d.audioDubladoUrl ? (d.audioDubladoUrl.startsWith('http') ? d.audioDubladoUrl : `${baseURL}${d.audioDubladoUrl.replace(/^\/?/, '')}`) : undefined,
+              }));
+              break;
             }
-          } catch {}
+          } catch (e) {
+            console.warn(`[Storage] Erro ao carregar split chunk ${key}:`, e);
+          }
         }
-      } catch (err) {
-        console.warn(`[Storage] Aviso ao carregar dialogues sob demanda para ${projectId}:`, err);
       }
 
-      this.loadedProjectDialogues.set(projectId, fetchedDialogues);
-      baseForProj = fetchedDialogues;
-    } else if (baseForProj.length === 0) {
-      baseForProj = this.loadedProjectDialogues.get(projectId) || [];
+      // 2. Fallback de segurança para dados base embutidos
+      if (loadedData.length === 0) {
+        const matchingBase = this.baseDialogues.filter(
+          (d) =>
+            d.projectId === projectId ||
+            d.projectId.toLowerCase().replace(/^proj_/, '') === cleanProjectId
+        );
+        loadedData = matchingBase;
+      }
+
+      this.loadedProjectDialogues.set(projectId, loadedData);
     }
+
+    const baseForProj = this.loadedProjectDialogues.get(projectId) || [];
 
     // 3. Sobrepõe edições locais salvas pelo usuário no navegador (localStorage)
     let savedDialogues: Dialogue[] = [];
