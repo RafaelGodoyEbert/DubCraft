@@ -1,6 +1,24 @@
 {
   "projects": [
     {
+      "id": "proj_assassins creed 1",
+      "name": "Assassins Creed 1 | Dublagem PC/PS3",
+      "slug": "assassins creed 1",
+      "folderName": "Assassins Creed 1",
+      "description": "Projeto de dublagem",
+      "coverImage": "projetos/Assassins Creed 1/thumb.jpg",
+      "status": "active",
+      "totalLines": 6753,
+      "reviewedLines": 2878,
+      "pendingProposalsCount": 0,
+      "contributorsCount": 1,
+      "cutscenesCount": 13,
+      "githubBranch": "main",
+      "githubPath": "",
+      "dubbedAudioBaseUrl": "projetos/Assassins Creed 1",
+      "createdAt": "2026-01-20T00:00:00Z"
+    },
+    {
       "id": "proj_black",
       "name": "Black (PS2 / Xbox)",
       "slug": "black",

@@ -10,6 +10,7 @@ import {
   User,
 } from '../types';
 
+import { cloudSyncServiceSingleton } from '../services/cloudSyncService';
 import catalogData from '../data/catalog.json';
 
 const rawBase = import.meta.env.BASE_URL || './';
@@ -27,53 +28,9 @@ const INITIAL_DIALOGUES: Dialogue[] = (catalogData.dialogues || []).map((d: any)
   audioDubladoUrl: d.audioDubladoUrl ? `${baseURL}${d.audioDubladoUrl}` : undefined,
 }));
 
-const INITIAL_PROPOSALS: Proposal[] = [
-  {
-    id: 'prop_001',
-    dialogueId: INITIAL_DIALOGUES[1]?.id || 'dial_black_level_00_1',
-    projectId: 'proj_black',
-    authorId: 'user_trusted_01',
-    authorName: 'CapitaoPrice',
-    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    authorReputation: 240,
-    authorRole: 'trusted',
-    proposedTranslation: 'Todas as equipes, avancem para o museu! Suprimam o fogo inimigo nas sacadas superiores!',
-    proposedEmotion: 'grito',
-    proposedVoiceType: 'masculino_adulto',
-    proposedPace: 'rapido',
-    proposedNotes: 'Adaptação mais militar e dinâmica para o combate intenso no rádio.',
-    reason: 'Tradução com tom militar tático para o calor da batalha.',
-    status: 'pending',
-    score: 8.5,
-    upvotesCount: 5,
-    downvotesCount: 0,
-    createdAt: '2026-01-20T10:00:00Z',
-  },
-];
-
-const INITIAL_VOTES: Vote[] = [
-  {
-    id: 'vote_001',
-    proposalId: 'prop_001',
-    userId: 'user_admin_01',
-    value: 1,
-    weight: 5.0,
-    createdAt: '2026-01-20T11:00:00Z',
-    updatedAt: '2026-01-20T11:00:00Z',
-  },
-];
-
-const INITIAL_AUDITS: AuditLog[] = [
-  {
-    id: 'audit_001',
-    userId: 'user_admin_01',
-    userName: 'DubCraft Admin',
-    action: 'PROJECT_EXPORT',
-    details: 'Identificou automaticamente a pasta de projeto Black com 3.500+ falas e áudios originais e dublados.',
-    targetId: 'proj_black',
-    createdAt: '2026-01-20T12:00:00Z',
-  },
-];
+const INITIAL_PROPOSALS: Proposal[] = [];
+const INITIAL_VOTES: Vote[] = [];
+const INITIAL_AUDITS: AuditLog[] = [];
 
 // Vite Native Code Splitting: Cada projeto gera um chunk JavaScript separado baixado sob demanda
 const projectDialogueLoaders = import.meta.glob('../data/projects/*.json');
@@ -254,17 +211,19 @@ export class LocalStorageRepositoryAdapter {
     // 1. Carrega sob demanda via Code-Splitting do Vite (se ainda não estiver na memória)
     if (!this.loadedProjectDialogues.has(projectId)) {
       let loadedData: Dialogue[] = [];
+      const cleanUnderscore = cleanProjectId.replace(/[^a-z0-9]/g, '_');
 
-      const candidateKeys = [
-        `../data/projects/${projectId}.json`,
-        `../data/projects/proj_${cleanProjectId}.json`,
-        `../data/projects/${cleanProjectId}.json`,
-      ];
-
-      for (const key of candidateKeys) {
-        if (projectDialogueLoaders[key]) {
+      for (const [loaderPath, loaderFn] of Object.entries(projectDialogueLoaders)) {
+        const norm = loaderPath.toLowerCase().replace(/\\/g, '/');
+        if (
+          norm.includes(`/${projectId.toLowerCase()}.json`) ||
+          norm.includes(`/proj_${cleanProjectId}.json`) ||
+          norm.includes(`/proj_${cleanUnderscore}.json`) ||
+          norm.includes(`/${cleanProjectId}.json`) ||
+          norm.includes(`/${cleanUnderscore}.json`)
+        ) {
           try {
-            const mod: any = await projectDialogueLoaders[key]();
+            const mod: any = await loaderFn();
             const raw = mod.default || mod;
             if (Array.isArray(raw)) {
               loadedData = raw.map((d: any) => ({
@@ -275,7 +234,7 @@ export class LocalStorageRepositoryAdapter {
               break;
             }
           } catch (e) {
-            console.warn(`[Storage] Erro ao carregar split chunk ${key}:`, e);
+            console.warn(`[Storage] Erro ao carregar split chunk ${loaderPath}:`, e);
           }
         }
       }
@@ -682,39 +641,76 @@ export class LocalStorageRepositoryAdapter {
 
   // --- CONTRIBUTORS / LEADERBOARD ---
   public async getContributors(): Promise<ProjectContributor[]> {
-    return [
-      {
-        userId: 'user_admin_01',
-        userName: 'DubCraft Admin',
-        role: 'admin',
-        approvedCount: 38,
-        totalProposals: 42,
-        totalVotes: 120,
-        reputation: 680,
-      },
-      {
-        userId: 'user_trusted_01',
-        userName: 'CapitaoPrice',
-        role: 'trusted',
-        approvedCount: 24,
-        totalProposals: 28,
-        totalVotes: 85,
-        reputation: 340,
-      },
-      {
-        userId: 'user_exp_01',
-        userName: 'Ghost_BR',
-        role: 'experienced',
-        approvedCount: 10,
-        totalProposals: 15,
-        totalVotes: 45,
-        reputation: 160,
-      },
-    ];
+    return this.getProjectContributors('');
   }
 
   public async getProjectContributors(projectId: string): Promise<ProjectContributor[]> {
-    return this.getContributors();
+    // 1. Obter propostas salvas no armazenamento local
+    const raw = localStorage.getItem(this.proposalsKey);
+    const localProposals: Proposal[] = raw ? JSON.parse(raw) : [];
+
+    // 2. Obter propostas da nuvem caso a API esteja ativa
+    let cloudProps: Proposal[] = [];
+    try {
+      const remote = await cloudSyncServiceSingleton.fetchProposals(projectId || '');
+      if (remote && Array.isArray(remote)) {
+        cloudProps = remote;
+      }
+    } catch {}
+
+    const map = new Map<string, Proposal>();
+    localProposals.forEach((p) => map.set(p.id, p));
+    cloudProps.forEach((p) => map.set(p.id, p));
+    const allProposals = Array.from(map.values());
+
+    const cleanProjectId = projectId ? projectId.toLowerCase().replace(/^proj_/, '') : '';
+
+    // Filtrar por projeto se especificado
+    const filtered = cleanProjectId && cleanProjectId !== 'all'
+      ? allProposals.filter((p) => {
+          const pClean = (p.projectId || '').toLowerCase().replace(/^proj_/, '');
+          return pClean === cleanProjectId;
+        })
+      : allProposals;
+
+    // Agrupar métricas por autor
+    const contributorsMap = new Map<string, ProjectContributor>();
+
+    for (const p of filtered) {
+      if (!p.authorId) continue;
+      const existing = contributorsMap.get(p.authorId) || {
+        userId: p.authorId,
+        userName: p.authorName || 'Colaborador',
+        userAvatar: p.authorAvatar || '',
+        userRole: p.authorRole || 'user',
+        role: p.authorRole || 'user',
+        approvedCount: 0,
+        totalProposals: 0,
+        totalVotes: 0,
+        reputation: p.authorReputation || 10,
+      };
+
+      existing.totalProposals += 1;
+      if (p.status === 'approved') {
+        existing.approvedCount = (existing.approvedCount || 0) + 1;
+      }
+      if (p.authorAvatar && !existing.userAvatar) {
+        existing.userAvatar = p.authorAvatar;
+      }
+      if (p.authorName && (!existing.userName || existing.userName === 'Colaborador')) {
+        existing.userName = p.authorName;
+      }
+      if (p.authorRole) {
+        existing.userRole = p.authorRole;
+        existing.role = p.authorRole;
+      }
+
+      contributorsMap.set(p.authorId, existing);
+    }
+
+    return Array.from(contributorsMap.values()).sort(
+      (a, b) => (b.approvedCount || 0) - (a.approvedCount || 0) || b.totalProposals - a.totalProposals
+    );
   }
 }
 

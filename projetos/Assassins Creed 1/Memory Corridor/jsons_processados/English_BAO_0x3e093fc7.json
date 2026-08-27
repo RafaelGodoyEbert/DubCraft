@@ -1,0 +1,16 @@
+{
+    "texto_original": "The synchronization bar represents how in sync you are with your ancestors' memories. If you ever fall completely out of sync, the Animus will restore you to your last synchronized position. You are currently dangerously close to desynchronization. Please follow all forthcoming instructions in order to restore system stability.",
+    "traducao_ptbr": "A barra de sincronização representa o quão sincronizado você está com as memórias de seus ancestrais. Se você ficar completamente dessincronizado, o Animus o restaurará para a sua última posição sincronizada. No momento, você está perigosamente perto da dessincronização. Siga todas as instruções a seguir para restaurar a estabilidade do sistema.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "English_BAO_0x3e093fc7.wav",
+        "gerado_em": "2026-08-22T14:32:58Z",
+        "manual_creation": true
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

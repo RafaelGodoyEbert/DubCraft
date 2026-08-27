@@ -85,8 +85,14 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
           <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto" />
         </div>
       ) : sortedContributors.length === 0 ? (
-        <div className="py-12 text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-6">
-          <p className="text-sm font-semibold text-zinc-300">Nenhum contribuidor registrado ainda neste projeto.</p>
+        <div className="py-16 text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-6 sm:p-10 space-y-3 shadow-xl">
+          <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto">
+            <Trophy className="w-8 h-8 stroke-[1.5]" />
+          </div>
+          <h3 className="text-base sm:text-lg font-bold text-zinc-100">Quadro de Honra & Créditos Zerado</h3>
+          <p className="text-xs text-zinc-400 max-w-md mx-auto leading-relaxed">
+            Nenhuma proposta comunitária foi registrada ou aprovada ainda para este projeto. Conforme você e outros colaboradores enviarem sugestões e elas forem aprovadas na moderação, o ranking oficial dos créditos do jogo será computado aqui automaticamente!
+          </p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -109,19 +115,28 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
                   <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
                     {medal}
                   </span>
-                  <img
-                    src={contrib.userAvatar}
-                    alt={contrib.userName}
-                    className="w-14 h-14 rounded-full object-cover ring-2 ring-amber-500/50 shadow"
-                  />
+                  {contrib.userAvatar ? (
+                    <img
+                      src={contrib.userAvatar}
+                      alt={contrib.userName}
+                      className="w-14 h-14 rounded-full object-cover ring-2 ring-amber-500/50 shadow"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 text-zinc-950 font-bold text-base flex items-center justify-center ring-2 ring-amber-500/50 shadow">
+                      {contrib.userName.slice(0, 2).toUpperCase()}
+                    </div>
+                  )}
                   <div>
                     <h3 className="text-sm font-bold text-zinc-100 flex items-center justify-center gap-1">
                       {contrib.userName}
                     </h3>
-                    <Badge role={contrib.userRole} size="sm" />
+                    <Badge role={contrib.userRole || contrib.role} size="sm" />
                   </div>
                   <div className="pt-2 border-t border-zinc-800/80 w-full text-xs text-zinc-300 space-y-0.5">
-                    <p className="font-bold text-amber-400 text-sm">{contrib.approvedCount} falas aprovadas</p>
+                    <p className="font-bold text-amber-400 text-sm">{contrib.approvedCount || 0} falas aprovadas</p>
                     <p className="text-[11px] text-zinc-500">{contrib.totalProposals} propostas enviadas</p>
                   </div>
                 </div>
@@ -138,7 +153,7 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
             <div className="divide-y divide-zinc-800/80">
               {sortedContributors.map((contrib, index) => {
                 const approvalRate = contrib.totalProposals > 0
-                  ? Math.round((contrib.approvedCount / contrib.totalProposals) * 100)
+                  ? Math.round(((contrib.approvedCount || 0) / contrib.totalProposals) * 100)
                   : 100;
 
                 return (
@@ -151,15 +166,24 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
                       <span className="w-6 text-center font-bold text-xs text-amber-400">
                         #{index + 1}
                       </span>
-                      <img
-                        src={contrib.userAvatar}
-                        alt={contrib.userName}
-                        className="w-10 h-10 rounded-full object-cover ring-1 ring-zinc-700"
-                      />
+                      {contrib.userAvatar ? (
+                        <img
+                          src={contrib.userAvatar}
+                          alt={contrib.userName}
+                          className="w-10 h-10 rounded-full object-cover ring-1 ring-zinc-700"
+                          onError={(e) => {
+                            (e.target as HTMLElement).style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 text-zinc-950 font-bold text-xs flex items-center justify-center ring-1 ring-zinc-700">
+                          {contrib.userName.slice(0, 2).toUpperCase()}
+                        </div>
+                      )}
                       <div>
                         <div className="flex items-center gap-1.5">
                           <span className="text-xs font-bold text-zinc-100">{contrib.userName}</span>
-                          <Badge role={contrib.userRole} size="sm" />
+                          <Badge role={contrib.userRole || contrib.role} size="sm" />
                         </div>
                         <span className="text-[11px] text-zinc-500 font-medium">
                           Taxa de aprovação: {approvalRate}%
@@ -171,7 +195,7 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
                     <div className="text-right">
                       <div className="text-xs font-bold text-amber-400 flex items-center justify-end gap-1">
                         <CheckCircle2 className="w-3.5 h-3.5" />
-                        {contrib.approvedCount} Aprovadas
+                        {contrib.approvedCount || 0} Aprovadas
                       </div>
                       <span className="text-[10px] text-zinc-500">{contrib.totalProposals} enviadas</span>
                     </div>

@@ -1,0 +1,16 @@
+{
+    "texto_original": "This icon appears when a soldier is looking at you. The yellow color means the soldier is either unaware or suspicious of who you are.",
+    "traducao_ptbr": "Este ícone aparece quando um soldado está olhando para você. A cor amarela significa que o soldado não sabe quem você é ou desconfia da sua identidade.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "English_BAO_0x3ef14b23.wav",
+        "gerado_em": "2026-08-22T14:32:58Z",
+        "manual_creation": true
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}
