@@ -425,6 +425,39 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </button>
             </div>
 
+            {/* Quick Demo Switcher Section */}
+            <div className="p-3 bg-zinc-950 rounded-2xl border border-zinc-800 space-y-2">
+              <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Personas de Demonstração / Teste
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const auth = getAuthService();
+                    const u = auth.switchUserPersona('admin');
+                    onUserChanged(u);
+                  }}
+                  className="p-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/60 rounded-xl text-left transition-all"
+                >
+                  <p className="text-xs font-bold text-amber-400">DubCraft Admin</p>
+                  <p className="text-[10px] text-zinc-500">★ 750 • Acesso Total</p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const auth = getAuthService();
+                    const u = auth.switchUserPersona('trusted');
+                    onUserChanged(u);
+                  }}
+                  className="p-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/60 rounded-xl text-left transition-all"
+                >
+                  <p className="text-xs font-bold text-emerald-400">Revisor Sênior</p>
+                  <p className="text-[10px] text-zinc-500">★ 210 • Confiança Alta</p>
+                </button>
+              </div>
+            </div>
+
             {/* Logout Button */}
             <button
               type="button"

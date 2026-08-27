@@ -16,6 +16,19 @@ import { IAuthProvider, RateLimitStatus, setAuthProvider } from './authService';
 
 let firebaseConfig: any = null;
 
+// Lista de administradores lida exclusivamente de variáveis secretas de ambiente (GitHub Secrets)
+const envAdminEmails = (import.meta.env.VITE_ADMIN_EMAILS || '')
+  .split(',')
+  .map((e: string) => e.trim().toLowerCase())
+  .filter(Boolean);
+
+export function isUserAdmin(email?: string | null): boolean {
+  if (!email) return false;
+  const clean = email.toLowerCase().trim();
+  // Apenas o admin de demo local ou os e-mails informados com segurança no GitHub Secret
+  return clean === 'admin@dubcraft.io' || envAdminEmails.includes(clean);
+}
+
 // Load from Vite env variables or window runtime config
 if (import.meta.env.VITE_FIREBASE_API_KEY) {
   firebaseConfig = {
@@ -91,6 +104,7 @@ export class FirebaseAuthProvider implements IAuthProvider {
         const fbUser = userCredential.user;
         this.failedAttempts.delete(cleanEmail);
 
+        const isAdmin = isUserAdmin(cleanEmail);
         this.currentUser = {
           id: fbUser.uid,
           name: fbUser.displayName || cleanEmail.split('@')[0],
@@ -98,9 +112,9 @@ export class FirebaseAuthProvider implements IAuthProvider {
           email: fbUser.email || cleanEmail,
           emailVerified: fbUser.emailVerified,
           avatarUrl: fbUser.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanEmail)}`,
-          role: cleanEmail.includes('admin') ? 'admin' : 'user',
-          reputation: 10,
-          isTrusted: false,
+          role: isAdmin ? 'admin' : 'user',
+          reputation: isAdmin ? 999 : 20,
+          isTrusted: isAdmin,
           createdAt: fbUser.metadata.creationTime || new Date().toISOString(),
         };
         return this.currentUser;
@@ -135,6 +149,7 @@ export class FirebaseAuthProvider implements IAuthProvider {
         .replace(/\s+/g, '_')
         .replace(/[^a-z0-9_]/g, '');
 
+      const isAdmin = isUserAdmin(email);
       this.currentUser = {
         id: fbUser.uid,
         name: name,
@@ -142,9 +157,9 @@ export class FirebaseAuthProvider implements IAuthProvider {
         email: email,
         emailVerified: fbUser.emailVerified,
         avatarUrl: fbUser.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(email || 'google')}`,
-        role: email.includes('admin') ? 'admin' : 'user',
-        reputation: 20,
-        isTrusted: false,
+        role: isAdmin ? 'admin' : 'user',
+        reputation: isAdmin ? 999 : 20,
+        isTrusted: isAdmin,
         createdAt: fbUser.metadata.creationTime || new Date().toISOString(),
       };
 
@@ -176,6 +191,7 @@ export class FirebaseAuthProvider implements IAuthProvider {
       });
       await fbSendEmailVerification(fbUser);
 
+      const isAdmin = isUserAdmin(email);
       this.currentUser = {
         id: fbUser.uid,
         name: name,
@@ -183,9 +199,9 @@ export class FirebaseAuthProvider implements IAuthProvider {
         email: email,
         emailVerified: false,
         avatarUrl: fbUser.photoURL || '',
-        role: 'user',
-        reputation: 10,
-        isTrusted: false,
+        role: isAdmin ? 'admin' : 'user',
+        reputation: isAdmin ? 999 : 20,
+        isTrusted: isAdmin,
         createdAt: new Date().toISOString(),
       };
       return this.currentUser;
@@ -239,6 +255,7 @@ export class FirebaseAuthProvider implements IAuthProvider {
     if (this.auth) {
       return fbOnAuthStateChanged(this.auth, (fbUser: any) => {
         if (fbUser) {
+          const isAdmin = isUserAdmin(fbUser.email);
           this.currentUser = {
             id: fbUser.uid,
             name: fbUser.displayName || fbUser.email?.split('@')[0] || 'Usuário',
@@ -246,9 +263,9 @@ export class FirebaseAuthProvider implements IAuthProvider {
             email: fbUser.email,
             emailVerified: fbUser.emailVerified,
             avatarUrl: fbUser.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(fbUser.email || 'user')}`,
-            role: fbUser.email?.includes('admin') ? 'admin' : 'user',
-            reputation: 10,
-            isTrusted: false,
+            role: isAdmin ? 'admin' : 'user',
+            reputation: isAdmin ? 999 : 20,
+            isTrusted: isAdmin,
             createdAt: new Date().toISOString(),
           };
         } else {
@@ -258,7 +275,7 @@ export class FirebaseAuthProvider implements IAuthProvider {
       });
     } else {
       callback(this.currentUser);
-      return () => {};
+      return () => { };
     }
   }
 }
