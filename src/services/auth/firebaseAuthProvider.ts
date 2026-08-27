@@ -153,6 +153,15 @@ export class FirebaseAuthProvider implements IAuthProvider {
       if (err.code === 'auth/popup-closed-by-user') {
         throw new Error('Login com Google cancelado.');
       }
+      if (err.code === 'auth/unauthorized-domain') {
+        throw new Error('Domínio não autorizado. Adicione "rafaelgodoyebert.github.io" em Firebase Console > Authentication > Settings > Authorized domains.');
+      }
+      if (err.code === 'auth/operation-not-allowed') {
+        throw new Error('Provedor Google desativado. Ative o Google em Firebase Console > Authentication > Sign-in method.');
+      }
+      if (err.code === 'auth/popup-blocked') {
+        throw new Error('O navegador bloqueou o pop-up do Google. Permita pop-ups no navegador para este site.');
+      }
       throw new Error(err.message || 'Erro ao fazer login com o Google.');
     }
   }
