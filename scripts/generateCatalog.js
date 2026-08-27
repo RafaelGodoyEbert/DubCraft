@@ -44,7 +44,9 @@ export function generateCatalog() {
     console.warn('[Catalog] Aviso ao ler diretório de projetos:', err.message);
   }
 
-  if (projectDirs.length === 0 && fs.existsSync(OUTPUT_FILE)) {
+  const isForce = process.argv.includes('--force') || process.argv.includes('--clean');
+
+  if (!isForce && projectDirs.length === 0 && fs.existsSync(OUTPUT_FILE)) {
     try {
       const existing = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf8'));
       if (existing.projects && existing.projects.length > 0) {
