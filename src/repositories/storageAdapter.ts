@@ -319,7 +319,7 @@ export class LocalStorageRepositoryAdapter {
     return Array.from(dialogueMap.values());
   }
 
-  public async getDialogueById(id: string): Promise<Dialogue | null> {
+  public async getDialogueById(id: string, projectId?: string): Promise<Dialogue | null> {
     let savedDialogues: Dialogue[] = [];
     try {
       const raw = localStorage.getItem(this.dialoguesKey);
@@ -328,6 +328,27 @@ export class LocalStorageRepositoryAdapter {
 
     const saved = savedDialogues.find((d) => d.id === id);
     if (saved) return saved;
+
+    // Se projectId for especificado, busca direto no projeto
+    if (projectId) {
+      const projDialogues = await this.getDialoguesByProject(projectId);
+      const found = projDialogues.find((d) => d.id === id);
+      if (found) return found;
+    }
+
+    // Busca nas memórias já carregadas
+    for (const list of this.loadedProjectDialogues.values()) {
+      const found = list.find((d) => d.id === id);
+      if (found) return found;
+    }
+
+    // Fallback: busca em todos os projetos registrados
+    const projects = await this.getProjects();
+    for (const p of projects) {
+      const list = await this.getDialoguesByProject(p.id);
+      const found = list.find((d) => d.id === id);
+      if (found) return found;
+    }
 
     const base = this.baseDialogues.find((d) => d.id === id);
     return base || null;

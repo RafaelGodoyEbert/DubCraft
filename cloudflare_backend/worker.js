@@ -314,7 +314,20 @@ export default {
         return jsonResponse({ success: true });
       }
 
-      // 7. Rota raiz / status
+      // 7. PATCH /proposals/status (Atualizar status da proposta para approved ou rejected)
+      if (request.method === 'PATCH' && path === '/proposals/status') {
+        const { id, status, resolvedBy } = await request.json();
+        const now = new Date().toISOString();
+        await db.prepare(`
+          UPDATE proposals
+          SET status = ?, resolved_by = ?, resolved_at = ?
+          WHERE id = ?
+        `).bind(status, resolvedBy || null, now, id).run();
+
+        return jsonResponse({ success: true, id, status });
+      }
+
+      // 8. Rota raiz / status
       if (path === '/' || path === '/health') {
         return jsonResponse({
           status: 'online',

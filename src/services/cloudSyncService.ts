@@ -172,6 +172,32 @@ export class CloudSyncService {
       return null;
     }
   }
+
+  public async updateProposalStatus(
+    proposalId: string,
+    status: 'approved' | 'rejected',
+    resolvedBy?: string
+  ): Promise<boolean> {
+    if (!this.isEnabled || !this.apiUrl || this.circuitBreaker.isPaused) {
+      return false;
+    }
+
+    try {
+      const response = await fetch(`${this.apiUrl}/proposals/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(this.apiKey ? { 'apikey': this.apiKey, 'Authorization': `Bearer ${this.apiKey}` } : {}),
+        },
+        body: JSON.stringify({ id: proposalId, status, resolvedBy }),
+      });
+
+      return response.ok;
+    } catch (err) {
+      console.warn('[CloudSync] Falha ao atualizar status da proposta na nuvem:', err);
+      return false;
+    }
+  }
 }
 
 export const cloudSyncServiceSingleton = new CloudSyncService();

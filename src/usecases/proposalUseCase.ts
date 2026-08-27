@@ -176,7 +176,7 @@ export class ProposalUseCase {
     approver: User,
     reason: string = 'Aprovado por revisão comunitária'
   ): Promise<Dialogue> {
-    const dialogue = await this.repo.getDialogueById(proposal.dialogueId);
+    const dialogue = await this.repo.getDialogueById(proposal.dialogueId, proposal.projectId);
     if (!dialogue) {
       throw new Error('Diálogo associado não encontrado.');
     }
@@ -211,6 +211,9 @@ export class ProposalUseCase {
     proposal.resolvedAt = new Date().toISOString();
     proposal.resolvedBy = approver.name;
     await this.repo.updateProposal(proposal);
+
+    // Sincroniza resolução com a nuvem (Cloudflare D1)
+    cloudSyncServiceSingleton.updateProposalStatus(proposal.id, 'approved', approver.name).catch(() => {});
 
     // Record Reputation Event for Author
     const repEvent: ReputationEvent = {
@@ -267,6 +270,9 @@ export class ProposalUseCase {
     proposal.resolvedAt = new Date().toISOString();
     proposal.resolvedBy = rejecter.name;
     await this.repo.updateProposal(proposal);
+
+    // Sincroniza rejeição com a nuvem (Cloudflare D1)
+    cloudSyncServiceSingleton.updateProposalStatus(proposal.id, 'rejected', rejecter.name).catch(() => {});
 
     // Penalty optional if spam
     const repEvent: ReputationEvent = {
