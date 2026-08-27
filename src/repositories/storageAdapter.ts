@@ -251,17 +251,21 @@ export class LocalStorageRepositoryAdapter {
           p.slug === cleanProjectId ||
           p.id.toLowerCase().replace(/^proj_/, '') === cleanProjectId
       );
-      const slug = proj?.slug || cleanProjectId;
-      const folderName = proj?.name || slug;
+      const realFolderName = (proj as any)?.folderName || (proj?.dubbedAudioBaseUrl ? proj.dubbedAudioBaseUrl.replace(/^\/?(projetos\/)?/, '').split('/')[0] : '');
+      const rawBaseAudio = proj?.dubbedAudioBaseUrl ? proj.dubbedAudioBaseUrl.replace(/^\/?/, '') : '';
 
       let fetchedDialogues: Dialogue[] = [];
       try {
         const candidateUrls = [
+          realFolderName ? `${baseURL}projetos/${realFolderName}/dialogues.json` : '',
+          rawBaseAudio ? `${baseURL}${rawBaseAudio}/dialogues.json` : '',
           `${baseURL}projetos/${slug}/dialogues.json`,
-          `${baseURL}projetos/${folderName}/dialogues.json`,
+          `${baseURL}projetos/${slug.charAt(0).toUpperCase() + slug.slice(1)}/dialogues.json`,
+          `${baseURL}projetos/Black/dialogues.json`,
+          realFolderName ? `./projetos/${realFolderName}/dialogues.json` : '',
           `./projetos/${slug}/dialogues.json`,
-          `./projetos/${folderName}/dialogues.json`,
-        ];
+          `./projetos/Black/dialogues.json`,
+        ].filter(Boolean);
 
         for (const url of candidateUrls) {
           try {

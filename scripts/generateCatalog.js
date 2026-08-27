@@ -210,6 +210,7 @@ export function generateCatalog() {
       id: projectId,
       name: projectInfo.name || projectName,
       slug: projectName.toLowerCase(),
+      folderName: projectName,
       description: projectInfo.description || `Projeto de dublagem de ${projectName}`,
       coverImage,
       status: 'active',

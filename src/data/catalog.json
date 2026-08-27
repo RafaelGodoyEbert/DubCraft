@@ -4,6 +4,7 @@
       "id": "proj_black",
       "name": "Black (PS2 / Xbox)",
       "slug": "black",
+      "folderName": "Black",
       "description": "Projeto de dublagem e localização do clássico FPS Black com diálogos organizados por missões.",
       "coverImage": "projetos/Black/thumb.png",
       "status": "active",
