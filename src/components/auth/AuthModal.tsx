@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, UserRole } from '../../types';
+import { User } from '../../types';
 import { Drawer } from '../common/Drawer';
 import { Badge } from '../common/Badge';
 import { getAuthService } from '../../services/auth/authService';
@@ -15,7 +15,10 @@ import {
   Sparkles,
   ArrowRight,
   ShieldCheck,
-  RotateCcw,
+  Camera,
+  KeyRound,
+  Save,
+  AtSign,
 } from 'lucide-react';
 
 interface AuthModalProps {
@@ -25,34 +28,58 @@ interface AuthModalProps {
   onUserChanged: (user: User | null) => void;
 }
 
+const AVATAR_PRESETS = [
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
+  'https://api.dicebear.com/7.x/bottts/svg?seed=DubMaster',
+  'https://api.dicebear.com/7.x/bottts/svg?seed=VoiceActor',
+  'https://api.dicebear.com/7.x/bottts/svg?seed=StudioSound',
+];
+
 export const AuthModal: React.FC<AuthModalProps> = ({
   isOpen,
   onClose,
   currentUser,
   onUserChanged,
 }) => {
-  const [tab, setTab] = useState<'login' | 'register' | 'forgot'>('login');
+  const [tab, setTab] = useState<'login' | 'register' | 'forgot' | 'profile'>('login');
 
-  // Form states
+  // Form states (Login / Register)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  // Profile Edit states
+  const [editName, setEditName] = useState('');
+  const [editUsername, setEditUsername] = useState('');
+  const [editAvatarUrl, setEditAvatarUrl] = useState('');
+  const [isChangingAvatar, setIsChangingAvatar] = useState(false);
+
   // Status & Feedback
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [isEmailVerifiedNoticeSent, setIsEmailVerifiedNoticeSent] = useState(false);
 
+  // Sync state when opening modal
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
       setError(null);
       setSuccessMessage(null);
+      if (currentUser) {
+        setTab('profile');
+        setEditName(currentUser.name);
+        setEditUsername(currentUser.username);
+        setEditAvatarUrl(currentUser.avatarUrl);
+      } else {
+        setTab('login');
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, currentUser]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,17 +170,61 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
   };
 
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!currentUser) return;
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      setIsSubmitting(true);
+      const auth = getAuthService();
+      const updatedUser = auth.updateUser({
+        name: editName.trim() || currentUser.name,
+        username: editUsername.trim().toLowerCase().replace(/[^a-z0-9_]/g, '') || currentUser.username,
+        avatarUrl: editAvatarUrl.trim() || currentUser.avatarUrl,
+      });
+
+      onUserChanged(updatedUser);
+      setSuccessMessage('Perfil atualizado com sucesso! ✨');
+      setIsChangingAvatar(false);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 2500);
+    } catch (err: any) {
+      setError(err.message || 'Erro ao salvar alterações do perfil.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleRequestPasswordResetFromProfile = async () => {
+    if (!currentUser?.email) {
+      setError('Sua conta não possui um e-mail vinculado para envio da senha.');
+      return;
+    }
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      setIsSubmitting(true);
+      const auth = getAuthService();
+      await auth.sendPasswordResetEmail(currentUser.email);
+      setSuccessMessage(`Link de redefinição de senha enviado para ${currentUser.email}! Verifique seu e-mail.`);
+    } catch (err: any) {
+      setError(err.message || 'Erro ao enviar e-mail de redefinição.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleResendVerification = async () => {
     try {
       setIsSubmitting(true);
       const auth = getAuthService();
       await auth.sendEmailVerification();
       setIsEmailVerifiedNoticeSent(true);
-      setSuccessMessage('E-mail de confirmação reenviado e conta validada!');
-      const updatedUser = auth.getCurrentUser();
-      if (updatedUser) {
-        onUserChanged({ ...updatedUser, emailVerified: true });
-      }
+      setSuccessMessage('E-mail de confirmação reenviado!');
     } catch (err: any) {
       setError(err.message || 'Erro ao reenviar e-mail de verificação.');
     } finally {
@@ -175,37 +246,94 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       title={currentUser ? `Minha Conta — ${currentUser.name}` : 'DubCraft Studio — Autenticação'}
     >
       <div className="space-y-4 text-xs sm:text-sm">
-        {/* If user is logged in: show profile info, email status, and options */}
-        {currentUser && tab !== 'login' && tab !== 'register' && (
-          <div className="space-y-4">
-            {/* User Header Profile Card */}
-            <div className="p-4 bg-zinc-950 rounded-2xl border border-zinc-800 space-y-3 shadow-inner">
+        {/* Error Banner */}
+        {error && (
+          <div className="p-3 bg-rose-950/80 border border-rose-800 rounded-xl text-rose-200 text-xs flex items-center gap-2 animate-fade-in">
+            <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0" />
+            <p className="font-semibold flex-1">{error}</p>
+          </div>
+        )}
+
+        {/* Success Banner */}
+        {successMessage && (
+          <div className="p-3 bg-emerald-950/80 border border-emerald-800 rounded-xl text-emerald-200 text-xs flex items-center gap-2 animate-fade-in">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>{successMessage}</span>
+          </div>
+        )}
+
+        {/* ========================================================
+            VIEW: LOGGED IN USER PROFILE & ACCOUNT MANAGEMENT
+        ======================================================== */}
+        {currentUser && tab === 'profile' && (
+          <div className="space-y-5">
+            {/* Header Profile Card */}
+            <div className="p-4 bg-zinc-950 rounded-2xl border border-zinc-800 space-y-4 shadow-inner">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <img
-                    src={currentUser.avatarUrl}
-                    alt={currentUser.name}
-                    className="w-12 h-12 rounded-xl object-cover ring-2 ring-amber-500/50"
-                  />
+                  <div className="relative group">
+                    <img
+                      src={editAvatarUrl || currentUser.avatarUrl}
+                      alt={currentUser.name}
+                      className="w-14 h-14 rounded-2xl object-cover ring-2 ring-amber-500/60 shadow-md transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setIsChangingAvatar(!isChangingAvatar)}
+                      className="absolute -bottom-1 -right-1 p-1.5 bg-amber-500 hover:bg-amber-400 text-zinc-950 rounded-lg shadow transition-all"
+                      title="Mudar Foto"
+                    >
+                      <Camera className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <h3 className="font-bold text-zinc-100 text-sm">{currentUser.name}</h3>
+                      <h3 className="font-bold text-zinc-100 text-base">{currentUser.name}</h3>
                       <Badge role={currentUser.role} isTrusted={currentUser.isTrusted} size="sm" />
                     </div>
                     <p className="text-xs text-zinc-400 font-mono">@{currentUser.username}</p>
-                    <p className="text-[11px] text-zinc-500">{currentUser.email || 'Sem e-mail vinculado'}</p>
+                    <p className="text-[11px] text-zinc-500">{currentUser.email || 'Conta sem e-mail'}</p>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-xs font-bold text-amber-400">★ {currentUser.reputation} pts</span>
-                  <p className="text-[10px] text-zinc-500 uppercase">Reputação</p>
+                  <span className="text-sm font-black text-amber-400">★ {currentUser.reputation}</span>
+                  <p className="text-[10px] text-zinc-500 uppercase font-semibold">Reputação</p>
                 </div>
               </div>
 
-              {/* Email Verification Status Banner */}
+              {/* Avatar Selector Picker Dropdown */}
+              {isChangingAvatar && (
+                <div className="p-3 bg-zinc-900 border border-zinc-700/80 rounded-xl space-y-2 animate-fade-in">
+                  <p className="text-[11px] font-bold text-zinc-300">Escolha um avatar ou cole uma URL:</p>
+                  <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                    {AVATAR_PRESETS.map((preset, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setEditAvatarUrl(preset)}
+                        className={`w-9 h-9 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
+                          editAvatarUrl === preset ? 'border-amber-400 scale-105' : 'border-zinc-700 opacity-70 hover:opacity-100'
+                        }`}
+                      >
+                        <img src={preset} alt="preset" className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type="url"
+                    placeholder="Ou cole a URL da sua foto (https://...)"
+                    value={editAvatarUrl}
+                    onChange={(e) => setEditAvatarUrl(e.target.value)}
+                    className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-2 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
+                  />
+                </div>
+              )}
+
+              {/* Email Status Verification Pill */}
               <div
-                className={`p-3 rounded-xl border flex items-center justify-between gap-2 text-xs ${
+                className={`p-2.5 rounded-xl border flex items-center justify-between gap-2 text-xs ${
                   currentUser.emailVerified
                     ? 'bg-emerald-950/40 border-emerald-800/80 text-emerald-300'
                     : 'bg-amber-950/40 border-amber-800/80 text-amber-300'
@@ -219,7 +347,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   )}
                   <span>
                     {currentUser.emailVerified
-                      ? 'E-mail verificado e protegido.'
+                      ? 'E-mail autenticado com segurança.'
                       : 'E-mail pendente de confirmação.'}
                   </span>
                 </div>
@@ -228,28 +356,90 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <button
                     onClick={handleResendVerification}
                     disabled={isSubmitting || isEmailVerifiedNoticeSent}
-                    className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[11px] font-bold rounded-lg transition-all shrink-0"
+                    className="px-2 py-1 bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[10px] font-bold rounded-lg transition-all shrink-0"
                   >
-                    {isEmailVerifiedNoticeSent ? 'Validado ✓' : 'Confirmar E-mail'}
+                    {isEmailVerifiedNoticeSent ? 'Enviado ✓' : 'Confirmar'}
                   </button>
                 )}
               </div>
             </div>
 
-            {/* Quick Navigation Buttons */}
-            <div>
+            {/* Profile Editing Form */}
+            <form onSubmit={handleSaveProfile} className="space-y-3 bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
+              <h4 className="text-xs font-bold text-zinc-200 uppercase tracking-wider flex items-center gap-1.5">
+                <UserIcon className="w-3.5 h-3.5 text-amber-400" /> Dados do Perfil
+              </h4>
+
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-zinc-400">Nome de Exibição</label>
+                <input
+                  type="text"
+                  required
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  placeholder="Seu Nome Completo"
+                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-zinc-400">Nome de Usuário (@handle)</label>
+                <div className="relative">
+                  <AtSign className="w-4 h-4 text-zinc-500 absolute left-3 top-3" />
+                  <input
+                    type="text"
+                    required
+                    value={editUsername}
+                    onChange={(e) => setEditUsername(e.target.value)}
+                    placeholder="usuario_dub"
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 pl-9 text-zinc-100 text-xs font-mono focus:outline-none focus:border-amber-500"
+                  />
+                </div>
+              </div>
+
               <button
-                onClick={handleLogout}
-                className="w-full p-3 bg-rose-950/50 hover:bg-rose-900/60 border border-rose-800/60 rounded-xl text-xs font-semibold text-rose-300 flex items-center justify-center gap-2 transition-all min-h-[44px]"
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-2 min-h-[40px] disabled:opacity-50"
               >
-                <LogOut className="w-4 h-4" /> Desconectar da Conta
+                <Save className="w-4 h-4" />
+                {isSubmitting ? 'Salvando...' : 'Salvar Alterações do Perfil'}
+              </button>
+            </form>
+
+            {/* Security & Password Section */}
+            <div className="p-4 bg-zinc-950 rounded-2xl border border-zinc-800 space-y-2.5">
+              <h4 className="text-xs font-bold text-zinc-200 uppercase tracking-wider flex items-center gap-1.5">
+                <KeyRound className="w-3.5 h-3.5 text-amber-400" /> Segurança & Senha
+              </h4>
+              <p className="text-xs text-zinc-400">
+                Deseja alterar ou recuperar sua senha de acesso?
+              </p>
+              <button
+                type="button"
+                onClick={handleRequestPasswordResetFromProfile}
+                disabled={isSubmitting}
+                className="w-full p-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 rounded-xl text-xs font-semibold text-zinc-200 flex items-center justify-center gap-2 transition-all min-h-[40px]"
+              >
+                <Lock className="w-3.5 h-3.5 text-zinc-400" /> Enviar Link de Troca de Senha por E-mail
               </button>
             </div>
+
+            {/* Logout Button */}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full p-3 bg-rose-950/40 hover:bg-rose-900/60 border border-rose-800/60 rounded-xl text-xs font-bold text-rose-300 flex items-center justify-center gap-2 transition-all min-h-[44px]"
+            >
+              <LogOut className="w-4 h-4" /> Desconectar da Conta
+            </button>
           </div>
         )}
 
-        {/* Tab Selector when logged out */}
-        {(!currentUser || tab === 'login' || tab === 'register' || tab === 'forgot') && (
+        {/* ========================================================
+            VIEW: LOGGED OUT TABS (LOGIN / REGISTER / FORGOT)
+        ======================================================== */}
+        {!currentUser && (
           <div>
             {/* Tabs Header */}
             <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 mb-4">
@@ -282,22 +472,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 Criar Conta
               </button>
             </div>
-
-            {/* Error Banner */}
-            {error && (
-              <div className="p-3 bg-rose-950/80 border border-rose-800 rounded-xl text-rose-200 text-xs flex items-center gap-2 animate-fade-in">
-                <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0" />
-                <p className="font-semibold flex-1">{error}</p>
-              </div>
-            )}
-
-            {/* Success Banner */}
-            {successMessage && (
-              <div className="p-3 bg-emerald-950/80 border border-emerald-800 rounded-xl text-emerald-200 text-xs flex items-center gap-2 animate-fade-in">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>{successMessage}</span>
-              </div>
-            )}
 
             {/* Tab: LOGIN */}
             {tab === 'login' && (
@@ -430,94 +604,94 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
 
                 <form onSubmit={handleRegister} className="space-y-3">
-                <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-zinc-300">Nome Completo</label>
-                  <div className="relative">
-                    <UserIcon className="w-4 h-4 text-zinc-500 absolute left-3 top-3.5" />
+                  <div className="space-y-1">
+                    <label className="block text-xs font-semibold text-zinc-300">Nome Completo</label>
+                    <div className="relative">
+                      <UserIcon className="w-4 h-4 text-zinc-500 absolute left-3 top-3.5" />
+                      <input
+                        type="text"
+                        required
+                        autoComplete="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Ex: Carlos Tradutor"
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 pl-9 text-zinc-100 text-xs focus:outline-none focus:border-amber-500 min-h-[44px]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-semibold text-zinc-300">Nome de Usuário (@handle)</label>
                     <input
                       type="text"
                       required
-                      autoComplete="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Ex: Carlos Tradutor"
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 pl-9 text-zinc-100 text-xs focus:outline-none focus:border-amber-500 min-h-[44px]"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-zinc-300">Nome de Usuário (@handle)</label>
-                  <input
-                    type="text"
-                    required
-                    autoComplete="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="carlos_dub"
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-zinc-100 text-xs focus:outline-none focus:border-amber-500 min-h-[44px]"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-zinc-300">E-mail</label>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 text-zinc-500 absolute left-3 top-3.5" />
-                    <input
-                      type="email"
-                      required
-                      autoComplete="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="carlos@exemplo.com"
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 pl-9 text-zinc-100 text-xs focus:outline-none focus:border-amber-500 min-h-[44px]"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-semibold text-zinc-300">Senha</label>
-                    <input
-                      type="password"
-                      required
-                      autoComplete="new-password"
-                      minLength={6}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Mínimo 6 dígitos"
+                      autoComplete="username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder="carlos_dub"
                       className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-zinc-100 text-xs focus:outline-none focus:border-amber-500 min-h-[44px]"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-xs font-semibold text-zinc-300">Confirmar Senha</label>
-                    <input
-                      type="password"
-                      required
-                      autoComplete="new-password"
-                      minLength={6}
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="Repita a senha"
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-zinc-100 text-xs focus:outline-none focus:border-amber-500 min-h-[44px]"
-                    />
+                    <label className="block text-xs font-semibold text-zinc-300">E-mail</label>
+                    <div className="relative">
+                      <Mail className="w-4 h-4 text-zinc-500 absolute left-3 top-3.5" />
+                      <input
+                        type="email"
+                        required
+                        autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="carlos@exemplo.com"
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 pl-9 text-zinc-100 text-xs focus:outline-none focus:border-amber-500 min-h-[44px]"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-2 min-h-[44px] disabled:opacity-50"
-                  >
-                    <ShieldCheck className="w-4 h-4" />
-                    {isSubmitting ? 'Cadastrando...' : 'Criar Minha Conta'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1">
+                      <label className="block text-xs font-semibold text-zinc-300">Senha</label>
+                      <input
+                        type="password"
+                        required
+                        autoComplete="new-password"
+                        minLength={6}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Mínimo 6 dígitos"
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-zinc-100 text-xs focus:outline-none focus:border-amber-500 min-h-[44px]"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="block text-xs font-semibold text-zinc-300">Confirmar Senha</label>
+                      <input
+                        type="password"
+                        required
+                        autoComplete="new-password"
+                        minLength={6}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Repita a senha"
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-zinc-100 text-xs focus:outline-none focus:border-amber-500 min-h-[44px]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-2 min-h-[44px] disabled:opacity-50"
+                    >
+                      <ShieldCheck className="w-4 h-4" />
+                      {isSubmitting ? 'Cadastrando...' : 'Criar Minha Conta'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
 
             {/* Tab: FORGOT PASSWORD */}
             {tab === 'forgot' && (
@@ -533,6 +707,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     <input
                       type="email"
                       required
+                      autoComplete="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="seu.email@exemplo.com"
