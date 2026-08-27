@@ -229,6 +229,26 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
     }
   };
 
+  const handleToggleApproveDialogue = async (isApproved: boolean) => {
+    if (!activeDialogue) return;
+    if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'moderator' && !currentUser.isTrusted)) {
+      alert('Apenas administradores ou revisores confiáveis podem validar diretamente a fala.');
+      return;
+    }
+
+    try {
+      const updated: Dialogue = {
+        ...activeDialogue,
+        isReviewed: isApproved,
+        status: isApproved ? 'approved' : 'pending',
+      };
+      await repositoryAdapterSingleton.saveDialogue(updated);
+      setDialogues((prev) => prev.map((d) => (d.id === updated.id ? updated : d)));
+    } catch (err: any) {
+      alert(err.message || 'Erro ao atualizar status da fala.');
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="py-20 text-center space-y-3">
@@ -397,6 +417,8 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
           dialogue={activeDialogue}
           currentIndex={currentIndex}
           totalLines={filteredDialogues.length}
+          currentUser={currentUser}
+          onToggleApprove={handleToggleApproveDialogue}
         />
       )}
 

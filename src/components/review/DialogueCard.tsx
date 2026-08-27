@@ -1,18 +1,30 @@
 import React from 'react';
-import { Dialogue } from '../../types';
-import { Volume2, Sparkles, MessageSquare, Mic, FastForward } from 'lucide-react';
+import { Dialogue, User } from '../../types';
+import { Volume2, Sparkles, MessageSquare, Mic, FastForward, CheckCircle2, RotateCcw } from 'lucide-react';
 
 interface DialogueCardProps {
   dialogue: Dialogue;
   currentIndex: number;
   totalLines: number;
+  currentUser?: User | null;
+  onToggleApprove?: (isApproved: boolean) => void;
 }
 
-export const DialogueCard: React.FC<DialogueCardProps> = ({ dialogue, currentIndex, totalLines }) => {
+export const DialogueCard: React.FC<DialogueCardProps> = ({
+  dialogue,
+  currentIndex,
+  totalLines,
+  currentUser,
+  onToggleApprove,
+}) => {
+  const canModerate = Boolean(
+    currentUser && (currentUser.role === 'admin' || currentUser.role === 'moderator' || currentUser.isTrusted)
+  );
+
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
       {/* Dialogue Header */}
-      <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3">
+      <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3 flex-wrap gap-2">
         <div>
           <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">
             {dialogue.subfolder ? dialogue.subfolder.toUpperCase() : dialogue.cutsceneName || 'Cutscene'}
@@ -25,15 +37,39 @@ export const DialogueCard: React.FC<DialogueCardProps> = ({ dialogue, currentInd
           </h2>
         </div>
 
-        <span
-          className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${
-            dialogue.isReviewed
-              ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
-              : 'bg-amber-950 text-amber-300 border-amber-800'
-          }`}
-        >
-          {dialogue.isReviewed ? '✓ Revisada' : '⏳ Em Revisão'}
-        </span>
+        <div className="flex items-center gap-2">
+          {canModerate && (
+            dialogue.isReviewed ? (
+              <button
+                type="button"
+                onClick={() => onToggleApprove?.(false)}
+                className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold rounded-xl border border-zinc-700 flex items-center gap-1.5 transition-all min-h-[36px]"
+                title="Voltar status para Em Revisão"
+              >
+                <RotateCcw className="w-3.5 h-3.5 text-amber-400" /> Reabrir Revisão
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => onToggleApprove?.(true)}
+                className="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs rounded-xl shadow flex items-center gap-1.5 transition-all min-h-[36px]"
+                title="Aprovar tradução, áudio e atuação desta fala"
+              >
+                <CheckCircle2 className="w-4 h-4" /> Aprovar Fala (Está Pronta)
+              </button>
+            )
+          )}
+
+          <span
+            className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${
+              dialogue.isReviewed
+                ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
+                : 'bg-amber-950 text-amber-300 border-amber-800'
+            }`}
+          >
+            {dialogue.isReviewed ? '✓ Aprovada / Concluída' : '⏳ Em Revisão'}
+          </span>
+        </div>
       </div>
 
       {/* Text Blocks: Original vs PT-BR */}
