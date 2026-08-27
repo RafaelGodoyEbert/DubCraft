@@ -1,30 +1,26 @@
 @echo off
-chcp 65001 >nul
-title DubCraft Studio - Instalador e Servidor Local
+setlocal
+title DubCraft Studio - Servidor Local
+
 echo ========================================================
-echo   🎙️  DubCraft Studio - Instalador e Modo Local
+echo   DubCraft Studio - Servidor Local
 echo ========================================================
 echo.
 
 cd /d "%~dp0"
 
 if not exist "node_modules" (
-    echo [1/2] Instalando dependências (npm install)...
+    echo [1/2] Instalando dependencias (npm install)...
     call npm install
-    if %errorlevel% neq 0 (
-        echo.
-        echo [ERRO] Falha ao instalar dependências com npm.
+    if errorlevel 1 (
+        echo [ERRO] Falha ao instalar dependencias.
         pause
-        exit /b %errorlevel%
+        exit /b 1
     )
-) else (
-    echo [1/2] Dependências já instaladas.
 )
 
-echo.
 echo [2/2] Iniciando servidor de desenvolvimento local...
 echo Abrindo em http://localhost:3000 ...
-echo Pressione Ctrl+C na janela para encerrar.
 echo.
 
 start "" "http://localhost:3000"
