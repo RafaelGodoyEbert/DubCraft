@@ -239,12 +239,12 @@ export function generateCatalog() {
     }
   }
 
-  // Lightweight manifest for instant homepage rendering (only project summaries)
-  const catalog = { projects, dialogues: [] };
+  // Salva o catálogo completo com todos os diálogos indexados
+  const catalog = { projects, dialogues: allDialogues };
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(catalog, null, 2), 'utf8');
 
   const elapsed = Date.now() - startTime;
-  console.log(`⚡ [Catalog] Manifest compilado com sucesso em ${elapsed}ms: ${projects.length} projeto(s), ${allDialogues.length} falas fracionadas -> ${OUTPUT_FILE}`);
+  console.log(`⚡ [Catalog] Catálogo compilado com sucesso em ${elapsed}ms: ${projects.length} projeto(s), ${allDialogues.length} falas -> ${OUTPUT_FILE}`);
 }
 
 generateCatalog();

@@ -238,12 +238,19 @@ export class LocalStorageRepositoryAdapter {
     localStorage.setItem(this.projectsKey, JSON.stringify(customProjects));
   }
 
-  // --- DIALOGUES & LAZY LOADING ON DEMAND ---
+  // --- DIALOGUES & PERSISTENCE ---
   public async getDialoguesByProject(projectId: string): Promise<Dialogue[]> {
     const cleanProjectId = projectId.toLowerCase().replace(/^proj_/, '');
 
-    // 1. Fetch on-demand if not already cached in memory
-    if (!this.loadedProjectDialogues.has(projectId)) {
+    // 1. Prioridade máxima: Diálogos indexados no catálogo base
+    let baseForProj = this.baseDialogues.filter(
+      (d) =>
+        d.projectId === projectId ||
+        d.projectId.toLowerCase().replace(/^proj_/, '') === cleanProjectId
+    );
+
+    // 2. Se não estiver embutido no catálogo base, busca sob demanda
+    if (baseForProj.length === 0 && !this.loadedProjectDialogues.has(projectId)) {
       const allProjects = await this.getProjects();
       const proj = allProjects.find(
         (p) =>
@@ -251,20 +258,16 @@ export class LocalStorageRepositoryAdapter {
           p.slug === cleanProjectId ||
           p.id.toLowerCase().replace(/^proj_/, '') === cleanProjectId
       );
+      const slug = proj?.slug || cleanProjectId;
       const realFolderName = (proj as any)?.folderName || (proj?.dubbedAudioBaseUrl ? proj.dubbedAudioBaseUrl.replace(/^\/?(projetos\/)?/, '').split('/')[0] : '');
-      const rawBaseAudio = proj?.dubbedAudioBaseUrl ? proj.dubbedAudioBaseUrl.replace(/^\/?/, '') : '';
 
       let fetchedDialogues: Dialogue[] = [];
       try {
         const candidateUrls = [
           realFolderName ? `${baseURL}projetos/${realFolderName}/dialogues.json` : '',
-          rawBaseAudio ? `${baseURL}${rawBaseAudio}/dialogues.json` : '',
           `${baseURL}projetos/${slug}/dialogues.json`,
-          `${baseURL}projetos/${slug.charAt(0).toUpperCase() + slug.slice(1)}/dialogues.json`,
           `${baseURL}projetos/Black/dialogues.json`,
-          realFolderName ? `./projetos/${realFolderName}/dialogues.json` : '',
-          `./projetos/${slug}/dialogues.json`,
-          `./projetos/Black/dialogues.json`,
+          `./projetos/${realFolderName}/dialogues.json`,
         ].filter(Boolean);
 
         for (const url of candidateUrls) {
@@ -287,21 +290,13 @@ export class LocalStorageRepositoryAdapter {
         console.warn(`[Storage] Aviso ao carregar dialogues sob demanda para ${projectId}:`, err);
       }
 
-      if (fetchedDialogues.length > 0) {
-        this.loadedProjectDialogues.set(projectId, fetchedDialogues);
-      } else {
-        const matchingBase = this.baseDialogues.filter(
-          (d) =>
-            d.projectId === projectId ||
-            d.projectId.toLowerCase().replace(/^proj_/, '') === cleanProjectId
-        );
-        this.loadedProjectDialogues.set(projectId, matchingBase);
-      }
+      this.loadedProjectDialogues.set(projectId, fetchedDialogues);
+      baseForProj = fetchedDialogues;
+    } else if (baseForProj.length === 0) {
+      baseForProj = this.loadedProjectDialogues.get(projectId) || [];
     }
 
-    const baseForProj = this.loadedProjectDialogues.get(projectId) || [];
-
-    // 2. Overlay user modifications from localStorage
+    // 3. Sobrepõe edições locais salvas pelo usuário no navegador (localStorage)
     let savedDialogues: Dialogue[] = [];
     try {
       const raw = localStorage.getItem(this.dialoguesKey);
