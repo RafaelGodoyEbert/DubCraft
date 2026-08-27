@@ -85,6 +85,7 @@ export class LocalStorageRepositoryAdapter {
 
   private baseProjects: Project[] = INITIAL_PROJECTS;
   private baseDialogues: Dialogue[] = INITIAL_DIALOGUES;
+  private loadedProjectDialogues: Map<string, Dialogue[]> = new Map();
 
   constructor() {
     this.initSeedData();
@@ -129,7 +130,7 @@ export class LocalStorageRepositoryAdapter {
 
     const projectMap = new Map<string, Project>();
 
-    // Add base discovered projects
+    // Add base discovered projects from lightweight manifest
     for (const p of this.baseProjects) {
       projectMap.set(p.id, { ...p });
     }
@@ -144,17 +145,7 @@ export class LocalStorageRepositoryAdapter {
       }
     }
 
-    const result = Array.from(projectMap.values());
-
-    // Update real-time counts from dialogues
-    for (const proj of result) {
-      const dialogues = await this.getDialoguesByProject(proj.id);
-      proj.totalLines = dialogues.length;
-      proj.reviewedLines = dialogues.filter((d) => d.isReviewed).length;
-      proj.cutscenesCount = new Set(dialogues.map((d) => d.cutsceneName || d.subfolder)).size;
-    }
-
-    return result;
+    return Array.from(projectMap.values());
   }
 
   public async getProjectById(id: string): Promise<Project | null> {
@@ -247,18 +238,66 @@ export class LocalStorageRepositoryAdapter {
     localStorage.setItem(this.projectsKey, JSON.stringify(customProjects));
   }
 
-  // --- DIALOGUES & GITHUB / JSON IMPORT ---
+  // --- DIALOGUES & LAZY LOADING ON DEMAND ---
   public async getDialoguesByProject(projectId: string): Promise<Dialogue[]> {
     const cleanProjectId = projectId.toLowerCase().replace(/^proj_/, '');
 
-    // Get matching base dialogues
-    const matchingBase = this.baseDialogues.filter(
-      (d) =>
-        d.projectId === projectId ||
-        d.projectId.toLowerCase().replace(/^proj_/, '') === cleanProjectId
-    );
+    // 1. Fetch on-demand if not already cached in memory
+    if (!this.loadedProjectDialogues.has(projectId)) {
+      const allProjects = await this.getProjects();
+      const proj = allProjects.find(
+        (p) =>
+          p.id === projectId ||
+          p.slug === cleanProjectId ||
+          p.id.toLowerCase().replace(/^proj_/, '') === cleanProjectId
+      );
+      const slug = proj?.slug || cleanProjectId;
+      const folderName = proj?.name || slug;
 
-    // Overlay user saved modifications from localStorage
+      let fetchedDialogues: Dialogue[] = [];
+      try {
+        const candidateUrls = [
+          `${baseURL}projetos/${slug}/dialogues.json`,
+          `${baseURL}projetos/${folderName}/dialogues.json`,
+          `./projetos/${slug}/dialogues.json`,
+          `./projetos/${folderName}/dialogues.json`,
+        ];
+
+        for (const url of candidateUrls) {
+          try {
+            const resp = await fetch(url);
+            if (resp.ok) {
+              const data = await resp.json();
+              if (Array.isArray(data) && data.length > 0) {
+                fetchedDialogues = data.map((d: any) => ({
+                  ...d,
+                  audioOriginalUrl: d.audioOriginalUrl ? (d.audioOriginalUrl.startsWith('http') ? d.audioOriginalUrl : `${baseURL}${d.audioOriginalUrl.replace(/^\/?/, '')}`) : undefined,
+                  audioDubladoUrl: d.audioDubladoUrl ? (d.audioDubladoUrl.startsWith('http') ? d.audioDubladoUrl : `${baseURL}${d.audioDubladoUrl.replace(/^\/?/, '')}`) : undefined,
+                }));
+                break;
+              }
+            }
+          } catch {}
+        }
+      } catch (err) {
+        console.warn(`[Storage] Aviso ao carregar dialogues sob demanda para ${projectId}:`, err);
+      }
+
+      if (fetchedDialogues.length > 0) {
+        this.loadedProjectDialogues.set(projectId, fetchedDialogues);
+      } else {
+        const matchingBase = this.baseDialogues.filter(
+          (d) =>
+            d.projectId === projectId ||
+            d.projectId.toLowerCase().replace(/^proj_/, '') === cleanProjectId
+        );
+        this.loadedProjectDialogues.set(projectId, matchingBase);
+      }
+    }
+
+    const baseForProj = this.loadedProjectDialogues.get(projectId) || [];
+
+    // 2. Overlay user modifications from localStorage
     let savedDialogues: Dialogue[] = [];
     try {
       const raw = localStorage.getItem(this.dialoguesKey);
@@ -266,7 +305,7 @@ export class LocalStorageRepositoryAdapter {
     } catch {}
 
     const dialogueMap = new Map<string, Dialogue>();
-    for (const d of matchingBase) {
+    for (const d of baseForProj) {
       dialogueMap.set(d.id, { ...d });
     }
 

@@ -227,13 +227,23 @@ export function generateCatalog() {
 
     projects.push(project);
     allDialogues.push(...projectDialogues);
+
+    // Save individual project dialogues.json for on-demand lazy loading (~0.3MB each instead of 20MB monolithic)
+    try {
+      const projectDialoguesFile = path.join(projectPath, 'dialogues.json');
+      fs.writeFileSync(projectDialoguesFile, JSON.stringify(projectDialogues, null, 2), 'utf8');
+      console.log(`  ✓ [Projeto ${projectName}] Gerado dialogues.json com ${projectDialogues.length} falas -> ${projectDialoguesFile}`);
+    } catch (e) {
+      console.warn(`  [Aviso] Falha ao salvar dialogues.json em ${projectName}:`, e.message);
+    }
   }
 
-  const catalog = { projects, dialogues: allDialogues };
+  // Lightweight manifest for instant homepage rendering (only project summaries)
+  const catalog = { projects, dialogues: [] };
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(catalog, null, 2), 'utf8');
 
   const elapsed = Date.now() - startTime;
-  console.log(`⚡ [Catalog] Compilado com sucesso em ${elapsed}ms: ${projects.length} projeto(s), ${allDialogues.length} falas -> ${OUTPUT_FILE}`);
+  console.log(`⚡ [Catalog] Manifest compilado com sucesso em ${elapsed}ms: ${projects.length} projeto(s), ${allDialogues.length} falas fracionadas -> ${OUTPUT_FILE}`);
 }
 
 generateCatalog();
