@@ -1,0 +1,17 @@
+{
+    "texto_original": "Enemy down.",
+    "traducao_ptbr": "Inimigo abatido.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "34.wav",
+        "gerado_em": "2026-01-20T14:44:15.418451Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

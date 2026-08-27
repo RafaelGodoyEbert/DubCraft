@@ -1,0 +1,17 @@
+{
+    "texto_original": "I can't wait here! I'm moving out!",
+    "traducao_ptbr": "Não posso esperar aqui! Estou saindo!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "70.wav",
+        "gerado_em": "2026-01-20T05:15:56.316114Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

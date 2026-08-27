@@ -1,0 +1,17 @@
+{
+    "texto_original": "This is 2-1. There are hostiles everywhere. I'll cover you.",
+    "traducao_ptbr": "Aqui é o dois um. Inimigos por toda parte. Vou te cobrir.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "6.wav",
+        "gerado_em": "2026-01-20T14:27:16.488903Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

@@ -1,0 +1,16 @@
+{
+  "texto_original": "Носилки сюда тащите!",
+  "traducao_ptbr": "",
+  "emocao": "neutro",
+  "tipo_voz": "masculino_adulto",
+  "notas_dublagem": "",
+  "_metadata": {
+    "arquivo_original": "1476.wav",
+    "gerado_em": "2026-06-21T18:21:53.424614z",
+    "project": "whisperx-api",
+    "location": "local",
+    "model": "large-v3-turbo",
+    "compute_type": "float16"
+  },
+  "status": "pendente"
+}

@@ -1,0 +1,17 @@
+{
+    "texto_original": "Check it out. I thought places like this only existed in movies.",
+    "traducao_ptbr": "Veja só. Eu achava que lugares desses só existiam no cinema.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "33.wav",
+        "gerado_em": "2026-01-20T14:42:40.694286Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

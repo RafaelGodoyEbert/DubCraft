@@ -1,0 +1,17 @@
+{
+    "texto_original": "Copy that 2-9, we are raising attack now, wait out.",
+    "traducao_ptbr": "Copiado dois nove, estamos iniciando o ataque agora, aguardem.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "95.wav",
+        "gerado_em": "2026-01-20T05:16:24.477955Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

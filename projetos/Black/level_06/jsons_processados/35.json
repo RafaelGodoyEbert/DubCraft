@@ -1,0 +1,17 @@
+{
+    "texto_original": "Hang tight and cover the point.",
+    "traducao_ptbr": "Aguentem firme e cubram o ponto.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "35.wav",
+        "gerado_em": "2026-01-20T14:44:16.266584Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

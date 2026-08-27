@@ -1,0 +1,17 @@
+{
+    "texto_original": "McCarver, I'm coming out. Hold fire.",
+    "traducao_ptbr": "McCarver, estou saindo. Cesse o fogo.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "13.wav",
+        "gerado_em": "2026-01-20T14:27:46.483905Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

@@ -1,0 +1,17 @@
+{
+    "texto_original": "You're gonna get cut to pieces! Drop the guy in the high ground!",
+    "traducao_ptbr": "Você vai ser despedaçado! Derrube o cara no terreno alto!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "42.wav",
+        "gerado_em": "2026-01-20T14:55:46.171073Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

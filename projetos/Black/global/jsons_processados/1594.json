@@ -1,0 +1,16 @@
+{
+  "texto_original": "Ракета! Ракеты!",
+  "traducao_ptbr": "",
+  "emocao": "neutro",
+  "tipo_voz": "masculino_adulto",
+  "notas_dublagem": "",
+  "_metadata": {
+    "arquivo_original": "1594.wav",
+    "gerado_em": "2026-06-21T18:23:16.433057z",
+    "project": "whisperx-api",
+    "location": "local",
+    "model": "large-v3-turbo",
+    "compute_type": "float16"
+  },
+  "status": "pendente"
+}

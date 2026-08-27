@@ -1,0 +1,17 @@
+{
+    "texto_original": "This is 2-5, I say again, we're pinned down, we're pinned down! I have multiple casualties! Request priority medevac on my location!",
+    "traducao_ptbr": "Aqui é dois cinco, repito, estamos cercados, estamos cercados! Tenho várias baixas! Solicito evacuação médica prioritária na minha posição!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "72.wav",
+        "gerado_em": "2026-01-20T05:15:58.703251Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

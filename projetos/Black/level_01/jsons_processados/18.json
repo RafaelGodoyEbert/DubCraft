@@ -1,0 +1,17 @@
+{
+    "texto_original": "This is Bravo 3 radio check over",
+    "traducao_ptbr": "Aqui é Bravo três. Check de rádio, câmbio.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "18.wav",
+        "gerado_em": "2026-01-20T14:25:48.135126Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

@@ -1,0 +1,17 @@
+{
+    "texto_original": "Behind the truck! Someone take him!",
+    "traducao_ptbr": "Atrás do caminhão! Alguém o pegue!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "47.wav",
+        "gerado_em": "2026-01-20T14:28:18.214651Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

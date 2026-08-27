@@ -1,0 +1,17 @@
+{
+    "texto_original": "We got a machine gun! Take cover!",
+    "traducao_ptbr": "Eles têm uma metralhadora! Protejam-se!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "63.wav",
+        "gerado_em": "2026-01-20T14:56:05.042189Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

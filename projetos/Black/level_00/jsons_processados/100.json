@@ -1,0 +1,17 @@
+{
+    "texto_original": "Swing it right under the flag!",
+    "traducao_ptbr": "Mire bem embaixo da bandeira!",
+    "emocao": "grito",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "está no meio de uma guerra, usando rádio militar tático para se comunidar e fala a frase gritando.",
+    "_metadata": {
+        "arquivo_original": "100.wav",
+        "gerado_em": "2026-01-20T05:14:40.920054Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "rápido",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

@@ -1,0 +1,17 @@
+{
+    "texto_original": "Two-one, this is three, nothing heard, proceeding to top out, over.",
+    "traducao_ptbr": "Dois um, aqui é três, nada ouvido, prosseguindo até o topo, câmbio.\n",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "2.wav",
+        "gerado_em": "2026-01-20T14:25:50.006400Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

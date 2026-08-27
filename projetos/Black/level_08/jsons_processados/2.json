@@ -1,0 +1,17 @@
+{
+    "texto_original": "Advancing below ground. Radio is becoming broken and unclear. We'll update as needed. Over. Did you copy my last? Over. Nothing heard. Out.",
+    "traducao_ptbr": "Avançando abaixo do solo. O rádio está falhando e a recepção está ruim. Atualizo conforme necessário. Câmbio. Copiou minha última? Câmbio. Sem resposta. Desligo.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "2.wav",
+        "gerado_em": "2026-01-20T14:58:34.165503Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

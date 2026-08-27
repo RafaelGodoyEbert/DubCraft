@@ -1,0 +1,17 @@
+{
+    "texto_original": "I've got a bunker entrance. Moving in. Standing by.",
+    "traducao_ptbr": "Achei uma entrada de bunker. Entrando. No aguardo.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "1.wav",
+        "gerado_em": "2026-01-20T14:58:30.895119Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

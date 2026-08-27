@@ -1,0 +1,38 @@
+{
+  "cutscene": "4",
+  "project": "black_lvl00-outros",
+  "segments": [
+    {
+      "file": "4_split_1782071009721_1_speed_adjusted.wav",
+      "start": 0.007800048410014693,
+      "duration": 3.187641723356009,
+      "tts_original_path": "Projetos\\black_lvl00-outros\\_temp\\4_split_1782071009721_1.wav",
+      "trim_offset": 0.0,
+      "full_duration": 3.187641723356009
+    },
+    {
+      "file": "4_split_1782071009721_2_trim_1782071035200.wav",
+      "start": 3.2136199449260134,
+      "duration": 1.788843537414966,
+      "tts_original_path": "Projetos\\black_lvl00-outros\\_temp\\4_split_1782071009721_2.wav",
+      "trim_offset": 0.46020285619086154,
+      "full_duration": 2.249047619047619
+    },
+    {
+      "file": "4_seg_1782071168571_trim_1782071180503.wav",
+      "start": 5.132431853789604,
+      "duration": 6.661587301587302,
+      "tts_original_path": "Projetos\\black_lvl00-outros\\_temp\\4_seg_1782071168571.wav",
+      "trim_offset": 0.21840135548040873,
+      "full_duration": 6.88
+    },
+    {
+      "file": "4_seg_1782071377665.wav",
+      "start": 11.520671501591556,
+      "duration": 5.04,
+      "tts_original_path": "Projetos\\black_lvl00-outros\\_temp\\4_seg_1782071377665.wav",
+      "trim_offset": 0.0,
+      "full_duration": 5.04
+    }
+  ]
+}

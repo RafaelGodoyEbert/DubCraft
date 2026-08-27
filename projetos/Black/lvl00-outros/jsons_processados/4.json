@@ -1,0 +1,18 @@
+{
+  "texto_original": "Hammerhead 6-2, this is Alpha-2, I need my eyes on 2-5. Hammerhead 6-2, this is 2-5, we're pinned down! I have multiple casualties! Request behind him head back on our location! 5-1, 5-1, this is 3-1. I'm on the other side of the block. I'm coming to you now, over.",
+  "traducao_ptbr": "Voz 1 (Alpha 2): \"Hammerhead seis-dois, aqui é Alpha dois. Vocês têm contato visual com o dois-cinco?\"\n\nVoz 2 (2-5): \"Hammerhead seis-dois, aqui é dois-cinco. Estamos encurralados sob fogo. Tenho múltiplas baixas. Solicito evacuação médica prioritária na minha localização.\"\n\nVoz 3 (3-1): \"cinco um, cinco um, aqui é três um. Estou do outro lado do quarteirão. Estou indo até vocês agora. Câmbio.\"",
+  "emocao": "neutro",
+  "tipo_voz": "masculino_adulto",
+  "notas_dublagem": "",
+  "_metadata": {
+    "arquivo_original": "4.wav",
+    "gerado_em": "2026-06-21T19:32:30.030080z",
+    "project": "whisperx-api",
+    "location": "local",
+    "model": "large-v3-turbo",
+    "compute_type": "float16"
+  },
+  "status": "cutscene",
+  "ritmo": "normal",
+  "comentarios": ""
+}

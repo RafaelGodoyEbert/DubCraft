@@ -1,0 +1,17 @@
+{
+    "texto_original": "TURN IT DOWN! TURN IT DOWN! MOVE! MOVE! MOVE!",
+    "traducao_ptbr": "FOGO NELES FOGO NELES MOVAM-SE MOVAM-SE MOVAM-SE!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "59.wav",
+        "gerado_em": "2026-01-20T14:56:00.914410Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

@@ -1,0 +1,17 @@
+{
+    "texto_original": "Hey, get a frame on that position!",
+    "traducao_ptbr": "Ei, consiga uma visual daquela posição!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "67.wav",
+        "gerado_em": "2026-01-20T14:56:07.978309Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

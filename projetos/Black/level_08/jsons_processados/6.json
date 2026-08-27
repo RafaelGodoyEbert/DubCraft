@@ -1,0 +1,17 @@
+{
+    "texto_original": "This is 3. This is 3. Package may be on site. I say again, package may be on site. I am advancing to contact. Stand by.",
+    "traducao_ptbr": "Aqui é o três. Aqui é o três. O pacote pode estar no local. Repito, o pacote pode estar no local. Estou avançando para contato. No aguardo.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "6.wav",
+        "gerado_em": "2026-01-20T14:58:38.393305Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

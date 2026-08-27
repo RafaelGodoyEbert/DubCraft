@@ -37,10 +37,11 @@ jobs:
       - name: Compilar Projeto (Vite Build)
         run: npm run build
 
-      - name: Adicionar .nojekyll e 404.html
+      - name: Adicionar .nojekyll, 404.html e Copiar Projetos de Audio
         run: |
           touch dist/.nojekyll
           cp dist/index.html dist/404.html
+          if [ -d "projetos" ]; then cp -r projetos dist/projetos; fi
 
       - name: Upload do Artefato do Pages
         uses: actions/upload-pages-artifact@v3

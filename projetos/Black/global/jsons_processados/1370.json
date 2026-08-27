@@ -1,0 +1,16 @@
+{
+  "texto_original": "Готов? Пошёл!",
+  "traducao_ptbr": "",
+  "emocao": "neutro",
+  "tipo_voz": "masculino_adulto",
+  "notas_dublagem": "",
+  "_metadata": {
+    "arquivo_original": "1370.wav",
+    "gerado_em": "2026-06-21T18:20:40.330754z",
+    "project": "whisperx-api",
+    "location": "local",
+    "model": "large-v3-turbo",
+    "compute_type": "float16"
+  },
+  "status": "pendente"
+}
