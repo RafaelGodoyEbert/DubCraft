@@ -257,6 +257,8 @@ export class AudioService {
       playbackRate: 1.0,
       isLoading: this.isLoading,
       hasAudio,
+      volume: this.volume,
+      isMuted: this.isMuted,
     };
 
     this.listeners.forEach((fn) => fn(state));

@@ -28,9 +28,22 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
     isMuted: false,
   });
 
+  const [localVolume, setLocalVolume] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('dubcraft_audio_volume');
+      if (saved !== null) return parseFloat(saved);
+    }
+    return 1.0;
+  });
+  const [localMuted, setLocalMuted] = useState<boolean>(false);
+
   useEffect(() => {
     const unsubscribe = audioServiceSingleton.subscribe((state) => {
       setAudioState(state);
+      if (typeof state.volume === 'number') {
+        setLocalVolume(state.volume);
+      }
+      setLocalMuted(Boolean(state.isMuted));
     });
 
     audioServiceSingleton.loadDialogueAudio(
@@ -210,13 +223,16 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
         <div className="flex items-center gap-2 bg-zinc-900/90 border border-zinc-800 rounded-xl px-3 py-1.5 shadow-inner">
           <button
             type="button"
-            onClick={() => audioServiceSingleton.toggleMute()}
+            onClick={() => {
+              const muted = audioServiceSingleton.toggleMute();
+              setLocalMuted(muted);
+            }}
             className="text-zinc-400 hover:text-amber-400 transition-colors p-1"
-            title={audioState.isMuted ? 'Desmutar' : 'Mutar áudio'}
+            title={localMuted ? 'Desmutar' : 'Mutar áudio'}
           >
-            {audioState.isMuted || (audioState.volume ?? 1) === 0 ? (
+            {localMuted || localVolume === 0 ? (
               <VolumeX className="w-4 h-4 text-rose-400" />
-            ) : (audioState.volume ?? 1) < 0.5 ? (
+            ) : localVolume < 0.5 ? (
               <Volume1 className="w-4 h-4 text-zinc-300" />
             ) : (
               <Volume2 className="w-4 h-4 text-amber-400" />
@@ -228,14 +244,19 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
             min="0"
             max="1"
             step="0.02"
-            value={audioState.isMuted ? 0 : (audioState.volume ?? 1)}
-            onChange={(e) => audioServiceSingleton.setVolume(parseFloat(e.target.value))}
+            value={localMuted ? 0 : localVolume}
+            onChange={(e) => {
+              const val = parseFloat(e.target.value);
+              setLocalVolume(val);
+              setLocalMuted(false);
+              audioServiceSingleton.setVolume(val);
+            }}
             className="w-20 sm:w-28 h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
-            title={`Volume: ${Math.round((audioState.isMuted ? 0 : (audioState.volume ?? 1)) * 100)}%`}
+            title={`Volume: ${Math.round((localMuted ? 0 : localVolume) * 100)}%`}
           />
 
           <span className="text-[11px] font-mono text-zinc-400 w-8 text-right">
-            {audioState.isMuted ? '0%' : `${Math.round((audioState.volume ?? 1) * 100)}%`}
+            {localMuted ? '0%' : `${Math.round(localVolume * 100)}%`}
           </span>
         </div>
 
