@@ -27,7 +27,8 @@ export class CloudSyncService {
   private listeners: Array<(status: CircuitBreakerStatus) => void> = [];
 
   constructor() {
-    this.apiUrl = import.meta.env.VITE_CLOUD_API_URL || import.meta.env.VITE_SUPABASE_URL || null;
+    const rawUrl = import.meta.env.VITE_CLOUD_API_URL || import.meta.env.VITE_SUPABASE_URL || null;
+    this.apiUrl = rawUrl ? rawUrl.trim().replace(/\/+$/, '') : null;
     this.apiKey = import.meta.env.VITE_CLOUD_API_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || null;
     this.isEnabled = Boolean(this.apiUrl);
   }

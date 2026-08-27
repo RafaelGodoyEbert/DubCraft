@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 
 import { getCommunityUsers, getAuthService } from '../../services/auth/authService';
+import { cloudSyncServiceSingleton } from '../../services/cloudSyncService';
 
 interface AdminDashboardProps {
   projects: Project[];
@@ -190,8 +191,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       <div className="bg-gradient-to-r from-purple-950/80 via-zinc-900 to-zinc-900 p-4 sm:p-6 rounded-2xl border border-purple-800/60 shadow-xl space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-1">
-            <div className="flex items-center gap-2 text-purple-400 font-semibold text-xs uppercase tracking-wider">
-              <Shield className="w-4 h-4" /> {isAdmin ? 'Painel de Controle do Administrador' : 'Painel de Moderação da Comunidade'}
+            <div className="flex items-center gap-2 text-purple-400 font-semibold text-xs uppercase tracking-wider flex-wrap">
+              <span className="flex items-center gap-1.5">
+                <Shield className="w-4 h-4" /> {isAdmin ? 'Painel de Controle do Administrador' : 'Painel de Moderação da Comunidade'}
+              </span>
+              {cloudSyncServiceSingleton.isCloudConnected() ? (
+                <span className="px-2.5 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-700/80 text-[10px] font-bold rounded-full flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Nuvem Conectada (D1)
+                </span>
+              ) : (
+                <span className="px-2.5 py-0.5 bg-amber-950 text-amber-300 border border-amber-700/80 text-[10px] font-bold rounded-full flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  Modo Local (Offline)
+                </span>
+              )}
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">
               {isAdmin ? 'Gestão de Projetos & Moderação' : 'Central de Moderação de Falas'}

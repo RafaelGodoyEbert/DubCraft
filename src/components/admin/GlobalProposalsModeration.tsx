@@ -207,14 +207,27 @@ export const GlobalProposalsModeration: React.FC<GlobalProposalsModerationProps>
             <MessageSquare className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-zinc-100 flex items-center gap-2">
-              Central de Moderação de Propostas
-              {pendingCount > 0 && (
-                <span className="px-2 py-0.5 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold rounded-full animate-pulse">
-                  {pendingCount} pendente{pendingCount > 1 ? 's' : ''}
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="text-base font-bold text-zinc-100 flex items-center gap-2">
+                Central de Moderação de Propostas
+                {pendingCount > 0 && (
+                  <span className="px-2 py-0.5 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold rounded-full animate-pulse">
+                    {pendingCount} pendente{pendingCount > 1 ? 's' : ''}
+                  </span>
+                )}
+              </h3>
+              {cloudSyncServiceSingleton.isCloudConnected() ? (
+                <span className="px-2 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold rounded-full flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  D1 Conectado
+                </span>
+              ) : (
+                <span className="px-2 py-0.5 bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-bold rounded-full flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  Local
                 </span>
               )}
-            </h3>
+            </div>
             <p className="text-xs text-zinc-400">
               Analise, aprove ou rejeite sugestões da comunidade de todos os projetos em uma única tela.
             </p>
