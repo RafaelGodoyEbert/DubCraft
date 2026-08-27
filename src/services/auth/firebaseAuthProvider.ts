@@ -56,6 +56,7 @@ interface FailedAttemptTracker {
 
 export class FirebaseAuthProvider implements IAuthProvider {
   private auth: any = null;
+  private db: any = null;
   private googleProvider: any = null;
   private currentUser: User | null = null;
   private failedAttempts: Map<string, FailedAttemptTracker> = new Map();
@@ -315,33 +316,67 @@ export class FirebaseAuthProvider implements IAuthProvider {
     return this.currentUser;
   }
 
-  updateUser(updates: Partial<User>): User {
+  async updateUser(updates: Partial<User>): Promise<User> {
     if (!this.currentUser) throw new Error('Nenhum usuário logado.');
     this.currentUser = { ...this.currentUser, ...updates };
+
     if (!this.currentUser.isDemo) {
+      if (this.auth?.currentUser) {
+        try {
+          await updateProfile(this.auth.currentUser, {
+            displayName: this.currentUser.name,
+            photoURL: this.currentUser.avatarUrl,
+          });
+        } catch (err) {
+          console.warn('[Firebase Auth] Erro ao atualizar perfil nativo:', err);
+        }
+      }
       syncCommunityUser(this.currentUser);
+      await this.saveUserToFirestore(this.currentUser);
     }
+
+    try {
+      localStorage.setItem('dubcraft_current_user', JSON.stringify(this.currentUser));
+    } catch {}
+
     return this.currentUser;
   }
 
   onAuthStateChanged(callback: (user: User | null) => void): () => void {
     if (this.auth) {
-      return fbOnAuthStateChanged(this.auth, (fbUser: any) => {
+      return fbOnAuthStateChanged(this.auth, async (fbUser: any) => {
         if (fbUser) {
           const isAdmin = isUserAdmin(fbUser.email);
+
+          // Tenta resgatar dados salvos localmente ou do Firestore (ex: username customizado)
+          let cachedUser: User | null = null;
+          try {
+            const raw = localStorage.getItem('dubcraft_current_user');
+            if (raw) {
+              const parsed = JSON.parse(raw);
+              if (parsed.id === fbUser.uid || parsed.email === fbUser.email) {
+                cachedUser = parsed;
+              }
+            }
+          } catch {}
+
+          const resolvedName = cachedUser?.name || fbUser.displayName || fbUser.email?.split('@')[0] || 'Usuário';
+          const resolvedUsername = cachedUser?.username || (fbUser.displayName || 'usuario').toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+
           this.currentUser = {
             id: fbUser.uid,
-            name: fbUser.displayName || fbUser.email?.split('@')[0] || 'Usuário',
-            username: (fbUser.displayName || 'usuario').toLowerCase().replace(/\s+/g, '_'),
+            name: resolvedName,
+            username: resolvedUsername,
             email: fbUser.email,
             emailVerified: fbUser.emailVerified,
-            avatarUrl: fbUser.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(fbUser.email || 'user')}`,
-            role: isAdmin ? 'admin' : 'user',
-            reputation: isAdmin ? 999 : 20,
-            isTrusted: isAdmin,
+            avatarUrl: cachedUser?.avatarUrl || fbUser.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(fbUser.email || 'user')}`,
+            role: isAdmin ? 'admin' : (cachedUser?.role || 'user'),
+            reputation: isAdmin ? 999 : (cachedUser?.reputation || 20),
+            isTrusted: isAdmin || Boolean(cachedUser?.isTrusted),
             isDemo: false,
-            createdAt: new Date().toISOString(),
+            createdAt: cachedUser?.createdAt || fbUser.metadata?.creationTime || new Date().toISOString(),
           };
+
           syncCommunityUser(this.currentUser);
           this.saveUserToFirestore(this.currentUser);
           callback(this.currentUser);

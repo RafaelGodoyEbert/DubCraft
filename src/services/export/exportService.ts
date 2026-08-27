@@ -125,14 +125,15 @@ export class ExportService {
       }
     });
 
-    // Editor config metadata
+    const validDialogues = dialogues.filter((d) => d.status !== 'ignorar');
     const configData = {
       project_id: project.id,
       project_name: project.name,
       slug: project.slug,
       status: project.status,
-      total_lines: dialogues.length,
-      reviewed_lines: dialogues.filter((d) => d.isReviewed).length,
+      total_lines: validDialogues.length,
+      reviewed_lines: validDialogues.filter((d) => d.isReviewed).length,
+      ignored_lines: dialogues.filter((d) => d.status === 'ignorar').length,
       cutscenes_count: Object.keys(grouped).length,
       exported_at: new Date().toISOString(),
       generator: 'DubCraft Studio v2.0 (OrganizarPOP Engine)',

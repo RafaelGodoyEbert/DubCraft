@@ -50,9 +50,22 @@ export default function App() {
     };
   }, []);
 
+  const [targetDialogueId, setTargetDialogueId] = useState<string | undefined>(undefined);
+
   const handleSelectProject = (project: Project) => {
     setCurrentProject(project);
+    setTargetDialogueId(undefined);
     setActiveTab('review');
+  };
+
+  const handleNavigateToDialogue = (projectId: string, dialogueId: string) => {
+    const proj = projects.find((p) => p.id === projectId);
+    if (proj) {
+      setCurrentProject(proj);
+    }
+    setTargetDialogueId(dialogueId);
+    setActiveTab('review');
+    setIsAuthModalOpen(false);
   };
 
   const handleRefreshProjects = async () => {
@@ -83,6 +96,9 @@ export default function App() {
   }
 
   const isAdmin = currentUser?.role === 'admin';
+  const canModerate = Boolean(
+    currentUser && (currentUser.role === 'admin' || currentUser.role === 'moderator' || currentUser.isTrusted)
+  );
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-amber-500 selection:text-zinc-950">
@@ -103,7 +119,7 @@ export default function App() {
             onOpenCreateProject={isAdmin ? () => setIsCreateModalOpen(true) : undefined}
             onOpenImportJson={isAdmin ? handleOpenImport : undefined}
             onEditProject={isAdmin ? (project) => setEditingProject(project) : undefined}
-            onNavigateToAdmin={isAdmin ? () => setActiveTab('admin') : undefined}
+            onNavigateToAdmin={canModerate ? () => setActiveTab('admin') : undefined}
           />
         )}
 
@@ -112,6 +128,7 @@ export default function App() {
             currentProject={currentProject}
             onSelectProject={setCurrentProject}
             currentUser={currentUser}
+            initialDialogueId={targetDialogueId}
           />
         )}
 
@@ -119,11 +136,12 @@ export default function App() {
           <LeaderboardScreen projects={projects} currentProject={currentProject || undefined} />
         )}
 
-        {activeTab === 'admin' && isAdmin && (
+        {activeTab === 'admin' && canModerate && (
           <AdminDashboard
             projects={projects}
             currentUser={currentUser}
             onRefresh={handleRefreshProjects}
+            onNavigateToDialogue={handleNavigateToDialogue}
           />
         )}
       </main>
@@ -140,7 +158,8 @@ export default function App() {
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         currentUser={currentUser}
-        onUserChanged={(newUser) => setCurrentUser(newUser)}
+        onUserChanged={setCurrentUser}
+        onNavigateToDialogue={handleNavigateToDialogue}
       />
 
       {/* Create Project Modal */}

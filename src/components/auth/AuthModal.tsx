@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { User } from '../../types';
+import { User, Proposal } from '../../types';
 import { Drawer } from '../common/Drawer';
 import { Badge } from '../common/Badge';
+import { DiffViewer } from '../common/DiffViewer';
 import { getAuthService } from '../../services/auth/authService';
+import { repositoryAdapterSingleton } from '../../repositories/storageAdapter';
+import { cloudSyncServiceSingleton } from '../../services/cloudSyncService';
 import {
   Lock,
   Mail,
@@ -19,6 +22,12 @@ import {
   KeyRound,
   Save,
   AtSign,
+  MessageSquare,
+  Clock,
+  XCircle,
+  FolderGit2,
+  Headphones,
+  Ban,
 } from 'lucide-react';
 
 interface AuthModalProps {
@@ -26,6 +35,7 @@ interface AuthModalProps {
   onClose: () => void;
   currentUser: User | null;
   onUserChanged: (user: User | null) => void;
+  onNavigateToDialogue?: (projectId: string, dialogueId: string) => void;
 }
 
 const AVATAR_PRESETS = [
@@ -43,8 +53,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   onClose,
   currentUser,
   onUserChanged,
+  onNavigateToDialogue,
 }) => {
   const [tab, setTab] = useState<'login' | 'register' | 'forgot' | 'profile'>('login');
+  const [profileSubTab, setProfileSubTab] = useState<'info' | 'proposals'>('info');
+  const [userProposals, setUserProposals] = useState<Proposal[]>([]);
+  const [isLoadingProposals, setIsLoadingProposals] = useState(false);
 
   // Form states (Login / Register)
   const [email, setEmail] = useState('');
@@ -65,7 +79,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEmailVerifiedNoticeSent, setIsEmailVerifiedNoticeSent] = useState(false);
 
-  // Sync state when opening modal
+  // Sync state and load user proposals when opening modal
   useEffect(() => {
     if (isOpen) {
       setError(null);
@@ -75,6 +89,41 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         setEditName(currentUser.name);
         setEditUsername(currentUser.username);
         setEditAvatarUrl(currentUser.avatarUrl);
+
+        // Load proposals authored by this user
+        (async () => {
+          setIsLoadingProposals(true);
+          try {
+            const localProps = await repositoryAdapterSingleton.getProposalsByProject('');
+            let cloudProps: Proposal[] = [];
+            try {
+              const remote = await cloudSyncServiceSingleton.fetchProposals('');
+              if (remote && Array.isArray(remote)) {
+                cloudProps = remote;
+              }
+            } catch {}
+
+            const map = new Map<string, Proposal>();
+            localProps.forEach((p) => map.set(p.id, p));
+            cloudProps.forEach((p) => map.set(p.id, p));
+
+            const allProps = Array.from(map.values());
+            const mine = allProps
+              .filter(
+                (p) =>
+                  p.authorId === currentUser.id ||
+                  p.authorName === currentUser.name ||
+                  (currentUser.email && p.authorId === currentUser.email)
+              )
+              .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+            setUserProposals(mine);
+          } catch (err) {
+            console.error('Erro ao carregar propostas do usuário:', err);
+          } finally {
+            setIsLoadingProposals(false);
+          }
+        })();
       } else {
         setTab('login');
       }
@@ -179,7 +228,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     try {
       setIsSubmitting(true);
       const auth = getAuthService();
-      const updatedUser = auth.updateUser({
+      const updatedUser = await auth.updateUser({
         name: editName.trim() || currentUser.name,
         username: editUsername.trim().toLowerCase().replace(/[^a-z0-9_]/g, '') || currentUser.username,
         avatarUrl: editAvatarUrl.trim() || currentUser.avatarUrl,
@@ -364,100 +413,226 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
             </div>
 
-            {/* Profile Editing Form */}
-            <form onSubmit={handleSaveProfile} className="space-y-3 bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
-              <h4 className="text-xs font-bold text-zinc-200 uppercase tracking-wider flex items-center gap-1.5">
-                <UserIcon className="w-3.5 h-3.5 text-amber-400" /> Dados do Perfil
-              </h4>
-
-              <div className="space-y-1">
-                <label className="block text-xs font-semibold text-zinc-400">Nome de Exibição</label>
-                <input
-                  type="text"
-                  required
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  placeholder="Seu Nome Completo"
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="block text-xs font-semibold text-zinc-400">Nome de Usuário (@handle)</label>
-                <div className="relative">
-                  <AtSign className="w-4 h-4 text-zinc-500 absolute left-3 top-3" />
-                  <input
-                    type="text"
-                    required
-                    value={editUsername}
-                    onChange={(e) => setEditUsername(e.target.value)}
-                    placeholder="usuario_dub"
-                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 pl-9 text-zinc-100 text-xs font-mono focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-2 min-h-[40px] disabled:opacity-50"
-              >
-                <Save className="w-4 h-4" />
-                {isSubmitting ? 'Salvando...' : 'Salvar Alterações do Perfil'}
-              </button>
-            </form>
-
-            {/* Security & Password Section */}
-            <div className="p-4 bg-zinc-950 rounded-2xl border border-zinc-800 space-y-2.5">
-              <h4 className="text-xs font-bold text-zinc-200 uppercase tracking-wider flex items-center gap-1.5">
-                <KeyRound className="w-3.5 h-3.5 text-amber-400" /> Segurança & Senha
-              </h4>
-              <p className="text-xs text-zinc-400">
-                Deseja alterar ou recuperar sua senha de acesso?
-              </p>
+            {/* Subtabs Switcher */}
+            <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 gap-1">
               <button
                 type="button"
-                onClick={handleRequestPasswordResetFromProfile}
-                disabled={isSubmitting}
-                className="w-full p-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 rounded-xl text-xs font-semibold text-zinc-200 flex items-center justify-center gap-2 transition-all min-h-[40px]"
+                onClick={() => setProfileSubTab('info')}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                  profileSubTab === 'info'
+                    ? 'bg-zinc-800 text-amber-400 shadow'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
               >
-                <Lock className="w-3.5 h-3.5 text-zinc-400" /> Enviar Link de Troca de Senha por E-mail
+                <UserIcon className="w-3.5 h-3.5" /> Meus Dados
+              </button>
+              <button
+                type="button"
+                onClick={() => setProfileSubTab('proposals')}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                  profileSubTab === 'proposals'
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                <MessageSquare className="w-3.5 h-3.5" /> Minhas Propostas ({userProposals.length})
               </button>
             </div>
 
-            {/* Quick Demo Switcher Section: Only visible when current user is in Demo mode */}
-            {(currentUser.isDemo || currentUser.email === 'admin@dubcraft.io') && (
-              <div className="p-3 bg-zinc-950 rounded-2xl border border-zinc-800 space-y-2">
-                <p className="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Personas de Demonstração / Teste [DEMO]
-                </p>
-                <div className="grid grid-cols-2 gap-2">
+            {profileSubTab === 'proposals' ? (
+              <div className="space-y-3">
+                {isLoadingProposals ? (
+                  <div className="py-8 text-center space-y-2">
+                    <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto" />
+                    <p className="text-xs text-zinc-400">Carregando suas propostas...</p>
+                  </div>
+                ) : userProposals.length === 0 ? (
+                  <div className="py-8 text-center bg-zinc-950/60 rounded-2xl border border-zinc-800 p-6 space-y-2">
+                    <MessageSquare className="w-8 h-8 text-zinc-600 mx-auto" />
+                    <p className="text-sm font-bold text-zinc-300">Você ainda não enviou propostas</p>
+                    <p className="text-xs text-zinc-500 max-w-xs mx-auto">
+                      Ao revisar qualquer cutscene no DubCraft, você pode sugerir melhorias de dublagem ou descarte de falas!
+                    </p>
+                  </div>
+                ) : (
+                  userProposals.map((prop) => {
+                    const isApproved = prop.status === 'approved';
+                    const isRejected = prop.status === 'rejected';
+                    const isIgnore = prop.proposedStatus === 'ignorar';
+
+                    return (
+                      <div
+                        key={prop.id}
+                        className={`p-3.5 bg-zinc-950 rounded-2xl border transition-all space-y-2.5 ${
+                          isApproved
+                            ? 'border-emerald-500/40 bg-emerald-950/10'
+                            : isRejected
+                            ? 'border-rose-900/30 opacity-70'
+                            : 'border-zinc-800 hover:border-zinc-700'
+                        }`}
+                      >
+                        {/* Header */}
+                        <div className="flex items-center justify-between gap-2 flex-wrap border-b border-zinc-800/80 pb-2">
+                          <span className="px-2 py-0.5 bg-amber-500/10 text-amber-300 border border-amber-500/20 text-[10px] font-bold rounded uppercase flex items-center gap-1">
+                            <FolderGit2 className="w-3 h-3" /> {prop.projectId.replace('proj_', '').toUpperCase()}
+                          </span>
+
+                          {isApproved ? (
+                            <span className="px-2 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold rounded-full flex items-center gap-1">
+                              <CheckCircle2 className="w-3 h-3" /> Aprovada no Jogo ✓
+                            </span>
+                          ) : isRejected ? (
+                            <span className="px-2 py-0.5 bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-bold rounded-full flex items-center gap-1">
+                              <XCircle className="w-3 h-3" /> Não Aprovada
+                            </span>
+                          ) : (
+                            <span className="px-2 py-0.5 bg-amber-950/80 text-amber-300 border border-amber-800/80 text-[10px] font-bold rounded-full flex items-center gap-1">
+                              <Clock className="w-3 h-3" /> Em Votação • Score: +{prop.score}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Ignore notice or translation diff */}
+                        {isIgnore ? (
+                          <div className="p-2 bg-rose-950/30 border border-rose-800/60 rounded-xl text-xs text-rose-300 flex items-center gap-2">
+                            <Ban className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                            <span>Sugestão para ignorar / descartar esta fala do jogo.</span>
+                          </div>
+                        ) : (
+                          <div className="space-y-1 text-xs">
+                            <span className="text-[10px] font-bold text-zinc-400 uppercase">Sua Sugestão PT-BR:</span>
+                            <p className="p-2 bg-zinc-900 rounded-xl border border-zinc-800 font-mono text-zinc-200 text-xs">
+                              "{prop.proposedTranslation}"
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Reason */}
+                        {prop.reason && (
+                          <p className="text-[11px] text-zinc-400">
+                            <strong className="text-zinc-300">Justificativa:</strong> {prop.reason}
+                          </p>
+                        )}
+
+                        {/* Footer with date and button */}
+                        <div className="flex items-center justify-between gap-2 pt-1 border-t border-zinc-800/60 text-[10px] text-zinc-500">
+                          <span>{new Date(prop.createdAt).toLocaleDateString('pt-BR')}</span>
+                          {onNavigateToDialogue && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                onClose();
+                                onNavigateToDialogue(prop.projectId, prop.dialogueId);
+                              }}
+                              className="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 text-[10px] font-semibold rounded-lg transition-all flex items-center gap-1"
+                            >
+                              <Headphones className="w-3 h-3 text-amber-400" /> Ir para a Fala
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            ) : (
+              <>
+                {/* Profile Editing Form */}
+                <form onSubmit={handleSaveProfile} className="space-y-3 bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
+                  <h4 className="text-xs font-bold text-zinc-200 uppercase tracking-wider flex items-center gap-1.5">
+                    <UserIcon className="w-3.5 h-3.5 text-amber-400" /> Dados do Perfil
+                  </h4>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-semibold text-zinc-400">Nome de Exibição</label>
+                    <input
+                      type="text"
+                      required
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      placeholder="Seu Nome Completo"
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 text-zinc-100 text-xs focus:outline-none focus:border-amber-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-semibold text-zinc-400">Nome de Usuário (@handle)</label>
+                    <div className="relative">
+                      <AtSign className="w-4 h-4 text-zinc-500 absolute left-3 top-3" />
+                      <input
+                        type="text"
+                        required
+                        value={editUsername}
+                        onChange={(e) => setEditUsername(e.target.value)}
+                        placeholder="usuario_dub"
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 pl-9 text-zinc-100 text-xs font-mono focus:outline-none focus:border-amber-500"
+                      />
+                    </div>
+                  </div>
+
                   <button
-                    type="button"
-                    onClick={() => {
-                      const auth = getAuthService();
-                      const u = auth.switchUserPersona('admin');
-                      onUserChanged(u);
-                    }}
-                    className="p-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/60 rounded-xl text-left transition-all"
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-2 min-h-[40px] disabled:opacity-50"
                   >
-                    <p className="text-xs font-bold text-amber-400">DubCraft Admin [DEMO]</p>
-                    <p className="text-[10px] text-zinc-500">★ 750 • Acesso Total</p>
+                    <Save className="w-4 h-4" />
+                    {isSubmitting ? 'Salvando...' : 'Salvar Alterações do Perfil'}
                   </button>
+                </form>
+
+                {/* Security & Password Section */}
+                <div className="p-4 bg-zinc-950 rounded-2xl border border-zinc-800 space-y-2.5">
+                  <h4 className="text-xs font-bold text-zinc-200 uppercase tracking-wider flex items-center gap-1.5">
+                    <KeyRound className="w-3.5 h-3.5 text-amber-400" /> Segurança & Senha
+                  </h4>
+                  <p className="text-xs text-zinc-400">
+                    Deseja alterar ou recuperar sua senha de acesso?
+                  </p>
                   <button
                     type="button"
-                    onClick={() => {
-                      const auth = getAuthService();
-                      const u = auth.switchUserPersona('trusted');
-                      onUserChanged(u);
-                    }}
-                    className="p-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/60 rounded-xl text-left transition-all"
+                    onClick={handleRequestPasswordResetFromProfile}
+                    disabled={isSubmitting}
+                    className="w-full p-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 rounded-xl text-xs font-semibold text-zinc-200 flex items-center justify-center gap-2 transition-all min-h-[40px]"
                   >
-                    <p className="text-xs font-bold text-emerald-400">Revisor Sênior [DEMO]</p>
-                    <p className="text-[10px] text-zinc-500">★ 210 • Confiança Alta</p>
+                    <Lock className="w-3.5 h-3.5 text-zinc-400" /> Enviar Link de Troca de Senha por E-mail
                   </button>
                 </div>
-              </div>
+
+                {/* Quick Demo Switcher Section */}
+                {(currentUser.isDemo || currentUser.email === 'admin@dubcraft.io') && (
+                  <div className="p-3 bg-zinc-950 rounded-2xl border border-zinc-800 space-y-2">
+                    <p className="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Personas de Demonstração / Teste [DEMO]
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const auth = getAuthService();
+                          const u = auth.switchUserPersona('admin');
+                          onUserChanged(u);
+                        }}
+                        className="p-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/60 rounded-xl text-left transition-all"
+                      >
+                        <p className="text-xs font-bold text-amber-400">DubCraft Admin [DEMO]</p>
+                        <p className="text-[10px] text-zinc-500">★ 750 • Acesso Total</p>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const auth = getAuthService();
+                          const u = auth.switchUserPersona('trusted');
+                          onUserChanged(u);
+                        }}
+                        className="p-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/60 rounded-xl text-left transition-all"
+                      >
+                        <p className="text-xs font-bold text-emerald-400">Revisor Sênior [DEMO]</p>
+                        <p className="text-[10px] text-zinc-500">★ 210 • Confiança Alta</p>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
 
             {/* Logout Button */}

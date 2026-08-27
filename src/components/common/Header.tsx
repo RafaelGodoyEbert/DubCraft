@@ -17,6 +17,9 @@ export const Header: React.FC<HeaderProps> = ({
   setActiveTab,
 }) => {
   const isAdmin = currentUser?.role === 'admin';
+  const canModerate = Boolean(
+    currentUser && (currentUser.role === 'admin' || currentUser.role === 'moderator' || currentUser.isTrusted)
+  );
 
   return (
     <header className="sticky top-0 z-40 bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800 px-4 py-2.5">
@@ -73,8 +76,8 @@ export const Header: React.FC<HeaderProps> = ({
             <Trophy className="w-3.5 h-3.5" /> Ranking
           </button>
           
-          {/* Admin Panel button - ONLY visible for Admin */}
-          {isAdmin && (
+          {/* Admin / Moderation Panel button - Visible for Admin, Moderator & Trusted Users */}
+          {canModerate && (
             <button
               onClick={() => setActiveTab('admin')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
@@ -83,7 +86,7 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'bg-purple-950/30 text-purple-400 border border-purple-800/40 hover:bg-purple-900/40'
               }`}
             >
-              <Shield className="w-3.5 h-3.5 text-purple-400" /> Painel Admin
+              <Shield className="w-3.5 h-3.5 text-purple-400" /> {isAdmin ? 'Painel Admin' : 'Moderação'}
             </button>
           )}
         </nav>

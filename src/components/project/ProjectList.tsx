@@ -28,12 +28,15 @@ export const ProjectList: React.FC<ProjectListProps> = ({
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.description.toLowerCase().includes(search.toLowerCase());
 
-    const matchesStatus = statusFilter === 'all' ? true : p.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const isCompleted = p.status === 'completed' || (p.totalLines > 0 && p.reviewedLines >= p.totalLines);
+    if (statusFilter === 'completed') return matchesSearch && isCompleted;
+    if (statusFilter === 'active') return matchesSearch && !isCompleted && p.status !== 'paused';
+    if (statusFilter === 'paused') return matchesSearch && p.status === 'paused';
+    return matchesSearch;
   });
 
-  const completedCount = projects.filter((p) => p.status === 'completed').length;
-  const activeCount = projects.filter((p) => p.status === 'active').length;
+  const completedCount = projects.filter((p) => p.status === 'completed' || (p.totalLines > 0 && p.reviewedLines >= p.totalLines)).length;
+  const activeCount = projects.filter((p) => p.status === 'active' && !(p.totalLines > 0 && p.reviewedLines >= p.totalLines)).length;
 
   return (
     <div className="space-y-4 pb-20">

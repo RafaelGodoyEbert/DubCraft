@@ -28,14 +28,16 @@ export class ProposalUseCase {
       proposedEmotion?: string;
       proposedVoiceType?: string;
       proposedPace?: string;
+      proposedStatus?: 'ignorar' | 'dublado' | 'gameplay';
     }
   ): Promise<Proposal> {
+    const isIgnore = data.proposedStatus === 'ignorar';
     const hasTranslation = Boolean(data.proposedTranslation && data.proposedTranslation.trim());
     const hasOriginal = Boolean(data.proposedOriginalText && data.proposedOriginalText.trim());
     const hasReason = Boolean(data.reason && data.reason.trim());
     const hasNotes = Boolean(data.proposedNotes && data.proposedNotes.trim());
 
-    if (!hasTranslation && !hasOriginal && !hasReason && !hasNotes) {
+    if (!isIgnore && !hasTranslation && !hasOriginal && !hasReason && !hasNotes) {
       throw new Error('A proposta deve conter ao menos uma sugestão de texto, justificativa de áudio ou notas de dublagem.');
     }
 
@@ -54,7 +56,8 @@ export class ProposalUseCase {
       proposedVoiceType: data.proposedVoiceType || dialogue.tipo_voz,
       proposedPace: data.proposedPace || dialogue.ritmo,
       proposedNotes: data.proposedNotes ? data.proposedNotes.trim() : undefined,
-      reason: data.reason ? data.reason.trim() : 'Melhoria no diálogo / tradução',
+      proposedStatus: data.proposedStatus,
+      reason: data.reason ? data.reason.trim() : (isIgnore ? 'Sugerido descartar/ignorar fala' : 'Melhoria no diálogo / tradução'),
       status: 'pending',
       score: 0,
       upvotesCount: 0,
@@ -179,17 +182,25 @@ export class ProposalUseCase {
     }
 
     // Apply translation & original text & fields
-    if (proposal.proposedTranslation && proposal.proposedTranslation.trim()) {
-      dialogue.traducao_ptbr = proposal.proposedTranslation.trim();
+    if (proposal.proposedStatus === 'ignorar') {
+      dialogue.status = 'ignorar';
+      dialogue.isReviewed = false;
+    } else {
+      if (proposal.proposedTranslation && proposal.proposedTranslation.trim()) {
+        dialogue.traducao_ptbr = proposal.proposedTranslation.trim();
+      }
+      if (proposal.proposedOriginalText && proposal.proposedOriginalText.trim()) {
+        dialogue.texto_original = proposal.proposedOriginalText.trim();
+      }
+      if (proposal.proposedEmotion) dialogue.emocao = proposal.proposedEmotion;
+      if (proposal.proposedVoiceType) dialogue.tipo_voz = proposal.proposedVoiceType;
+      if (proposal.proposedPace) dialogue.ritmo = proposal.proposedPace;
+      if (proposal.proposedNotes) dialogue.notas_dublagem = proposal.proposedNotes;
+      dialogue.isReviewed = true;
+      if (dialogue.status === 'ignorar') {
+        dialogue.status = 'dublado';
+      }
     }
-    if (proposal.proposedOriginalText && proposal.proposedOriginalText.trim()) {
-      dialogue.texto_original = proposal.proposedOriginalText.trim();
-    }
-    if (proposal.proposedEmotion) dialogue.emocao = proposal.proposedEmotion;
-    if (proposal.proposedVoiceType) dialogue.tipo_voz = proposal.proposedVoiceType;
-    if (proposal.proposedPace) dialogue.ritmo = proposal.proposedPace;
-    if (proposal.proposedNotes) dialogue.notas_dublagem = proposal.proposedNotes;
-    dialogue.isReviewed = true;
     dialogue.activeProposalId = proposal.id;
     dialogue.updatedAt = new Date().toISOString();
 
@@ -232,7 +243,12 @@ export class ProposalUseCase {
         project.pendingProposalsCount -= 1;
       }
       const dialogues = await this.repo.getDialoguesByProject(dialogue.projectId);
-      project.reviewedLines = dialogues.filter((d) => d.isReviewed).length;
+      const validDialogues = dialogues.filter((d) => d.status !== 'ignorar');
+      project.totalLines = validDialogues.length;
+      project.reviewedLines = validDialogues.filter((d) => d.isReviewed).length;
+      if (project.reviewedLines >= project.totalLines && project.totalLines > 0) {
+        project.status = 'completed';
+      }
       await this.repo.updateProject(project);
     }
 

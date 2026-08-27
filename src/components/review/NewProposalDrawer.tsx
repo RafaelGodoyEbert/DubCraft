@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialogue } from '../../types';
 import { Drawer } from '../common/Drawer';
 import { DiffViewer } from '../common/DiffViewer';
-import { Send, AlertCircle, FileEdit, Languages, Mic, Volume2 } from 'lucide-react';
+import { Send, AlertCircle, FileEdit, Languages, Mic, Volume2, Ban } from 'lucide-react';
 
 interface NewProposalDrawerProps {
   isOpen: boolean;
@@ -16,6 +16,7 @@ interface NewProposalDrawerProps {
     proposedEmotion?: string;
     proposedVoiceType?: string;
     proposedPace?: string;
+    proposedStatus?: 'ignorar' | 'dublado' | 'gameplay';
   }) => void;
 }
 
@@ -32,6 +33,7 @@ export const NewProposalDrawer: React.FC<NewProposalDrawerProps> = ({
   const [emotion, setEmotion] = useState(dialogue.emocao || 'neutro');
   const [voiceType, setVoiceType] = useState(dialogue.tipo_voz || 'masculino_adulto');
   const [pace, setPace] = useState(dialogue.ritmo || 'normal');
+  const [isSuggestingIgnore, setIsSuggestingIgnore] = useState(dialogue.status === 'ignorar');
   const [error, setError] = useState('');
 
   // Reset fields when active dialogue changes
@@ -43,6 +45,7 @@ export const NewProposalDrawer: React.FC<NewProposalDrawerProps> = ({
     setEmotion(dialogue.emocao || 'neutro');
     setVoiceType(dialogue.tipo_voz || 'masculino_adulto');
     setPace(dialogue.ritmo || 'normal');
+    setIsSuggestingIgnore(dialogue.status === 'ignorar');
     setError('');
   }, [dialogue.id, isOpen]);
 
@@ -64,18 +67,23 @@ export const NewProposalDrawer: React.FC<NewProposalDrawerProps> = ({
       voiceType !== (dialogue.tipo_voz || 'masculino_adulto') ||
       pace !== (dialogue.ritmo || 'normal');
 
-    if (!hasOriginalChanged && !hasTranslationChanged && !hasOtherChanged && !hasReason) {
+    if (!isSuggestingIgnore && !hasOriginalChanged && !hasTranslationChanged && !hasOtherChanged && !hasReason) {
       setError('Altere o texto, adicione uma justificativa de áudio ou ajuste as diretrizes de dublagem.');
       return;
     }
 
-    if (hasOriginalChanged && !proposedOriginalText.trim()) {
+    if (!isSuggestingIgnore && hasOriginalChanged && !proposedOriginalText.trim()) {
       setError('O texto original corrigido não pode ficar vazio.');
       return;
     }
 
-    if (hasTranslationChanged && !proposedTranslation.trim()) {
+    if (!isSuggestingIgnore && hasTranslationChanged && !proposedTranslation.trim()) {
       setError('A tradução proposta não pode ficar vazia.');
+      return;
+    }
+
+    if (isSuggestingIgnore && !hasReason) {
+      setError('Informe o motivo pelo qual esta fala deve ser ignorada / descartada.');
       return;
     }
 
@@ -84,10 +92,11 @@ export const NewProposalDrawer: React.FC<NewProposalDrawerProps> = ({
       proposedOriginalText: hasOriginalChanged ? proposedOriginalText.trim() : undefined,
       proposedTranslation: hasTranslationChanged ? proposedTranslation.trim() : dialogue.traducao_ptbr,
       proposedNotes: proposedNotes.trim() || undefined,
-      reason: reason.trim() || 'Solicitação de revisão / melhoria de áudio',
+      reason: reason.trim() || (isSuggestingIgnore ? 'Sugerido ignorar/descartar fala (ruído/gemido)' : 'Solicitação de revisão / melhoria de áudio'),
       proposedEmotion: emotion,
       proposedVoiceType: voiceType,
       proposedPace: pace,
+      proposedStatus: isSuggestingIgnore ? 'ignorar' : undefined,
     });
     onClose();
   };
@@ -101,32 +110,86 @@ export const NewProposalDrawer: React.FC<NewProposalDrawerProps> = ({
         {/* Quick Audio Preset Buttons */}
         <div className="p-3 bg-zinc-950 rounded-2xl border border-zinc-800 space-y-2">
           <label className="text-xs font-bold text-zinc-300 flex items-center gap-1.5 uppercase tracking-wide">
-            <Mic className="w-3.5 h-3.5 text-amber-400" /> Atalhos Rápidos para Chamados de Áudio:
+            <Mic className="w-3.5 h-3.5 text-amber-400" /> Atalhos Rápidos para Chamados:
           </label>
           <div className="flex flex-wrap gap-1.5">
             <button
               type="button"
-              onClick={() => setAudioPreset('Áudio com sotaque de Portugal (PT-PT). Necessário regravar em PT-BR.', 'Regravar com pronúncia e sotaque brasileiro')}
+              onClick={() => {
+                setIsSuggestingIgnore(true);
+                setAudioPreset('Fala sem falas/diálogo relevante (apenas gemido, ruído ou corte que deve ficar fora do jogo).', 'Ignorar fala');
+              }}
+              className={`px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition-all flex items-center gap-1 border ${
+                isSuggestingIgnore
+                  ? 'bg-rose-900/60 border-rose-500 text-rose-200'
+                  : 'bg-zinc-900 hover:bg-rose-950/40 hover:border-rose-700/60 border-zinc-800 text-zinc-300 hover:text-rose-300'
+              }`}
+            >
+              <Ban className="w-3.5 h-3.5 text-rose-400" /> ⛔ Sugerir Ignorar Fala
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsSuggestingIgnore(false);
+                setAudioPreset('Áudio com sotaque de Portugal (PT-PT). Necessário regravar em PT-BR.', 'Regravar com pronúncia e sotaque brasileiro');
+              }}
               className="px-2.5 py-1.5 bg-zinc-900 hover:bg-amber-950/40 hover:border-amber-700/60 border border-zinc-800 text-zinc-300 hover:text-amber-300 rounded-lg text-[11px] font-medium transition-all flex items-center gap-1"
             >
               🇵🇹 Sotaque de Portugal (PT-PT)
             </button>
             <button
               type="button"
-              onClick={() => setAudioPreset('Áudio com ruído ou corte brusco no final. Necessário regravar/limpar.', 'Limpeza de áudio e regravação')}
+              onClick={() => {
+                setIsSuggestingIgnore(false);
+                setAudioPreset('Áudio com ruído ou corte brusco no final. Necessário regravar/limpar.', 'Limpeza de áudio e regravação');
+              }}
               className="px-2.5 py-1.5 bg-zinc-900 hover:bg-amber-950/40 hover:border-amber-700/60 border border-zinc-800 text-zinc-300 hover:text-amber-300 rounded-lg text-[11px] font-medium transition-all flex items-center gap-1"
             >
               🔊 Ruído / Áudio Cortado
             </button>
             <button
               type="button"
-              onClick={() => setAudioPreset('Entonação/Emoção não combina com a cena. Necessário interpretar com mais energia.', 'Ajuste de interpretação e energia')}
+              onClick={() => {
+                setIsSuggestingIgnore(false);
+                setAudioPreset('Entonação/Emoção não combina com a cena. Necessário interpretar com mais energia.', 'Ajuste de interpretação e energia');
+              }}
               className="px-2.5 py-1.5 bg-zinc-900 hover:bg-amber-950/40 hover:border-amber-700/60 border border-zinc-800 text-zinc-300 hover:text-amber-300 rounded-lg text-[11px] font-medium transition-all flex items-center gap-1"
             >
               🎭 Entonação Inadequada
             </button>
           </div>
         </div>
+
+        {/* Suggest Ignore Card Option */}
+        <div className={`p-3 rounded-2xl border transition-all ${
+          isSuggestingIgnore 
+            ? 'bg-rose-950/30 border-rose-700 text-rose-200 shadow-sm' 
+            : 'bg-zinc-950/60 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+        }`}>
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isSuggestingIgnore}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setIsSuggestingIgnore(checked);
+                if (checked && !reason) {
+                  setReason('Esta fala é um ruído/gemido ou não deve ser dublada (descartar do jogo final).');
+                }
+              }}
+              className="mt-0.5 w-4 h-4 rounded text-rose-600 bg-zinc-900 border-zinc-700 focus:ring-rose-500 shrink-0"
+            />
+            <div className="space-y-0.5">
+              <span className="font-bold text-xs flex items-center gap-1.5 text-rose-400">
+                <Ban className="w-3.5 h-3.5" /> Propor Marcar como Ignorada (Fora do Jogo)
+              </span>
+              <p className="text-[11px] text-zinc-400 leading-snug">
+                Marque esta opção caso este áudio seja apenas um ruído, gemido ou fala descartada que <strong>não deve ser dublada</strong>. Quando aprovada pela comunidade ou moderação, a fala não irá para os arquivos finais do jogo.
+              </p>
+            </div>
+          </label>
+        </div>
+
         {/* Section 1: Original Text / Transcription */}
         <div className="space-y-1.5 p-3.5 bg-zinc-950/70 rounded-2xl border border-zinc-800 space-y-2">
           <div className="flex items-center justify-between">
@@ -289,9 +352,21 @@ export const NewProposalDrawer: React.FC<NewProposalDrawerProps> = ({
           </button>
           <button
             type="submit"
-            className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold rounded-xl shadow-lg flex items-center gap-1.5 text-xs min-h-[44px]"
+            className={`px-5 py-2.5 font-bold rounded-xl shadow-lg flex items-center gap-1.5 text-xs min-h-[44px] transition-all ${
+              isSuggestingIgnore
+                ? 'bg-rose-600 hover:bg-rose-500 text-white shadow-rose-950/50'
+                : 'bg-amber-500 hover:bg-amber-400 text-zinc-950'
+            }`}
           >
-            <Send className="w-4 h-4" /> Enviar Proposta
+            {isSuggestingIgnore ? (
+              <>
+                <Ban className="w-4 h-4" /> Enviar Proposta para Ignorar
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" /> Enviar Proposta
+              </>
+            )}
           </button>
         </div>
       </form>

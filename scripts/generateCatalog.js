@@ -225,7 +225,9 @@ export function generateCatalog() {
       }
     }
 
-    const reviewedCount = projectDialogues.filter(d => d.isReviewed).length;
+    const validDialogues = projectDialogues.filter(d => d.status !== 'ignorar' && d.status !== 'ignorado');
+    const reviewedCount = validDialogues.filter(d => d.isReviewed).length;
+    const isCompleted = validDialogues.length > 0 && reviewedCount >= validDialogues.length;
 
     const project = {
       id: projectId,
@@ -234,8 +236,8 @@ export function generateCatalog() {
       folderName: projectName,
       description: projectInfo.description || `Projeto de dublagem de ${projectName}`,
       coverImage,
-      status: 'active',
-      totalLines: projectDialogues.length,
+      status: isCompleted ? 'completed' : (projectInfo.status || 'active'),
+      totalLines: validDialogues.length,
       reviewedLines: reviewedCount,
       pendingProposalsCount: 0,
       contributorsCount: 1,

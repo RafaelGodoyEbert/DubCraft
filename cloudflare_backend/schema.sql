@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS proposals (
   proposed_voice_type TEXT,
   proposed_pace TEXT,
   proposed_notes TEXT,
+  proposed_status TEXT DEFAULT 'dublado', -- 'dublado', 'ignorar', 'gameplay'
   reason TEXT,
   status TEXT DEFAULT 'pending', -- 'pending', 'approved', 'rejected'
   score REAL DEFAULT 0,

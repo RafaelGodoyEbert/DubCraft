@@ -13,10 +13,22 @@ const CORS_HEADERS = {
 // Limite de segurança diário do plano gratuito (100.000)
 const DAILY_WRITE_LIMIT = 98000;
 
-async function checkCircuitBreaker(env) {
+// Helper para obter a instância do banco D1 com qualquer nome configurado no binding (DB, dubcraft_DB, etc.)
+function getDB(env) {
+  if (env.DB) return env.DB;
+  if (env.dubcraft_DB) return env.dubcraft_DB;
+  for (const key of Object.keys(env)) {
+    if (env[key] && typeof env[key].prepare === 'function') {
+      return env[key];
+    }
+  }
+  throw new Error('D1 Database binding não encontrado no Worker. Verifique as configurações em Settings ➔ Bindings.');
+}
+
+async function checkCircuitBreaker(db) {
   try {
     const today = new Date().toISOString().split('T')[0];
-    const stats = await env.DB.prepare(`
+    const stats = await db.prepare(`
       SELECT 
         (SELECT COUNT(*) FROM votes WHERE updated_at >= ?) +
         (SELECT COUNT(*) FROM proposals WHERE created_at >= ?) as writes_today
@@ -47,9 +59,11 @@ export default {
     const path = url.pathname;
 
     try {
+      const db = getDB(env);
+
       // Intercept write operations with Circuit Breaker (Disjuntor de Segurança)
       if (request.method === 'POST' || request.method === 'PATCH') {
-        const breaker = await checkCircuitBreaker(env);
+        const breaker = await checkCircuitBreaker(db);
         if (breaker.isPaused) {
           return jsonResponse({
             error: 'CIRCUIT_BREAKER_ACTIVE',
@@ -60,6 +74,7 @@ export default {
           }, 429);
         }
       }
+
       // 1. GET /proposals?projectId=proj_black
       if (request.method === 'GET' && path === '/proposals') {
         const projectId = url.searchParams.get('projectId');
@@ -72,7 +87,7 @@ export default {
         }
         query += ' ORDER BY created_at DESC';
 
-        const { results } = await env.DB.prepare(query).bind(...params).all();
+        const { results } = await db.prepare(query).bind(...params).all();
         
         // Format response matching frontend Proposal interface
         const formatted = results.map(r => ({
@@ -89,6 +104,7 @@ export default {
           proposedVoiceType: r.proposed_voice_type,
           proposedPace: r.proposed_pace,
           proposedNotes: r.proposed_notes,
+          proposedStatus: r.proposed_status || (r.reason?.toLowerCase().includes('ignorar') ? 'ignorar' : undefined),
           reason: r.reason,
           status: r.status,
           score: r.score,
@@ -107,38 +123,71 @@ export default {
         const body = await request.json();
         const id = body.id || `prop_${Date.now()}`;
 
-        await env.DB.prepare(`
-          INSERT INTO proposals (
-            id, project_id, dialogue_id, author_id, author_name, author_avatar, author_role,
-            proposed_translation, proposed_original_text, proposed_emotion, proposed_voice_type,
-            proposed_pace, proposed_notes, reason, status, score, upvotes_count, downvotes_count, created_at
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `).bind(
-          id,
-          body.projectId,
-          body.dialogueId,
-          body.authorId,
-          body.authorName,
-          body.authorAvatar || '',
-          body.authorRole || 'user',
-          body.proposedTranslation || null,
-          body.proposedOriginalText || null,
-          body.proposedEmotion || null,
-          body.proposedVoiceType || null,
-          body.proposedPace || null,
-          body.proposedNotes || null,
-          body.reason || 'Melhoria na fala',
-          body.status || 'pending',
-          body.score || 0,
-          body.upvotesCount || 0,
-          body.downvotesCount || 0,
-          body.createdAt || new Date().toISOString()
-        ).run();
+        // Tentativa de INSERT com proposed_status (com fallback para esquemas legados caso a coluna não exista)
+        try {
+          await db.prepare(`
+            INSERT INTO proposals (
+              id, project_id, dialogue_id, author_id, author_name, author_avatar, author_role,
+              proposed_translation, proposed_original_text, proposed_emotion, proposed_voice_type,
+              proposed_pace, proposed_notes, proposed_status, reason, status, score, upvotes_count, downvotes_count, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `).bind(
+            id,
+            body.projectId,
+            body.dialogueId,
+            body.authorId,
+            body.authorName,
+            body.authorAvatar || '',
+            body.authorRole || 'user',
+            body.proposedTranslation || null,
+            body.proposedOriginalText || null,
+            body.proposedEmotion || null,
+            body.proposedVoiceType || null,
+            body.proposedPace || null,
+            body.proposedNotes || null,
+            body.proposedStatus || null,
+            body.reason || 'Melhoria na fala',
+            body.status || 'pending',
+            body.score || 0,
+            body.upvotesCount || 0,
+            body.downvotesCount || 0,
+            body.createdAt || new Date().toISOString()
+          ).run();
+        } catch (dbErr) {
+          // Fallback se a coluna proposed_status ainda não foi adicionada no D1 remoto
+          await db.prepare(`
+            INSERT INTO proposals (
+              id, project_id, dialogue_id, author_id, author_name, author_avatar, author_role,
+              proposed_translation, proposed_original_text, proposed_emotion, proposed_voice_type,
+              proposed_pace, proposed_notes, reason, status, score, upvotes_count, downvotes_count, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `).bind(
+            id,
+            body.projectId,
+            body.dialogueId,
+            body.authorId,
+            body.authorName,
+            body.authorAvatar || '',
+            body.authorRole || 'user',
+            body.proposedTranslation || null,
+            body.proposedOriginalText || null,
+            body.proposedEmotion || null,
+            body.proposedVoiceType || null,
+            body.proposedPace || null,
+            body.proposedNotes || null,
+            body.reason || 'Melhoria na fala',
+            body.status || 'pending',
+            body.score || 0,
+            body.upvotesCount || 0,
+            body.downvotesCount || 0,
+            body.createdAt || new Date().toISOString()
+          ).run();
+        }
 
         return jsonResponse({ success: true, id }, 201);
       }
 
-        // 3. POST /votes (Registrar ou atualizar voto com garantia de voto único e anti-fraude)
+      // 3. POST /votes (Registrar ou atualizar voto com garantia de voto único e anti-fraude)
       if (request.method === 'POST' && path === '/votes') {
         const body = await request.json();
         const { proposalId, projectId, userId, value, weight = 1.0 } = body;
@@ -157,7 +206,7 @@ export default {
         const now = new Date().toISOString();
 
         // Upsert do voto no D1 (Garante 1 único voto por usuário mesmo com spam no console)
-        await env.DB.prepare(`
+        await db.prepare(`
           INSERT INTO votes (id, project_id, proposal_id, user_id, value, weight, updated_at)
           VALUES (?, ?, ?, ?, ?, ?, ?)
           ON CONFLICT(proposal_id, user_id) DO UPDATE SET
@@ -167,7 +216,7 @@ export default {
         `).bind(voteId, projectId || null, proposalId, userId, sanitizedValue, sanitizedWeight, now).run();
 
         // Recalcula totais da proposta
-        const voteStats = await env.DB.prepare(`
+        const voteStats = await db.prepare(`
           SELECT 
             SUM(CASE WHEN value > 0 THEN 1 ELSE 0 END) as upvotes,
             SUM(CASE WHEN value < 0 THEN 1 ELSE 0 END) as downvotes,
@@ -181,7 +230,7 @@ export default {
         const score = Math.round((voteStats?.net_score || 0) * 10) / 10;
 
         // Atualiza a proposta com os novos scores agregados
-        await env.DB.prepare(`
+        await db.prepare(`
           UPDATE proposals
           SET upvotes_count = ?, downvotes_count = ?, score = ?
           WHERE id = ?
@@ -192,7 +241,7 @@ export default {
 
       // 4. GET /users (Listar todos os usuários da comunidade para o Admin)
       if (request.method === 'GET' && path === '/users') {
-        const { results } = await env.DB.prepare(`
+        const { results } = await db.prepare(`
           SELECT id, name, username, email, avatar_url, role, reputation, is_trusted, created_at
           FROM users
           ORDER BY created_at DESC
@@ -221,7 +270,7 @@ export default {
         }
 
         const now = new Date().toISOString();
-        await env.DB.prepare(`
+        await db.prepare(`
           INSERT INTO users (id, name, username, email, avatar_url, role, reputation, is_trusted, created_at)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
           ON CONFLICT(id) DO UPDATE SET
@@ -249,13 +298,13 @@ export default {
         const { userId, email, isTrusted } = await request.json();
 
         if (userId) {
-          await env.DB.prepare(`
+          await db.prepare(`
             UPDATE users
             SET is_trusted = ?, role = CASE WHEN ? = 1 AND role = 'user' THEN 'trusted' ELSE role END
             WHERE id = ?
           `).bind(isTrusted ? 1 : 0, isTrusted ? 1 : 0, userId).run();
         } else if (email) {
-          await env.DB.prepare(`
+          await db.prepare(`
             UPDATE users
             SET is_trusted = ?, role = CASE WHEN ? = 1 AND role = 'user' THEN 'trusted' ELSE role END
             WHERE email = ?

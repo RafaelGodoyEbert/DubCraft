@@ -13,5 +13,6 @@
     "status": "ignorar",
     "ritmo": "normal",
     "comentarios": "",
-    "speed_factor": 1.0
+    "speed_factor": 1.0,
+    "volume_factor": 1.0
 }

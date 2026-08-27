@@ -28,7 +28,7 @@ export interface IAuthProvider {
   sendPasswordResetEmail(email: string): Promise<void>;
   sendEmailVerification(): Promise<void>;
   switchUserPersona(role: UserRole, customName?: string): User;
-  updateUser(updates: Partial<User>): User;
+  updateUser(updates: Partial<User>): Promise<User> | User;
   getRateLimitStatus(email: string): RateLimitStatus;
   onAuthStateChanged(callback: (user: User | null) => void): () => void;
   fetchCommunityUsers?(): Promise<User[]>;

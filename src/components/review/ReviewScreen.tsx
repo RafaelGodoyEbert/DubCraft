@@ -23,11 +23,13 @@ interface ReviewScreenProps {
   currentProject: Project;
   onSelectProject: (p: Project) => void;
   currentUser: User | null;
+  initialDialogueId?: string;
 }
 
 export const ReviewScreen: React.FC<ReviewScreenProps> = ({
   currentProject,
   currentUser,
+  initialDialogueId,
 }) => {
   const [dialogues, setDialogues] = useState<Dialogue[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,7 +37,7 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedCutscene, setSelectedCutscene] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'dublado' | 'sem_audio' | 'revisado' | 'pendente'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'dublado' | 'sem_audio' | 'revisado' | 'pendente' | 'ignorar'>('all');
   const [isJumpListOpen, setIsJumpListOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -50,6 +52,19 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
     }
     loadData();
   }, [currentProject.id]);
+
+  // Jump to specific dialogue if initialDialogueId is passed
+  useEffect(() => {
+    if (initialDialogueId && dialogues.length > 0) {
+      const idx = dialogues.findIndex((d) => d.id === initialDialogueId);
+      if (idx !== -1) {
+        setSelectedCutscene('all');
+        setStatusFilter('all');
+        setSearchTerm('');
+        setCurrentIndex(idx);
+      }
+    }
+  }, [initialDialogueId, dialogues]);
 
   // Compute unique cutscenes list
   const cutscenesList = useMemo(() => {
@@ -74,8 +89,9 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
       // 2. Status filter
       if (statusFilter === 'dublado' && !d.audioDubladoUrl) return false;
       if (statusFilter === 'sem_audio' && d.audioDubladoUrl) return false;
-      if (statusFilter === 'revisado' && !d.isReviewed) return false;
-      if (statusFilter === 'pendente' && d.isReviewed) return false;
+      if (statusFilter === 'revisado' && (!d.isReviewed || d.status === 'ignorar')) return false;
+      if (statusFilter === 'pendente' && (d.isReviewed || d.status === 'ignorar')) return false;
+      if (statusFilter === 'ignorar' && d.status !== 'ignorar') return false;
 
       // 3. Search query (search across original text, translation, notes, ID)
       if (searchTerm.trim()) {
@@ -214,6 +230,7 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
     proposedEmotion?: string;
     proposedVoiceType?: string;
     proposedPace?: string;
+    proposedStatus?: 'ignorar' | 'dublado' | 'gameplay';
   }) => {
     if (!activeDialogue) return;
     if (!currentUser) {
@@ -240,7 +257,27 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
       const updated: Dialogue = {
         ...activeDialogue,
         isReviewed: isApproved,
-        status: isApproved ? 'approved' : 'pending',
+        status: isApproved ? 'dublado' : (activeDialogue.status === 'ignorar' ? 'dublado' : activeDialogue.status || 'gameplay'),
+      };
+      await repositoryAdapterSingleton.saveDialogue(updated);
+      setDialogues((prev) => prev.map((d) => (d.id === updated.id ? updated : d)));
+    } catch (err: any) {
+      alert(err.message || 'Erro ao atualizar status da fala.');
+    }
+  };
+
+  const handleToggleIgnoreDialogue = async (isIgnored: boolean) => {
+    if (!activeDialogue) return;
+    if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'moderator' && !currentUser.isTrusted)) {
+      alert('Apenas administradores ou revisores confiáveis podem alterar o status da fala.');
+      return;
+    }
+
+    try {
+      const updated: Dialogue = {
+        ...activeDialogue,
+        status: isIgnored ? 'ignorar' : 'dublado',
+        isReviewed: false,
       };
       await repositoryAdapterSingleton.saveDialogue(updated);
       setDialogues((prev) => prev.map((d) => (d.id === updated.id ? updated : d)));
@@ -344,10 +381,11 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
               className="w-full bg-zinc-950 border border-zinc-800 text-xs font-semibold text-zinc-200 rounded-xl px-3 py-2 focus:outline-none focus:border-amber-500 min-h-[40px]"
             >
               <option value="all">Status: Todos</option>
+              <option value="pendente">⏳ Em Revisão (Pendentes)</option>
+              <option value="revisado">✓ Aprovadas / Concluídas</option>
+              <option value="ignorar">⛔ Ignoradas (Gemidos / Excluídas)</option>
               <option value="dublado">Com Áudio Dublado</option>
               <option value="sem_audio">Sem Áudio Dublado</option>
-              <option value="revisado">Revisados</option>
-              <option value="pendente">Em Revisão</option>
             </select>
           </div>
         </div>
@@ -360,6 +398,7 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
             ) : (
               filteredDialogues.map((d, idx) => {
                 const isSelected = idx === currentIndex;
+                const isIgnored = d.status === 'ignorar';
                 return (
                   <button
                     key={d.id}
@@ -375,7 +414,9 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
                   >
                     <div className="flex items-center gap-2 truncate">
                       <span className="font-mono text-[11px] text-zinc-500 shrink-0">#{d.lineIndex + 1}</span>
-                      <span className="truncate">{d.traducao_ptbr || d.texto_original}</span>
+                      <span className={`truncate ${isIgnored ? 'line-through text-zinc-500 italic' : ''}`}>
+                        {isIgnored ? '⛔ ' : ''}{d.traducao_ptbr || d.texto_original || '(Sem texto)'}
+                      </span>
                     </div>
                     <span className="text-[10px] text-zinc-500 shrink-0 uppercase tracking-wider">
                       {d.cutsceneName || d.subfolder}
@@ -419,6 +460,7 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
           totalLines={filteredDialogues.length}
           currentUser={currentUser}
           onToggleApprove={handleToggleApproveDialogue}
+          onToggleIgnore={handleToggleIgnoreDialogue}
         />
       )}
 

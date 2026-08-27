@@ -14,10 +14,13 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   currentUser,
 }) => {
   const isAdmin = currentUser?.role === 'admin';
+  const canModerate = Boolean(
+    currentUser && (currentUser.role === 'admin' || currentUser.role === 'moderator' || currentUser.isTrusted)
+  );
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 bg-zinc-900/98 backdrop-blur-lg border-t border-zinc-800 md:hidden pb-safe">
-      <div className={`grid ${isAdmin ? 'grid-cols-4' : 'grid-cols-3'} h-14`}>
+      <div className={`grid ${canModerate ? 'grid-cols-4' : 'grid-cols-3'} h-14`}>
         <button
           onClick={() => setActiveTab('projects')}
           className={`flex flex-col items-center justify-center min-h-[48px] ${
@@ -48,7 +51,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
           <span className="text-[10px]">Ranking</span>
         </button>
 
-        {isAdmin && (
+        {canModerate && (
           <button
             onClick={() => setActiveTab('admin')}
             className={`flex flex-col items-center justify-center min-h-[48px] ${
@@ -56,7 +59,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             }`}
           >
             <Shield className="w-5 h-5 mb-0.5" />
-            <span className="text-[10px]">Admin</span>
+            <span className="text-[10px]">{isAdmin ? 'Admin' : 'Moderação'}</span>
           </button>
         )}
       </div>

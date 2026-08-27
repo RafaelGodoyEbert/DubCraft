@@ -97,6 +97,7 @@ export interface Proposal {
   proposedVoiceType?: string;
   proposedPace?: string;
   proposedNotes?: string;
+  proposedStatus?: 'ignorar' | 'dublado' | 'gameplay';
   reason: string;
   status: 'pending' | 'approved' | 'rejected';
   score: number; // weighted score sum
@@ -128,6 +129,7 @@ export interface AuditLog {
     | 'TRUST_REVOKE'
     | 'REPUTATION_ADJUST'
     | 'PROJECT_EXPORT'
+    | 'USER_DELETE'
     | 'ROLLBACK';
   details: string;
   targetId?: string;

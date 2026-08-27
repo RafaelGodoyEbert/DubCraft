@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Proposal, User, Dialogue } from '../../types';
 import { Badge } from '../common/Badge';
 import { DiffViewer } from '../common/DiffViewer';
-import { ThumbsUp, ThumbsDown, CheckCircle2, XCircle, Sparkles, MessageSquare, PauseCircle } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, CheckCircle2, XCircle, Sparkles, MessageSquare, PauseCircle, Ban } from 'lucide-react';
 import { cloudSyncServiceSingleton, CircuitBreakerStatus } from '../../services/cloudSyncService';
 
 interface ProposalListProps {
@@ -136,6 +136,16 @@ export const ProposalList: React.FC<ProposalListProps> = ({
                     )}
                   </div>
                 </div>
+
+                {/* Ignored Line Proposal Banner */}
+                {prop.proposedStatus === 'ignorar' && (
+                  <div className="p-2.5 bg-rose-950/40 border border-rose-800/80 rounded-xl text-xs text-rose-300 flex items-center gap-2 font-medium">
+                    <Ban className="w-4 h-4 text-rose-400 shrink-0" />
+                    <span>
+                      Esta proposta sugere <strong>Ignorar / Descartar</strong> esta fala (ruído, gemido ou não dublada).
+                    </span>
+                  </div>
+                )}
 
                 {/* Proposed Original Text Diff if present */}
                 {prop.proposedOriginalText && prop.proposedOriginalText !== dialogue.texto_original && (

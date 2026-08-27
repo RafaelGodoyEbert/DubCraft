@@ -79,12 +79,12 @@ const INITIAL_AUDITS: AuditLog[] = [
 const projectDialogueLoaders = import.meta.glob('../data/projects/*.json');
 
 export class LocalStorageRepositoryAdapter {
-  private projectsKey = 'dubcraft_live_projects_v7';
-  private dialoguesKey = 'dubcraft_live_dialogues_v7';
-  private proposalsKey = 'dubcraft_live_proposals_v7';
-  private votesKey = 'dubcraft_live_votes_v7';
-  private auditsKey = 'dubcraft_live_audits_v7';
-  private reputationEventsKey = 'dubcraft_live_reputation_v7';
+  private projectsKey = 'dubcraft_live_projects_v8';
+  private dialoguesKey = 'dubcraft_live_dialogues_v8';
+  private proposalsKey = 'dubcraft_live_proposals_v8';
+  private votesKey = 'dubcraft_live_votes_v8';
+  private auditsKey = 'dubcraft_live_audits_v8';
+  private reputationEventsKey = 'dubcraft_live_reputation_v8';
 
   private baseProjects: Project[] = INITIAL_PROJECTS;
   private baseDialogues: Dialogue[] = INITIAL_DIALOGUES;
@@ -107,6 +107,12 @@ export class LocalStorageRepositoryAdapter {
       localStorage.removeItem('dubcraft_black_projects_v5');
       localStorage.removeItem('dubcraft_black_projects_v6');
       localStorage.removeItem('dubcraft_black_dialogues_v6');
+      localStorage.removeItem('dubcraft_live_projects_v7');
+      localStorage.removeItem('dubcraft_live_dialogues_v7');
+      localStorage.removeItem('dubcraft_live_proposals_v7');
+      localStorage.removeItem('dubcraft_live_votes_v7');
+      localStorage.removeItem('dubcraft_live_audits_v7');
+      localStorage.removeItem('dubcraft_live_reputation_v7');
     } catch {}
 
     if (!localStorage.getItem(this.proposalsKey)) {
@@ -341,7 +347,38 @@ export class LocalStorageRepositoryAdapter {
       dialogues.push(dialogue);
     }
     localStorage.setItem(this.dialoguesKey, JSON.stringify(dialogues));
+
+    // Atualiza cache em memória se o projeto estiver carregado
+    if (this.loadedProjectDialogues.has(dialogue.projectId)) {
+      const inMem = this.loadedProjectDialogues.get(dialogue.projectId) || [];
+      const memIdx = inMem.findIndex((d) => d.id === dialogue.id);
+      if (memIdx !== -1) {
+        inMem[memIdx] = dialogue;
+      } else {
+        inMem.push(dialogue);
+      }
+    }
+
+    // Recalcula totalLines e reviewedLines do projeto (desconsiderando ignorados)
+    try {
+      const project = await this.getProjectById(dialogue.projectId);
+      if (project) {
+        const allProjDialogues = await this.getDialoguesByProject(dialogue.projectId);
+        const validDialogues = allProjDialogues.filter((d) => d.status !== 'ignorar');
+        project.totalLines = validDialogues.length;
+        project.reviewedLines = validDialogues.filter((d) => d.isReviewed).length;
+        if (project.reviewedLines >= project.totalLines && project.totalLines > 0) {
+          project.status = 'completed';
+        }
+        await this.updateProject(project);
+      }
+    } catch {}
+
     return dialogue;
+  }
+
+  public async saveDialogue(dialogue: Dialogue): Promise<Dialogue> {
+    return this.updateDialogue(dialogue);
   }
 
   public async importCutsceneJSON(
@@ -386,9 +423,13 @@ export class LocalStorageRepositoryAdapter {
     const project = await this.getProjectById(projectId);
     if (project) {
       const projectDialogues = dialogues.filter((d) => d.projectId === projectId);
-      project.totalLines = projectDialogues.length;
-      project.reviewedLines = projectDialogues.filter((d) => d.isReviewed).length;
+      const validDialogues = projectDialogues.filter((d) => d.status !== 'ignorar');
+      project.totalLines = validDialogues.length;
+      project.reviewedLines = validDialogues.filter((d) => d.isReviewed).length;
       project.cutscenesCount = new Set(projectDialogues.map((d) => d.cutsceneName)).size;
+      if (project.reviewedLines >= project.totalLines && project.totalLines > 0) {
+        project.status = 'completed';
+      }
       await this.updateProject(project);
     }
 
