@@ -78,7 +78,7 @@ export class ExportService {
   }
 
   /**
-   * Generates production-ready ZIP containing jsons_cutscenes, jsons_processados and dubcraft_config.json
+   * Generates production-ready ZIP containing jsons_processados, individual cutscene folders and dubcraft_config.json
    */
   public async generateProjectZip(
     project: Project,
@@ -86,45 +86,81 @@ export class ExportService {
   ): Promise<Blob> {
     const zip = new JSZip();
 
-    // Group dialogues by cutscene JSON file name
-    const grouped: Record<string, Dialogue[]> = {};
+    // 1. Export each individual speech JSON in its correct subfolder/jsons_processados structure
+    const cutscenesMap = new Map<string, Dialogue[]>();
+
     dialogues.forEach((d) => {
-      const filename = d.cutsceneName || 'cutscene_01.json';
-      if (!grouped[filename]) {
-        grouped[filename] = [];
+      // Determine file id and filename (e.g. "0.json", "2_00A4A392.json")
+      let fileId = `${d.lineIndex}`;
+      if (d.audioOriginalUrl) {
+        const match = d.audioOriginalUrl.match(/\/([^\/\\]+)\.(wav|mp3|ogg|flac|aac)$/i);
+        if (match && match[1]) fileId = match[1];
+      } else if (d.audioDubladoUrl) {
+        const match = d.audioDubladoUrl.match(/\/([^\/\\]+)\.(wav|mp3|ogg|flac|aac)$/i);
+        if (match && match[1]) fileId = match[1];
+      } else if (d.id) {
+        const parts = d.id.split('_');
+        if (parts.length > 0) fileId = parts[parts.length - 1];
       }
-      grouped[filename].push(d);
+
+      const jsonFileName = fileId.endsWith('.json') ? fileId : `${fileId}.json`;
+      const audioFileName = fileId.endsWith('.wav') ? fileId : `${fileId.replace(/\.json$/i, '')}.wav`;
+
+      const singleJsonData = {
+        texto_original: d.texto_original,
+        traducao_ptbr: d.traducao_ptbr,
+        emocao: d.emocao || 'neutro',
+        tipo_voz: d.tipo_voz || 'masculino_adulto',
+        notas_dublagem: d.notas_dublagem || '',
+        _metadata: {
+          arquivo_original: audioFileName,
+          gerado_em: d.updatedAt || new Date().toISOString(),
+          project: project.name,
+          location: 'DubCraft Web Community',
+        },
+        status: d.status || 'dublado',
+        ritmo: d.ritmo || 'normal',
+        comentarios: d.comentarios || '',
+        speed_factor: typeof d.speed_factor === 'number' ? d.speed_factor : 1.0,
+      };
+
+      const serializedSingle = JSON.stringify(singleJsonData, null, 2);
+
+      // Save inside subfolder/jsons_processados if project uses subfolders, otherwise root jsons_processados
+      if (d.subfolder && d.subfolder.trim()) {
+        zip.file(`${d.subfolder}/jsons_processados/${jsonFileName}`, serializedSingle);
+      } else {
+        zip.file(`jsons_processados/${jsonFileName}`, serializedSingle);
+      }
+
+      // Group for cutscene consolidated view
+      const cutsceneGroupKey = d.cutsceneName || d.subfolder || 'geral';
+      if (!cutscenesMap.has(cutsceneGroupKey)) {
+        cutscenesMap.set(cutsceneGroupKey, []);
+      }
+      cutscenesMap.get(cutsceneGroupKey)!.push(d);
     });
 
-    const processadosDir = zip.folder('jsons_processados');
-    const cutscenesDir = zip.folder('jsons_cutscenes');
+    // 2. Export consolidated cutscene files inside jsons_cutscenes folder with .json extension
+    cutscenesMap.forEach((cutsceneDialogues, groupName) => {
+      const safeGroupName = groupName.endsWith('.json') ? groupName : `${groupName}.json`;
+      const cutsceneContent = cutsceneDialogues.map((d) => ({
+        lineIndex: d.lineIndex,
+        texto_original: d.texto_original,
+        traducao_ptbr: d.traducao_ptbr,
+        emocao: d.emocao,
+        tipo_voz: d.tipo_voz,
+        notas_dublagem: d.notas_dublagem,
+        status: d.status,
+        ritmo: d.ritmo,
+        comentarios: d.comentarios,
+        speed_factor: d.speed_factor,
+      }));
 
-    // For each file group, build JSON structure
-    Object.entries(grouped).forEach(([filename, fileDialogues]) => {
-      const jsonContent = fileDialogues.map((d) => {
-        return {
-          lineIndex: d.lineIndex,
-          texto_original: d.texto_original,
-          traducao_ptbr: d.traducao_ptbr,
-          emocao: d.emocao,
-          tipo_voz: d.tipo_voz,
-          notas_dublagem: d.notas_dublagem,
-          status: d.status,
-          ritmo: d.ritmo,
-          comentarios: d.comentarios,
-          speed_factor: d.speed_factor,
-        };
-      });
-
-      const serialized = JSON.stringify(jsonContent, null, 2);
-      if (processadosDir) {
-        processadosDir.file(filename, serialized);
-      }
-      if (cutscenesDir) {
-        cutscenesDir.file(filename, serialized);
-      }
+      zip.file(`jsons_cutscenes/${safeGroupName}`, JSON.stringify(cutsceneContent, null, 2));
     });
 
+    // 3. Export full dialogues.json and config files
     const validDialogues = dialogues.filter((d) => d.status !== 'ignorar');
     const configData = {
       project_id: project.id,
@@ -134,12 +170,14 @@ export class ExportService {
       total_lines: validDialogues.length,
       reviewed_lines: validDialogues.filter((d) => d.isReviewed).length,
       ignored_lines: dialogues.filter((d) => d.status === 'ignorar').length,
-      cutscenes_count: Object.keys(grouped).length,
+      cutscenes_count: cutscenesMap.size,
       exported_at: new Date().toISOString(),
       generator: 'DubCraft Studio v2.0 (OrganizarPOP Engine)',
     };
+
     zip.file('editor_config.json', JSON.stringify(configData, null, 2));
     zip.file('dubcraft_config.json', JSON.stringify(configData, null, 2));
+    zip.file('dialogues.json', JSON.stringify(dialogues, null, 2));
 
     return await zip.generateAsync({ type: 'blob' });
   }
