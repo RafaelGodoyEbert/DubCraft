@@ -7,8 +7,20 @@ coverage/
 .env*
 !.env.example
 *.7z
+*.zip
+*.rar
+*.tar*
 *.exe
+
+# Áudios brutos hospedados no Hugging Face Datasets CDN
+projetos/**/*.wav
+projetos/**/*.mp3
+projetos/**/*.ogg
+projetos/**/*.flac
+projetos/**/*.aac
+projetos/**/dialogues.json
 projetos/**/*.py
 projetos/**/*.bat
+
 
 

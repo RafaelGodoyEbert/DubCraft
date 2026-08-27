@@ -75,12 +75,15 @@ export function generateCatalog() {
       }
     }
 
+    // CDN do Hugging Face para streaming global de áudio de alta velocidade
+    const HF_CDN = 'https://huggingface.co/datasets/RafaG/DubCraft/resolve/main';
+
     // Cover image check
     let coverImage = 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80';
     for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
       const thumbFile = path.join(projectPath, `thumb.${ext}`);
       if (fs.existsSync(thumbFile)) {
-        coverImage = `projetos/${projectName}/thumb.${ext}`;
+        coverImage = `${HF_CDN}/projetos/${encodeURI(projectName)}/thumb.${ext}`;
         break;
       }
     }
@@ -116,8 +119,12 @@ export function generateCatalog() {
         const hasDublado = fs.existsSync(path.join(audioDubladoDir, audioFileName));
 
         const urlSubPath = subfolderName ? `${projectName}/${subfolderName}` : projectName;
-        const audioOriginalUrl = hasInput ? `projetos/${urlSubPath}/audios_input/${audioFileName}` : undefined;
-        const audioDubladoUrl = hasDublado ? `projetos/${urlSubPath}/audios_dublados/${audioFileName}` : undefined;
+        const audioOriginalUrl = (hasInput || metadata.arquivo_original)
+          ? `${HF_CDN}/projetos/${encodeURI(urlSubPath)}/audios_input/${encodeURIComponent(audioFileName)}`
+          : undefined;
+        const audioDubladoUrl = hasDublado
+          ? `${HF_CDN}/projetos/${encodeURI(urlSubPath)}/audios_dublados/${encodeURIComponent(audioFileName)}`
+          : undefined;
 
         // Determine cutscene / group name
         let cutscene = subfolderName;

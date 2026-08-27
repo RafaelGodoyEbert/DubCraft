@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout do Repositório
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -46,11 +48,10 @@ jobs:
           VITE_ADMIN_EMAILS: ${{ secrets.VITE_ADMIN_EMAILS }}
         run: npm run build
 
-      - name: Adicionar .nojekyll, 404.html e Copiar Projetos de Audio
+      - name: Adicionar .nojekyll e 404.html
         run: |
           touch dist/.nojekyll
           cp dist/index.html dist/404.html
-          if [ -d "projetos" ]; then cp -r projetos dist/projetos; fi
 
       - name: Upload do Artefato do Pages
         uses: actions/upload-pages-artifact@v3
