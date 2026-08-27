@@ -1,0 +1,14 @@
+{
+    "texto_original": "Another one bites the dust.",
+    "traducao_ptbr": "Mais um morde a poeira.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "96_10051452.wav",
+        "gerado_em": "2026-01-14T03:10:52.116064Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

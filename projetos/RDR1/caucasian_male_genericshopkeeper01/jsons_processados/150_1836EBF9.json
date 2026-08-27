@@ -1,0 +1,14 @@
+{
+    "texto_original": "Call.",
+    "traducao_ptbr": "Pagar.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "150_1836EBF9.wav",
+        "gerado_em": "2026-01-14T03:08:53.450553Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

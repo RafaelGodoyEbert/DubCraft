@@ -26,6 +26,8 @@ import {
   ExternalLink,
 } from 'lucide-react';
 
+import { getCommunityUsers, getAuthService } from '../../services/auth/authService';
+
 interface AdminDashboardProps {
   projects: Project[];
   currentUser: User | null;
@@ -42,12 +44,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [targetImportProjectId, setTargetImportProjectId] = useState<string | undefined>(undefined);
+  const [telemetryKey, setTelemetryKey] = useState(0);
   const [telemetry, setTelemetry] = useState({
     writesToday: 0,
     readsToday: 0,
     activeUsersCount: 0,
     proposalsToday: 0,
   });
+
+  const handleRefreshAll = () => {
+    setTelemetryKey((k) => k + 1);
+    onRefresh();
+  };
 
   useEffect(() => {
     async function loadTelemetry() {
@@ -64,17 +72,44 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
         const writesCount = Math.max(1, auditsToday + totalProposalsCount);
         const readsEstimated = Math.max(12, writesCount * 8 + 45);
+        const usersList = getCommunityUsers(currentUser);
+
+        let userCount = Math.max(usersList.length, 1);
+
+        try {
+          const auth = getAuthService();
+          if (auth && auth.fetchCommunityUsers) {
+            const firestoreUsers = await auth.fetchCommunityUsers();
+            if (firestoreUsers.length > 0) {
+              userCount = Math.max(userCount, firestoreUsers.length);
+            }
+          }
+        } catch {}
+
+        // Se houver backend na nuvem conectado, busca a contagem real
+        const cloudApiUrl = import.meta.env.VITE_CLOUD_API_URL;
+        if (cloudApiUrl) {
+          try {
+            const res = await fetch(`${cloudApiUrl}/users`);
+            if (res.ok) {
+              const cloudUsers = await res.json();
+              if (Array.isArray(cloudUsers) && cloudUsers.length > 0) {
+                userCount = Math.max(userCount, cloudUsers.length);
+              }
+            }
+          } catch {}
+        }
 
         setTelemetry({
           writesToday: writesCount,
           readsToday: readsEstimated,
-          activeUsersCount: projects.reduce((acc, p) => acc + p.contributorsCount, 0) || 1,
+          activeUsersCount: userCount,
           proposalsToday: totalProposalsCount,
         });
       } catch {}
     }
     loadTelemetry();
-  }, [projects]);
+  }, [projects, currentUser, telemetryKey]);
 
   if (!currentUser || currentUser.role !== 'admin') {
     return (
@@ -209,7 +244,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <Users className="w-3.5 h-3.5 text-purple-400" /> Colaboradores
           </span>
           <p className="text-xl font-bold text-zinc-100">
-            {projects.reduce((acc, p) => acc + p.contributorsCount, 0)}
+            {telemetry.activeUsersCount}
           </p>
         </div>
       </div>
@@ -438,7 +473,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       </div>
 
       {/* Trusted User Manager */}
-      <TrustedUsersManager currentUser={currentUser} onRefresh={onRefresh} />
+      <TrustedUsersManager currentUser={currentUser} onRefresh={handleRefreshAll} />
 
       {/* Audit Logs History */}
       <AuditLogView />

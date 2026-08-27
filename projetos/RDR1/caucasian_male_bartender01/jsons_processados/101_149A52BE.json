@@ -1,0 +1,17 @@
+{
+    "texto_original": "Where you go with my horse? Bring him back!",
+    "traducao_ptbr": "Onde vai com meu cavalo? Traga ele de volta!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "101_149A52BE.wav",
+        "gerado_em": "2026-01-14T03:17:54.209282Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado",
+    "ritmo": "normal",
+    "comentarios": "",
+    "speed_factor": 1.0
+}

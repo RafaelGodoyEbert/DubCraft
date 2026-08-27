@@ -1,0 +1,14 @@
+{
+    "texto_original": "Hey Pard, it's me, Herbert Moon.",
+    "traducao_ptbr": "Ei, amigo, sou eu, Herbert Moon.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "7_0168C980.wav",
+        "gerado_em": "2026-01-14T03:10:35.364591Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

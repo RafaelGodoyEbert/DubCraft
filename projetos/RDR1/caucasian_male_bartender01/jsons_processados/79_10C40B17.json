@@ -1,0 +1,14 @@
+{
+    "texto_original": "That's my horse!",
+    "traducao_ptbr": "Esse é meu cavalo!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "79_10C40B17.wav",
+        "gerado_em": "2026-01-14T03:19:46.362879Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

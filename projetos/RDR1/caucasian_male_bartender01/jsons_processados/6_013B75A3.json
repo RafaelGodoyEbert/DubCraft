@@ -1,0 +1,14 @@
+{
+    "texto_original": "Will you take a drink?",
+    "traducao_ptbr": "Quer um trago?",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "6_013B75A3.wav",
+        "gerado_em": "2026-01-14T03:19:37.676436Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

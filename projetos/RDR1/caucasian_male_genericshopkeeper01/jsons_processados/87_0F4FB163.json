@@ -1,0 +1,14 @@
+{
+    "texto_original": "This establishment welcomes you!",
+    "traducao_ptbr": "Este estabelecimento lhe dá as boas-vindas!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "87_0F4FB163.wav",
+        "gerado_em": "2026-01-14T03:10:43.059367Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

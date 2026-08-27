@@ -1,0 +1,14 @@
+{
+    "texto_original": "I've gotta go. I hate this thing.",
+    "traducao_ptbr": "Tenho que ir. Odeio essa coisa.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "94_0FEAB663.wav",
+        "gerado_em": "2026-01-14T03:10:50.236653Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

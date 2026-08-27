@@ -1,0 +1,14 @@
+{
+    "texto_original": "I'll teach you some respect!",
+    "traducao_ptbr": "Eu vou te ensinar a ter respeito!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "99_146AC116.wav",
+        "gerado_em": "2026-01-14T03:20:05.300527Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

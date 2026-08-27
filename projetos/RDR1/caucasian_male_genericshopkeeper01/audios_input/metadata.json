@@ -1,0 +1,4306 @@
+{
+  "SourceFile": "caucasian_male_genericshopkeeper01.awc",
+  "Streams": [
+    {
+      "stream_index": 0,
+      "hash": "0094E1BD",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 140455,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -5,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 1,
+      "hash": "00A4A392",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 21615,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 2,
+      "hash": "00C9B7CE",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 77700,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 111,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 3,
+      "hash": "0109D4D4",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 45324,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 4,
+      "hash": "0136AAA1",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 24245,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 5,
+      "hash": "01566654",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 44658,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 6,
+      "hash": "0159E965",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 121608,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -13,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 7,
+      "hash": "0168C980",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 73189,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -27,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 8,
+      "hash": "0183F047",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 82212,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 9,
+      "hash": "01B9575C",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 43014,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 10,
+      "hash": "01C5828B",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 16104,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24001,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 11,
+      "hash": "01CAB5D6",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 49056,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 83,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 12,
+      "hash": "01EEE9BC",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 71204,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 13,
+      "hash": "01F1EAB5",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 28267,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 86,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 14,
+      "hash": "022BAFC9",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 100285,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 15,
+      "hash": "022E2D47",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 88368,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 16,
+      "hash": "023EE0B2",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 68624,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 17,
+      "hash": "027B253D",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 49634,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 18,
+      "hash": "0283A8AF",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 85933,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 19,
+      "hash": "02CC8569",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 65086,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 297,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 20,
+      "hash": "02DD2C6A",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 125886,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 21,
+      "hash": "031E7318",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 67617,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 22,
+      "hash": "03B47E69",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 12931,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 23,
+      "hash": "03FBAA47",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 20482,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 24,
+      "hash": "041728C2",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 136864,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 25,
+      "hash": "0497F554",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 21920,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 26,
+      "hash": "04E271F8",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 52288,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 27,
+      "hash": "04EF908D",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 41118,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -1,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 28,
+      "hash": "04F205C0",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 70256,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -4,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 29,
+      "hash": "05276C39",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 30261,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 30,
+      "hash": "05575EB6",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 70361,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 31,
+      "hash": "05871DCF",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 66528,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 32,
+      "hash": "05927357",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 96544,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 33,
+      "hash": "05CC0CDA",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 78946,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 20,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 34,
+      "hash": "061B2C77",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 58444,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 35,
+      "hash": "06550EC9",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 101724,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 36,
+      "hash": "06B91422",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 44341,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 37,
+      "hash": "07657271",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 28078,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 38,
+      "hash": "07B571BA",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 16098,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 39,
+      "hash": "081236D7",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 96064,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 40,
+      "hash": "08272751",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 39456,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 41,
+      "hash": "085095B2",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 15536,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 42,
+      "hash": "089185F4",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 44056,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 43,
+      "hash": "08C6C7C9",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 42080,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 44,
+      "hash": "08E47385",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 125184,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 45,
+      "hash": "08E7B043",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 39648,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 46,
+      "hash": "091738E2",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 87488,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 132,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 47,
+      "hash": "09467702",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 87872,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 48,
+      "hash": "098E2C8C",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 29592,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 369,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 49,
+      "hash": "09A47628",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 53026,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 102,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 50,
+      "hash": "09A969DF",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 85461,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 51,
+      "hash": "09AE5D2F",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 110528,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 52,
+      "hash": "09B06A6F",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 52818,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 53,
+      "hash": "0A1CACD1",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 47732,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 54,
+      "hash": "0A1DFE2B",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 61424,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 55,
+      "hash": "0A23BF20",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 14053,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 56,
+      "hash": "0A27134B",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 13464,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 50,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 57,
+      "hash": "0A5720A5",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 36400,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 58,
+      "hash": "0A5DFF92",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 43426,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 59,
+      "hash": "0B19C25B",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 22116,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 60,
+      "hash": "0B2601CF",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 28490,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 67,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 61,
+      "hash": "0B58CADA",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 101708,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 106,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 62,
+      "hash": "0BB6E19C",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 49764,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 63,
+      "hash": "0BD66EBA",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 78212,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 64,
+      "hash": "0BE6C08D",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 93720,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 65,
+      "hash": "0C2BF89F",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 61379,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 66,
+      "hash": "0C3B9B3F",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 66561,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 169,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 67,
+      "hash": "0C444CE2",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 55288,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -22,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 68,
+      "hash": "0C554386",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 19264,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 69,
+      "hash": "0C6C97FD",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 129184,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 70,
+      "hash": "0C8AFFC8",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 96672,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 180,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 71,
+      "hash": "0C91F52F",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 51582,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 72,
+      "hash": "0C9CFE96",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 143360,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -16,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 73,
+      "hash": "0CC2C98E",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 85952,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 74,
+      "hash": "0CE40707",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 47016,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -18,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 75,
+      "hash": "0CF3BE5D",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 74600,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -2,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 76,
+      "hash": "0D4B8943",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 73694,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 77,
+      "hash": "0D9F7323",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 87946,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 78,
+      "hash": "0DAAE74F",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 34424,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 106,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 79,
+      "hash": "0DB03E3E",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 27002,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -4,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 80,
+      "hash": "0DECEF82",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 128260,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 13,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 81,
+      "hash": "0DF9063B",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 84817,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 82,
+      "hash": "0E255F10",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 58836,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 83,
+      "hash": "0E3E08A4",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 21708,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24001,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 84,
+      "hash": "0E900892",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 78501,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 85,
+      "hash": "0EAB8336",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 39520,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 86,
+      "hash": "0F3D7711",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 48610,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 87,
+      "hash": "0F4FB163",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 50294,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 88,
+      "hash": "0F6F0696",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 26196,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 89,
+      "hash": "0F7F45B2",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 123072,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 132,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 90,
+      "hash": "0FC09ED4",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 30816,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 22,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 91,
+      "hash": "0FD0C18B",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 10181,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24001,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 92,
+      "hash": "0FDF13E7",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 99424,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 132,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 93,
+      "hash": "0FE1C695",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 26232,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -7,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 94,
+      "hash": "0FEAB663",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 56118,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 95,
+      "hash": "0FFBF3FC",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 103390,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -16,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 96,
+      "hash": "10051452",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 46560,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 97,
+      "hash": "10171FF8",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 106442,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 254,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 98,
+      "hash": "106B347F",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 54417,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 99,
+      "hash": "107CF4E3",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 55408,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 100,
+      "hash": "109EE0FE",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 70080,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 147,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 101,
+      "hash": "10C40B17",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 53290,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 102,
+      "hash": "10E6F48E",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 41126,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 103,
+      "hash": "1110C5C9",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 54756,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 104,
+      "hash": "111B2E30",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 33446,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -1,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 105,
+      "hash": "115EAFBF",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 86482,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 106,
+      "hash": "1175A210",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 131552,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 107,
+      "hash": "11CC9267",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 82368,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 108,
+      "hash": "11CD3D48",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 32752,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -9,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 109,
+      "hash": "11E23FD0",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 60768,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 110,
+      "hash": "125E10A6",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 42428,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 70,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 111,
+      "hash": "1262270D",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 122643,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 112,
+      "hash": "1266C717",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 19552,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 113,
+      "hash": "126D856E",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 80662,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 81,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 114,
+      "hash": "12CDE177",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 26256,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 72,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 115,
+      "hash": "12FF3A03",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 23643,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -2,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 116,
+      "hash": "13104E54",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 55728,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 117,
+      "hash": "132C2D07",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 62848,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 118,
+      "hash": "133316AE",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 93920,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 119,
+      "hash": "136A90C4",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 77920,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 120,
+      "hash": "13744D9A",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 93952,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 297,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 121,
+      "hash": "138B2616",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 23438,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 48,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 122,
+      "hash": "13A42B6A",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 41220,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 123,
+      "hash": "13A94D31",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 99200,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 124,
+      "hash": "13E0ACD3",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 15970,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24001,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 125,
+      "hash": "146BD10A",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 72736,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 126,
+      "hash": "14758FBE",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 20758,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 196,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 127,
+      "hash": "14A9D206",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 46010,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 128,
+      "hash": "14D4D685",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 86976,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 304,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 129,
+      "hash": "14E068E4",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 132224,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 130,
+      "hash": "1502A9D5",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 82883,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 103,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 131,
+      "hash": "156716F3",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 21712,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 132,
+      "hash": "15968F61",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 6344,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -1,
+            "sample_rate": 24001,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 133,
+      "hash": "15C26925",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 54372,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -27,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 134,
+      "hash": "160D5BC9",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 35314,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 135,
+      "hash": "1618280C",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 28032,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 136,
+      "hash": "1660C3C4",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 95456,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 137,
+      "hash": "166A3F95",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 19008,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 138,
+      "hash": "166CD38C",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 110730,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 139,
+      "hash": "167A00A0",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 39488,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 140,
+      "hash": "16936362",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 55625,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 141,
+      "hash": "16D7C071",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 27568,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 142,
+      "hash": "17110A2D",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 44528,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 143,
+      "hash": "17187341",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 8904,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -4,
+            "sample_rate": 24001,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 144,
+      "hash": "171ADDDE",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 32128,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 145,
+      "hash": "172C2329",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 58958,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 146,
+      "hash": "17A093B7",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 93957,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 147,
+      "hash": "1810F9F4",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 63824,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 148,
+      "hash": "18207C37",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 16187,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 149,
+      "hash": "1826DA99",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 90272,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 150,
+      "hash": "1836EBF9",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 9984,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24001,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 151,
+      "hash": "185F9AAC",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 103190,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 152,
+      "hash": "18699DAE",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 44760,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 153,
+      "hash": "19181E48",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 66321,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 154,
+      "hash": "19296190",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 34358,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 174,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 155,
+      "hash": "193F94CF",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 12480,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 156,
+      "hash": "19641EEF",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 40096,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 157,
+      "hash": "1986BD3C",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 65614,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 158,
+      "hash": "1996B83E",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 7120,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24001,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 159,
+      "hash": "19BB9DC3",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 120350,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 160,
+      "hash": "1A5D9B6F",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 89578,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 349,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 161,
+      "hash": "1AABC259",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 108817,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 162,
+      "hash": "1AE82A58",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 78817,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 163,
+      "hash": "1B31DAD8",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 83040,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 164,
+      "hash": "1B460A35",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 82982,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 165,
+      "hash": "1B7A0AB2",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 80192,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 166,
+      "hash": "1B8AEB6F",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 70304,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 167,
+      "hash": "1B8F50CC",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 28567,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 168,
+      "hash": "1BDC43B2",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 34132,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 169,
+      "hash": "1C12FA6F",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 85912,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 170,
+      "hash": "1C346C91",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 141056,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 171,
+      "hash": "1C71329E",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 49328,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 49,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 172,
+      "hash": "1C8CE49C",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 35168,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 248,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 173,
+      "hash": "1D56208B",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 77585,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 174,
+      "hash": "1D98F056",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 59129,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 175,
+      "hash": "1DCF44AA",
+      "chunk_count": 4,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 51441,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 176,
+      "hash": "1DD02272",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 22048,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 177,
+      "hash": "1E227B69",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 75456,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 178,
+      "hash": "1E3A1079",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 66503,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": 117,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 179,
+      "hash": "1E6B2A15",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 34634,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 180,
+      "hash": "1E9EA356",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 107944,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 181,
+      "hash": "1F200B42",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 71288,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 182,
+      "hash": "1F32D255",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 86159,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 183,
+      "hash": "1F626D91",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 108468,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 184,
+      "hash": "1F9C9DAD",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 73760,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 185,
+      "hash": "1FC82405",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 97876,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    },
+    {
+      "stream_index": 186,
+      "hash": "1FC9533C",
+      "chunk_count": 3,
+      "type": "SFX",
+      "sfx_info": {
+        "total_samples": 108800,
+        "loop_point": -1,
+        "loop_begin": 0,
+        "loop_end": 0,
+        "play_end": 0,
+        "play_begin": 0,
+        "channels": [
+          {
+            "channel_index": 0,
+            "headroom_db": -29,
+            "sample_rate": 24000,
+            "codec_id": 17,
+            "codec_name": "MSADPCM"
+          }
+        ]
+      }
+    }
+  ]
+}

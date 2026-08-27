@@ -10,7 +10,20 @@ export class ExportService {
     contributors: ProjectContributor[],
     format: ExportFormat
   ): string {
-    const sorted = [...contributors].sort((a, b) => b.approvedCount - a.approvedCount);
+    // Apenas colaboradores que tiveram propostas aprovadas recebem créditos no jogo
+    const sorted = [...contributors]
+      .filter((c) => (c.approvedCount || 0) > 0)
+      .sort((a, b) => b.approvedCount - a.approvedCount);
+
+    if (sorted.length === 0) {
+      if (format === 'json') {
+        return JSON.stringify({ project_name: project.name, contributors: [] }, null, 2);
+      }
+      if (format === 'markdown') {
+        return `# Créditos de Tradução & Dublagem — ${project.name}\n\n*Nenhuma fala comunitária foi marcada como aprovada até o momento.*\n`;
+      }
+      return `CRÉDITOS DE DUBLAGEM — ${project.name}\n\nNenhuma fala comunitária foi aprovada ainda.\n`;
+    }
 
     if (format === 'json') {
       return JSON.stringify(

@@ -11,8 +11,11 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
+import { getFirestore, collection, doc, setDoc, getDocs, Firestore } from 'firebase/firestore';
 import { User, UserRole } from '../../types';
 import { IAuthProvider, RateLimitStatus, setAuthProvider, syncCommunityUser } from './authService';
+
+import { PRESET_USERS } from './mockAuthProvider';
 
 let firebaseConfig: any = null;
 
@@ -29,7 +32,7 @@ export function isUserAdmin(email?: string | null): boolean {
   return clean === 'admin@dubcraft.io' || envAdminEmails.includes(clean);
 }
 
-// Load from Vite env variables or window runtime config
+// Load from Vite env variables (.env.local / GitHub Secrets) or window runtime config
 if (import.meta.env.VITE_FIREBASE_API_KEY) {
   firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -38,9 +41,12 @@ if (import.meta.env.VITE_FIREBASE_API_KEY) {
     storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
   };
 } else if (typeof window !== 'undefined' && (window as any).__FIREBASE_CONFIG__) {
   firebaseConfig = (window as any).__FIREBASE_CONFIG__;
+} else {
+  firebaseConfig = null;
 }
 
 interface FailedAttemptTracker {
@@ -61,10 +67,50 @@ export class FirebaseAuthProvider implements IAuthProvider {
       try {
         const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
         this.auth = getAuth(app);
+        this.db = getFirestore(app);
         this.googleProvider = new GoogleAuthProvider();
       } catch (err) {
         console.warn('[Firebase] Erro ao inicializar SDK:', err);
       }
+    }
+  }
+
+  private async saveUserToFirestore(user: User | null) {
+    if (!this.db || !user || user.isDemo || user.email === 'admin@dubcraft.io') return;
+    try {
+      const userRef = doc(this.db, 'users', user.id);
+      await setDoc(userRef, {
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        avatarUrl: user.avatarUrl,
+        role: user.role,
+        reputation: user.reputation,
+        isTrusted: user.isTrusted,
+        createdAt: user.createdAt,
+        lastActiveAt: new Date().toISOString(),
+      }, { merge: true });
+    } catch (err) {
+      console.warn('[Firestore] Erro ao sincronizar usuário no banco:', err);
+    }
+  }
+
+  async fetchCommunityUsers(): Promise<User[]> {
+    if (!this.db) return [];
+    try {
+      const usersCol = collection(this.db, 'users');
+      const snapshot = await getDocs(usersCol);
+      const list: User[] = [];
+      snapshot.forEach((d) => {
+        const data = d.data() as User;
+        list.push(data);
+        syncCommunityUser(data);
+      });
+      return list;
+    } catch (err) {
+      console.warn('[Firestore] Erro ao buscar usuários:', err);
+      return [];
     }
   }
 
@@ -95,6 +141,18 @@ export class FirebaseAuthProvider implements IAuthProvider {
 
   async signIn(email: string, password: string): Promise<User> {
     const cleanEmail = email.trim().toLowerCase();
+
+    // Suporte para logins locais de demonstração (@dubcraft.io) sem passar pelo Firebase
+    if (cleanEmail.endsWith('@dubcraft.io') || cleanEmail === 'admin@dubcraft.io') {
+      const presetKey = cleanEmail.split('@')[0];
+      const preset = PRESET_USERS[presetKey] || PRESET_USERS.admin;
+      this.currentUser = {
+        ...preset,
+        isDemo: true,
+      };
+      return this.currentUser;
+    }
+
     const rateLimit = this.getRateLimitStatus(cleanEmail);
     if (rateLimit.isBlocked) {
       throw new Error(`Muitas tentativas falhas. Tente novamente em ${rateLimit.blockedSecondsLeft} segundos.`);
@@ -121,6 +179,7 @@ export class FirebaseAuthProvider implements IAuthProvider {
           createdAt: fbUser.metadata.creationTime || new Date().toISOString(),
         };
         syncCommunityUser(this.currentUser);
+        this.saveUserToFirestore(this.currentUser);
         return this.currentUser;
       } else {
         throw new Error('Firebase não inicializado.');
@@ -169,6 +228,7 @@ export class FirebaseAuthProvider implements IAuthProvider {
       };
 
       syncCommunityUser(this.currentUser);
+      this.saveUserToFirestore(this.currentUser);
       return this.currentUser;
     } catch (err: any) {
       if (err.code === 'auth/popup-closed-by-user') {
@@ -212,6 +272,7 @@ export class FirebaseAuthProvider implements IAuthProvider {
         createdAt: new Date().toISOString(),
       };
       syncCommunityUser(this.currentUser);
+      this.saveUserToFirestore(this.currentUser);
       return this.currentUser;
     }
     throw new Error('Firebase não inicializado.');
@@ -282,10 +343,12 @@ export class FirebaseAuthProvider implements IAuthProvider {
             createdAt: new Date().toISOString(),
           };
           syncCommunityUser(this.currentUser);
+          this.saveUserToFirestore(this.currentUser);
+          callback(this.currentUser);
         } else {
           this.currentUser = null;
+          callback(null);
         }
-        callback(this.currentUser);
       });
     } else {
       callback(this.currentUser);

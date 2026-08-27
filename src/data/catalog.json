@@ -17,6 +17,24 @@
       "githubPath": "",
       "dubbedAudioBaseUrl": "projetos/Black",
       "createdAt": "2026-01-20T00:00:00Z"
+    },
+    {
+      "id": "proj_rdr1",
+      "name": "Red Dead Redemption 1 | PC",
+      "slug": "rdr1",
+      "folderName": "RDR1",
+      "description": "Projeto de dublagem",
+      "coverImage": "projetos/RDR1/thumb.jpg",
+      "status": "active",
+      "totalLines": 340,
+      "reviewedLines": 337,
+      "pendingProposalsCount": 0,
+      "contributorsCount": 1,
+      "cutscenesCount": 2,
+      "githubBranch": "main",
+      "githubPath": "",
+      "dubbedAudioBaseUrl": "projetos/RDR1",
+      "createdAt": "2026-01-20T00:00:00Z"
     }
   ],
   "dialogues": []

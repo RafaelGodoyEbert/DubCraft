@@ -1,0 +1,14 @@
+{
+    "texto_original": "Hey!",
+    "traducao_ptbr": "Ei!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "126_1996B83E.wav",
+        "gerado_em": "2026-01-14T03:18:18.181818Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

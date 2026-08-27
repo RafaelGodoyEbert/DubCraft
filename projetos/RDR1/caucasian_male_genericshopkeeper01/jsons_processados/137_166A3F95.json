@@ -1,0 +1,14 @@
+{
+    "texto_original": "How can I help you?",
+    "traducao_ptbr": "Como posso ajudar?",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "137_166A3F95.wav",
+        "gerado_em": "2026-01-14T03:08:39.943110Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

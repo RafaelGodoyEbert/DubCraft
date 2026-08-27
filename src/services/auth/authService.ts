@@ -31,6 +31,7 @@ export interface IAuthProvider {
   updateUser(updates: Partial<User>): User;
   getRateLimitStatus(email: string): RateLimitStatus;
   onAuthStateChanged(callback: (user: User | null) => void): () => void;
+  fetchCommunityUsers?(): Promise<User[]>;
 }
 
 let activeProvider: IAuthProvider | null = null;
@@ -47,7 +48,7 @@ export function getAuthService(): IAuthProvider {
 }
 
 export function syncCommunityUser(user: User): void {
-  if (!user || user.isDemo || user.email === 'admin@dubcraft.io') return;
+  if (!user) return;
   try {
     const raw = localStorage.getItem('dubcraft_community_users');
     let list: User[] = raw ? JSON.parse(raw) : [];
@@ -59,25 +60,25 @@ export function syncCommunityUser(user: User): void {
     }
     localStorage.setItem('dubcraft_community_users', JSON.stringify(list));
   } catch (err) {
-    console.warn('[authService] Erro ao sincronizar usuário comunitário:', err);
+    console.warn('[authService] Erro ao sincronizar usuário:', err);
   }
 }
 
 export function getCommunityUsers(currentUser?: User | null): User[] {
-  if (currentUser?.isDemo || currentUser?.email === 'admin@dubcraft.io') {
-    return [];
-  }
   try {
     const raw = localStorage.getItem('dubcraft_community_users');
     let list: User[] = raw ? JSON.parse(raw) : [];
-    if (currentUser && !currentUser.isDemo) {
-      const exists = list.some((u) => u.id === currentUser.id || (u.email && u.email.toLowerCase() === (currentUser.email || '').toLowerCase()));
-      if (!exists) {
+
+    if (currentUser) {
+      const idx = list.findIndex((u) => u.id === currentUser.id || (u.email && u.email.toLowerCase() === (currentUser.email || '').toLowerCase()));
+      if (idx >= 0) {
+        list[idx] = { ...list[idx], ...currentUser };
+      } else {
         list.unshift(currentUser);
       }
     }
     return list;
   } catch {
-    return currentUser && !currentUser.isDemo ? [currentUser] : [];
+    return currentUser ? [currentUser] : [];
   }
 }

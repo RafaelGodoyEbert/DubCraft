@@ -1,0 +1,14 @@
+{
+    "texto_original": "My life stinks! I'm sick of it!",
+    "traducao_ptbr": "Minha vida é uma droga! Estou farto dela!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "42_09467702.wav",
+        "gerado_em": "2026-01-14T03:19:10.455023Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

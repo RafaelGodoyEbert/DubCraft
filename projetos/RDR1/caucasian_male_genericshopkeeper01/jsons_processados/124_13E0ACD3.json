@@ -1,0 +1,14 @@
+{
+    "texto_original": "Well, howdy there!",
+    "traducao_ptbr": "Ora, olá!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "124_13E0ACD3.wav",
+        "gerado_em": "2026-01-14T03:08:27.171179Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

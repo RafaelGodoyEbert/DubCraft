@@ -1,0 +1,14 @@
+{
+    "texto_original": "Hey, stop, you nag!",
+    "traducao_ptbr": "Ei, pare, sua bruxa!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "134_160D5BC9.wav",
+        "gerado_em": "2026-01-14T03:08:37.056532Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

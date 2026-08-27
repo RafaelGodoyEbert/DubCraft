@@ -1,0 +1,15 @@
+{
+  "texto_original": "WOAH!",
+  "traducao_ptbr": "WOAH!",
+  "emocao": "neutro",
+  "tipo_voz": "masculino_adulto",
+  "notas_dublagem": "",
+  "_metadata": {
+    "arquivo_original": "87_1266C717.wav",
+    "gerado_em": "2026-01-14T03:19:54.294456Z",
+    "project": "whisperx-local",
+    "location": "local"
+  },
+  "status": "ignorar",
+  "ritmo": "normal"
+}

@@ -1,0 +1,14 @@
+{
+    "texto_original": "How dare you do this to me!",
+    "traducao_ptbr": "Como você ousa fazer isso comigo!",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "78_106B347F.wav",
+        "gerado_em": "2026-01-14T03:19:45.561467Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

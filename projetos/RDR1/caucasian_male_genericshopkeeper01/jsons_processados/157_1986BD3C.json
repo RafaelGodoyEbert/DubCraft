@@ -1,0 +1,14 @@
+{
+    "texto_original": "Mr. Marston, that was an accident part.",
+    "traducao_ptbr": "Sr. Marston, aquilo foi um acidente, amigo.",
+    "emocao": "neutro",
+    "tipo_voz": "masculino_adulto",
+    "notas_dublagem": "",
+    "_metadata": {
+        "arquivo_original": "157_1986BD3C.wav",
+        "gerado_em": "2026-01-14T03:08:59.701076Z",
+        "project": "whisperx-local",
+        "location": "local"
+    },
+    "status": "dublado"
+}

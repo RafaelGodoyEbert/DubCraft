@@ -190,7 +190,82 @@ export default {
         return jsonResponse({ success: true, proposalId, upvotes, downvotes, score });
       }
 
-      // 4. Rota raiz / status
+      // 4. GET /users (Listar todos os usuários da comunidade para o Admin)
+      if (request.method === 'GET' && path === '/users') {
+        const { results } = await env.DB.prepare(`
+          SELECT id, name, username, email, avatar_url, role, reputation, is_trusted, created_at
+          FROM users
+          ORDER BY created_at DESC
+        `).all();
+
+        const formatted = (results || []).map(r => ({
+          id: r.id,
+          name: r.name,
+          username: r.username,
+          email: r.email,
+          avatarUrl: r.avatar_url,
+          role: r.role || 'user',
+          reputation: r.reputation || 10,
+          isTrusted: Boolean(r.is_trusted),
+          createdAt: r.created_at,
+        }));
+
+        return jsonResponse(formatted);
+      }
+
+      // 5. POST /users/sync (Sincronizar usuário ao fazer login)
+      if (request.method === 'POST' && path === '/users/sync') {
+        const user = await request.json();
+        if (!user || !user.id) {
+          return jsonResponse({ error: 'Dados do usuário inválidos' }, 400);
+        }
+
+        const now = new Date().toISOString();
+        await env.DB.prepare(`
+          INSERT INTO users (id, name, username, email, avatar_url, role, reputation, is_trusted, created_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON CONFLICT(id) DO UPDATE SET
+            name = excluded.name,
+            username = excluded.username,
+            email = excluded.email,
+            avatar_url = excluded.avatar_url
+        `).bind(
+          user.id,
+          user.name || 'Membro',
+          user.username || 'usuario',
+          user.email || null,
+          user.avatarUrl || '',
+          user.role || 'user',
+          user.reputation || 10,
+          user.isTrusted ? 1 : 0,
+          user.createdAt || now
+        ).run();
+
+        return jsonResponse({ success: true });
+      }
+
+      // 6. PATCH /users/trust (Alterar cargo / status Trusted de um colaborador)
+      if (request.method === 'PATCH' && path === '/users/trust') {
+        const { userId, email, isTrusted } = await request.json();
+
+        if (userId) {
+          await env.DB.prepare(`
+            UPDATE users
+            SET is_trusted = ?, role = CASE WHEN ? = 1 AND role = 'user' THEN 'trusted' ELSE role END
+            WHERE id = ?
+          `).bind(isTrusted ? 1 : 0, isTrusted ? 1 : 0, userId).run();
+        } else if (email) {
+          await env.DB.prepare(`
+            UPDATE users
+            SET is_trusted = ?, role = CASE WHEN ? = 1 AND role = 'user' THEN 'trusted' ELSE role END
+            WHERE email = ?
+          `).bind(isTrusted ? 1 : 0, isTrusted ? 1 : 0, email).run();
+        }
+
+        return jsonResponse({ success: true });
+      }
+
+      // 7. Rota raiz / status
       if (path === '/' || path === '/health') {
         return jsonResponse({
           status: 'online',
