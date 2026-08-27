@@ -1,5 +1,8 @@
 {
   "name": "Black (PS2 / Xbox)",
   "game": "Black",
-  "description": "Projeto de dublagem e localização do clássico FPS Black com diálogos organizados por missões."
+  "description": "Projeto de dublagem e localização do clássico FPS Black com diálogos organizados por missões.",
+  "ignorar_pastas": [
+    "global"
+  ]
 }

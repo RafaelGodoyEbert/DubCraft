@@ -10,6 +10,7 @@ export interface User {
   role: UserRole;
   reputation: number;
   isTrusted: boolean;
+  isDemo?: boolean;
   trustedGrantedBy?: string;
   trustedGrantedAt?: string;
   trustedReason?: string;

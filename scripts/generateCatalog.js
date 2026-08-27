@@ -147,6 +147,17 @@ export function generateCatalog() {
           }
         }
 
+        // Check if individual dialogue is flagged to be ignored
+        const isIgnoredDialogue = Boolean(
+          data.ignorar === true ||
+          data.ignorado === true ||
+          data.status === 'ignorado' ||
+          data.isIgnored === true
+        );
+        if (isIgnoredDialogue) {
+          continue;
+        }
+
         discoveredSubfolders.add(cutscene);
 
         const dialogue = {
@@ -185,6 +196,10 @@ export function generateCatalog() {
       );
     }
 
+    // Ignored subfolders configured in project_info.json (e.g. "global", "outros")
+    const ignoredFolders = (projectInfo.ignorar_pastas || projectInfo.ignored_folders || projectInfo.ignoredSubfolders || [])
+      .map(f => String(f).toLowerCase().trim());
+
     // 2. Check subfolders (e.g. Black/Level_00_Trench)
     const subfolders = fs.readdirSync(projectPath)
       .filter(d => !d.startsWith('.') && !d.startsWith('_') && fs.statSync(path.join(projectPath, d)).isDirectory());
@@ -193,6 +208,12 @@ export function generateCatalog() {
       if (['jsons_processados', 'audios_input', 'audios_dublados', 'audios_base_tts', 'vocais_separados', 'sfx_separados', 'textos_para_tts'].includes(subfolderName)) {
         continue;
       }
+
+      if (ignoredFolders.includes(subfolderName.toLowerCase().trim())) {
+        console.log(`  ⊘ [Ignorado] Pasta ignorada conforme project_info.json: "${subfolderName}"`);
+        continue;
+      }
+
       const jsonDir = path.join(projectPath, subfolderName, 'jsons_processados');
       if (fs.existsSync(jsonDir)) {
         processJsonDirectory(

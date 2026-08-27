@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User } from '../../types';
 import { Badge } from '../common/Badge';
 import { PRESET_USERS } from '../../services/auth/mockAuthProvider';
+import { getCommunityUsers } from '../../services/auth/authService';
 import { adminUseCaseSingleton } from '../../usecases/adminUseCase';
 import { repositoryAdapterSingleton } from '../../repositories/storageAdapter';
-import { UserCheck, UserX, Shield, AlertCircle, Trash2, Calendar } from 'lucide-react';
+import { UserCheck, UserX, Shield, AlertCircle, Trash2, Calendar, Users } from 'lucide-react';
 
 interface TrustedUsersManagerProps {
   currentUser: User;
@@ -16,9 +17,24 @@ export const TrustedUsersManager: React.FC<TrustedUsersManagerProps> = ({
   onRefresh,
 }) => {
   const [reason, setReason] = useState('');
-  const [selectedUserId, setSelectedUserId] = useState<string>('user_exp_01');
+  const isDemoMode = Boolean(currentUser.isDemo || currentUser.email === 'admin@dubcraft.io');
 
-  const usersList = Object.values(PRESET_USERS);
+  const [usersList, setUsersList] = useState<User[]>(() => {
+    return isDemoMode ? Object.values(PRESET_USERS) : getCommunityUsers(currentUser);
+  });
+
+  const [selectedUserId, setSelectedUserId] = useState<string>(() => {
+    return usersList[0]?.id || '';
+  });
+
+  useEffect(() => {
+    const list = isDemoMode ? Object.values(PRESET_USERS) : getCommunityUsers(currentUser);
+    setUsersList(list);
+    if (!list.some((u) => u.id === selectedUserId) && list.length > 0) {
+      setSelectedUserId(list[0].id);
+    }
+  }, [currentUser, isDemoMode]);
+
   const targetUser = usersList.find((u) => u.id === selectedUserId) || usersList[0];
 
   const handleToggleTrust = async (isTrusted: boolean) => {

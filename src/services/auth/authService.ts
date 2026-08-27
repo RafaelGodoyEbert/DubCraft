@@ -45,3 +45,39 @@ export function getAuthService(): IAuthProvider {
   }
   return activeProvider;
 }
+
+export function syncCommunityUser(user: User): void {
+  if (!user || user.isDemo || user.email === 'admin@dubcraft.io') return;
+  try {
+    const raw = localStorage.getItem('dubcraft_community_users');
+    let list: User[] = raw ? JSON.parse(raw) : [];
+    const index = list.findIndex((u) => u.id === user.id || (u.email && u.email.toLowerCase() === (user.email || '').toLowerCase()));
+    if (index >= 0) {
+      list[index] = { ...list[index], ...user };
+    } else {
+      list.push(user);
+    }
+    localStorage.setItem('dubcraft_community_users', JSON.stringify(list));
+  } catch (err) {
+    console.warn('[authService] Erro ao sincronizar usuário comunitário:', err);
+  }
+}
+
+export function getCommunityUsers(currentUser?: User | null): User[] {
+  if (currentUser?.isDemo || currentUser?.email === 'admin@dubcraft.io') {
+    return [];
+  }
+  try {
+    const raw = localStorage.getItem('dubcraft_community_users');
+    let list: User[] = raw ? JSON.parse(raw) : [];
+    if (currentUser && !currentUser.isDemo) {
+      const exists = list.some((u) => u.id === currentUser.id || (u.email && u.email.toLowerCase() === (currentUser.email || '').toLowerCase()));
+      if (!exists) {
+        list.unshift(currentUser);
+      }
+    }
+    return list;
+  } catch {
+    return currentUser && !currentUser.isDemo ? [currentUser] : [];
+  }
+}

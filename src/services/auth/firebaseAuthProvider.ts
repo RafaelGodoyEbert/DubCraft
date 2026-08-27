@@ -12,7 +12,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { User, UserRole } from '../../types';
-import { IAuthProvider, RateLimitStatus, setAuthProvider } from './authService';
+import { IAuthProvider, RateLimitStatus, setAuthProvider, syncCommunityUser } from './authService';
 
 let firebaseConfig: any = null;
 
@@ -41,24 +41,30 @@ if (import.meta.env.VITE_FIREBASE_API_KEY) {
   };
 } else if (typeof window !== 'undefined' && (window as any).__FIREBASE_CONFIG__) {
   firebaseConfig = (window as any).__FIREBASE_CONFIG__;
-} else {
-  firebaseConfig = null;
+}
+
+interface FailedAttemptTracker {
+  count: number;
+  blockedUntil: number;
 }
 
 export class FirebaseAuthProvider implements IAuthProvider {
   private auth: any = null;
-  private googleProvider: GoogleAuthProvider | null = null;
+  private googleProvider: any = null;
   private currentUser: User | null = null;
-  private failedAttempts: Map<string, { count: number; blockedUntil: number }> = new Map();
+  private failedAttempts: Map<string, FailedAttemptTracker> = new Map();
   private readonly MAX_FAILED_ATTEMPTS = 5;
-  private readonly BLOCK_DURATION_MS = 30 * 1000;
+  private readonly BLOCK_DURATION_MS = 15 * 60 * 1000;
 
   constructor() {
-    if (firebaseConfig && firebaseConfig.apiKey) {
-      const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-      this.auth = getAuth(app);
-      this.googleProvider = new GoogleAuthProvider();
-      this.googleProvider.setCustomParameters({ prompt: 'select_account' });
+    if (typeof window !== 'undefined' && firebaseConfig && firebaseConfig.apiKey) {
+      try {
+        const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+        this.auth = getAuth(app);
+        this.googleProvider = new GoogleAuthProvider();
+      } catch (err) {
+        console.warn('[Firebase] Erro ao inicializar SDK:', err);
+      }
     }
   }
 
@@ -67,14 +73,12 @@ export class FirebaseAuthProvider implements IAuthProvider {
   }
 
   getRateLimitStatus(email: string): RateLimitStatus {
-    const key = email.trim().toLowerCase();
-    const tracker = this.failedAttempts.get(key);
-    const now = Date.now();
-
+    const cleanEmail = email.trim().toLowerCase();
+    const tracker = this.failedAttempts.get(cleanEmail);
     if (!tracker) {
       return { isBlocked: false, remainingAttempts: this.MAX_FAILED_ATTEMPTS, blockedSecondsLeft: 0 };
     }
-
+    const now = Date.now();
     if (tracker.blockedUntil > now) {
       return {
         isBlocked: true,
@@ -82,7 +86,6 @@ export class FirebaseAuthProvider implements IAuthProvider {
         blockedSecondsLeft: Math.ceil((tracker.blockedUntil - now) / 1000),
       };
     }
-
     return {
       isBlocked: false,
       remainingAttempts: Math.max(0, this.MAX_FAILED_ATTEMPTS - tracker.count),
@@ -92,10 +95,9 @@ export class FirebaseAuthProvider implements IAuthProvider {
 
   async signIn(email: string, password: string): Promise<User> {
     const cleanEmail = email.trim().toLowerCase();
-    const rateStatus = this.getRateLimitStatus(cleanEmail);
-
-    if (rateStatus.isBlocked) {
-      throw new Error(`Acesso temporariamente bloqueado. Tente novamente em ${rateStatus.blockedSecondsLeft}s.`);
+    const rateLimit = this.getRateLimitStatus(cleanEmail);
+    if (rateLimit.isBlocked) {
+      throw new Error(`Muitas tentativas falhas. Tente novamente em ${rateLimit.blockedSecondsLeft} segundos.`);
     }
 
     try {
@@ -115,8 +117,10 @@ export class FirebaseAuthProvider implements IAuthProvider {
           role: isAdmin ? 'admin' : 'user',
           reputation: isAdmin ? 999 : 20,
           isTrusted: isAdmin,
+          isDemo: false,
           createdAt: fbUser.metadata.creationTime || new Date().toISOString(),
         };
+        syncCommunityUser(this.currentUser);
         return this.currentUser;
       } else {
         throw new Error('Firebase não inicializado.');
@@ -160,9 +164,11 @@ export class FirebaseAuthProvider implements IAuthProvider {
         role: isAdmin ? 'admin' : 'user',
         reputation: isAdmin ? 999 : 20,
         isTrusted: isAdmin,
+        isDemo: false,
         createdAt: fbUser.metadata.creationTime || new Date().toISOString(),
       };
 
+      syncCommunityUser(this.currentUser);
       return this.currentUser;
     } catch (err: any) {
       if (err.code === 'auth/popup-closed-by-user') {
@@ -202,8 +208,10 @@ export class FirebaseAuthProvider implements IAuthProvider {
         role: isAdmin ? 'admin' : 'user',
         reputation: isAdmin ? 999 : 20,
         isTrusted: isAdmin,
+        isDemo: false,
         createdAt: new Date().toISOString(),
       };
+      syncCommunityUser(this.currentUser);
       return this.currentUser;
     }
     throw new Error('Firebase não inicializado.');
@@ -229,17 +237,18 @@ export class FirebaseAuthProvider implements IAuthProvider {
   }
 
   switchUserPersona(role: UserRole, customName?: string): User {
-    // Fallback persona switch
+    // Fallback persona switch (Demo Mode)
     this.currentUser = {
-      id: `user_${Date.now()}`,
-      name: customName || `Usuário (${role})`,
-      username: (customName || role).toLowerCase().replace(/\s+/g, '_'),
+      id: `user_demo_${Date.now()}`,
+      name: customName ? `${customName} [DEMO]` : role === 'admin' ? 'DubCraft Admin [DEMO]' : role === 'trusted' ? 'Revisor Sênior [DEMO]' : `Usuário (${role}) [DEMO]`,
+      username: (customName || role).toLowerCase().replace(/\s+/g, '_') + '_demo',
       email: `${role}@dubcraft.io`,
       emailVerified: true,
       avatarUrl: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80`,
       role: role,
       reputation: role === 'admin' ? 750 : role === 'trusted' ? 210 : 20,
       isTrusted: role === 'admin' || role === 'trusted',
+      isDemo: true,
       createdAt: new Date().toISOString(),
     };
     return this.currentUser;
@@ -248,6 +257,9 @@ export class FirebaseAuthProvider implements IAuthProvider {
   updateUser(updates: Partial<User>): User {
     if (!this.currentUser) throw new Error('Nenhum usuário logado.');
     this.currentUser = { ...this.currentUser, ...updates };
+    if (!this.currentUser.isDemo) {
+      syncCommunityUser(this.currentUser);
+    }
     return this.currentUser;
   }
 
@@ -266,8 +278,10 @@ export class FirebaseAuthProvider implements IAuthProvider {
             role: isAdmin ? 'admin' : 'user',
             reputation: isAdmin ? 999 : 20,
             isTrusted: isAdmin,
+            isDemo: false,
             createdAt: new Date().toISOString(),
           };
+          syncCommunityUser(this.currentUser);
         } else {
           this.currentUser = null;
         }
