@@ -8,6 +8,8 @@ export interface AudioState {
   playbackRate: number;
   isLoading: boolean;
   hasAudio: boolean;
+  volume: number;
+  isMuted: boolean;
 }
 
 export type AudioStateListener = (state: AudioState) => void;
@@ -16,17 +18,25 @@ export class AudioService {
   private audioElement: HTMLAudioElement | null = null;
   private currentOriginalUrl: string = '';
   private currentDubladoUrl: string = '';
-  private activeTrack: AudioTrack = 'original';
+  private activeTrack: AudioTrack = (typeof window !== 'undefined' ? (localStorage.getItem('dubcraft_preferred_track') as AudioTrack) : null) || 'dublado';
   private listeners: AudioStateListener[] = [];
   private currentTime: number = 0;
   private duration: number = 0;
   private isPlaying: boolean = false;
   private isLoading: boolean = false;
+  private volume: number = 1.0;
+  private isMuted: boolean = false;
 
   constructor() {
     if (typeof window !== 'undefined') {
+      const savedVolume = localStorage.getItem('dubcraft_audio_volume');
+      if (savedVolume !== null) {
+        this.volume = parseFloat(savedVolume);
+      }
+
       this.audioElement = new Audio();
       this.audioElement.crossOrigin = 'anonymous';
+      this.audioElement.volume = this.volume;
 
       this.audioElement.addEventListener('timeupdate', () => {
         if (this.audioElement) {
@@ -81,6 +91,16 @@ export class AudioService {
     this.duration = 0;
     this.isLoading = false;
 
+    // Mantém a faixa escolhida anteriormente pelo usuário (Original ou Dublado)
+    // Se a preferida não existir nesta fala, tenta a alternativa disponível
+    if (this.activeTrack === 'dublado' && !this.currentDubladoUrl && this.currentOriginalUrl) {
+      // Tem apenas original
+      this.activeTrack = 'original';
+    } else if (this.activeTrack === 'original' && !this.currentOriginalUrl && this.currentDubladoUrl) {
+      // Tem apenas dublado
+      this.activeTrack = 'dublado';
+    }
+
     this.applyTrackUrl();
   }
 
@@ -90,7 +110,6 @@ export class AudioService {
     if (url && url.trim() && this.audioElement) {
       this.isLoading = true;
       this.notify();
-      // Resolve absolute or relative URL
       this.audioElement.src = url;
       this.audioElement.load();
     } else if (this.audioElement) {
@@ -102,11 +121,38 @@ export class AudioService {
     }
   }
 
+  public setVolume(newVolume: number) {
+    const clamped = Math.max(0, Math.min(1, newVolume));
+    this.volume = clamped;
+    if (this.audioElement) {
+      this.audioElement.volume = clamped;
+      this.audioElement.muted = false;
+    }
+    this.isMuted = false;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dubcraft_audio_volume', String(clamped));
+    }
+    this.notify();
+  }
+
+  public toggleMute(): boolean {
+    this.isMuted = !this.isMuted;
+    if (this.audioElement) {
+      this.audioElement.muted = this.isMuted;
+    }
+    this.notify();
+    return this.isMuted;
+  }
+
   public toggleTrack(): AudioTrack {
     const previousTime = this.currentTime;
     const wasPlaying = this.isPlaying;
 
     this.activeTrack = this.activeTrack === 'original' ? 'dublado' : 'original';
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dubcraft_preferred_track', this.activeTrack);
+    }
+
     this.applyTrackUrl();
 
     if (this.audioElement && this.audioElement.src) {
@@ -124,14 +170,20 @@ export class AudioService {
 
   public setTrack(track: AudioTrack) {
     if (this.activeTrack === track) return;
-    this.toggleTrack();
+    this.activeTrack = track;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dubcraft_preferred_track', track);
+    }
+    this.applyTrackUrl();
+    this.notify();
   }
 
   public playTrack(track: AudioTrack) {
-    if (this.activeTrack !== track) {
-      this.activeTrack = track;
-      this.applyTrackUrl();
+    this.activeTrack = track;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dubcraft_preferred_track', track);
     }
+    this.applyTrackUrl();
     this.play();
   }
 

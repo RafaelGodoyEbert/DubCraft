@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Play, Pause, Volume2, Sparkles, RefreshCw } from 'lucide-react';
+import { Play, Pause, Volume2, Volume1, VolumeX, Sparkles, RefreshCw } from 'lucide-react';
 import { audioServiceSingleton, AudioState, AudioTrack } from '../../services/audio/audioService';
 
 interface AudioPlayerProps {
@@ -18,12 +18,14 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
 }) => {
   const [audioState, setAudioState] = useState<AudioState>({
     isPlaying: false,
-    activeTrack: 'original',
+    activeTrack: (typeof window !== 'undefined' ? (localStorage.getItem('dubcraft_preferred_track') as AudioTrack) : null) || 'dublado',
     currentTime: 0,
     duration: 5,
     playbackRate: 1.0,
     isLoading: false,
     hasAudio: true,
+    volume: 1.0,
+    isMuted: false,
   });
 
   useEffect(() => {
@@ -189,25 +191,58 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
         />
       </div>
 
-      {/* Primary Touch Controls Bar */}
-      <div className="flex items-center justify-between pt-1">
-        <div className="text-[11px] text-zinc-400 font-medium flex items-center gap-1">
+      {/* Primary Touch Controls Bar & Volume Slider */}
+      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 pt-1">
+        <div className="text-[11px] text-zinc-400 font-medium flex items-center gap-1.5 min-w-[130px]">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           {audioState.isLoading ? (
             <span className="flex items-center gap-1 text-amber-400">
               <RefreshCw className="w-3 h-3 animate-spin" /> Carregando...
             </span>
           ) : isOriginal ? (
-            'Áudio Original de Referência'
+            <span className="text-zinc-300 font-semibold">Áudio Original</span>
           ) : (
-            'Áudio Dublado Atual'
+            <span className="text-amber-400 font-semibold">Áudio Dublado</span>
           )}
+        </div>
+
+        {/* Volume Level Control */}
+        <div className="flex items-center gap-2 bg-zinc-900/90 border border-zinc-800 rounded-xl px-3 py-1.5 shadow-inner">
+          <button
+            type="button"
+            onClick={() => audioServiceSingleton.toggleMute()}
+            className="text-zinc-400 hover:text-amber-400 transition-colors p-1"
+            title={audioState.isMuted ? 'Desmutar' : 'Mutar áudio'}
+          >
+            {audioState.isMuted || (audioState.volume ?? 1) === 0 ? (
+              <VolumeX className="w-4 h-4 text-rose-400" />
+            ) : (audioState.volume ?? 1) < 0.5 ? (
+              <Volume1 className="w-4 h-4 text-zinc-300" />
+            ) : (
+              <Volume2 className="w-4 h-4 text-amber-400" />
+            )}
+          </button>
+
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.02"
+            value={audioState.isMuted ? 0 : (audioState.volume ?? 1)}
+            onChange={(e) => audioServiceSingleton.setVolume(parseFloat(e.target.value))}
+            className="w-20 sm:w-28 h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+            title={`Volume: ${Math.round((audioState.isMuted ? 0 : (audioState.volume ?? 1)) * 100)}%`}
+          />
+
+          <span className="text-[11px] font-mono text-zinc-400 w-8 text-right">
+            {audioState.isMuted ? '0%' : `${Math.round((audioState.volume ?? 1) * 100)}%`}
+          </span>
         </div>
 
         {/* Big Play/Pause Button - Thumb friendly (>= 44x44px) */}
         <button
           onClick={() => audioServiceSingleton.togglePlayPause()}
-          className="w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-400 text-zinc-950 flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all min-h-[48px] min-w-[48px]"
+          className="w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-400 text-zinc-950 flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all min-h-[48px] min-w-[48px] shrink-0"
           aria-label={audioState.isPlaying ? 'Pausar' : 'Tocar'}
         >
           {audioState.isPlaying ? (
