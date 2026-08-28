@@ -111,7 +111,13 @@ export class LocalStorageRepositoryAdapter {
       }
     }
 
-    return Array.from(projectMap.values());
+    return Array.from(projectMap.values()).map((p) => {
+      let cover = p.coverImage;
+      if (import.meta.env.DEV && cover && cover.includes('huggingface.co')) {
+        cover = cover.replace(/^https:\/\/huggingface\.co\/datasets\/[^\/]+\/[^\/]+\/resolve\/main\//, '/projetos/');
+      }
+      return { ...p, coverImage: cover };
+    });
   }
 
   public async getProjectById(id: string): Promise<Project | null> {
@@ -226,11 +232,26 @@ export class LocalStorageRepositoryAdapter {
             const mod: any = await loaderFn();
             const raw = mod.default || mod;
             if (Array.isArray(raw)) {
-              loadedData = raw.map((d: any) => ({
-                ...d,
-                audioOriginalUrl: d.audioOriginalUrl ? (d.audioOriginalUrl.startsWith('http') ? d.audioOriginalUrl : `${baseURL}${d.audioOriginalUrl.replace(/^\/?/, '')}`) : undefined,
-                audioDubladoUrl: d.audioDubladoUrl ? (d.audioDubladoUrl.startsWith('http') ? d.audioDubladoUrl : `${baseURL}${d.audioDubladoUrl.replace(/^\/?/, '')}`) : undefined,
-              }));
+              const isDev = Boolean(import.meta.env.DEV);
+              loadedData = raw.map((d: any) => {
+                let orig = d.audioOriginalUrl ? (d.audioOriginalUrl.startsWith('http') ? d.audioOriginalUrl : `${baseURL}${d.audioOriginalUrl.replace(/^\/?/, '')}`) : undefined;
+                let dub = d.audioDubladoUrl ? (d.audioDubladoUrl.startsWith('http') ? d.audioDubladoUrl : `${baseURL}${d.audioDubladoUrl.replace(/^\/?/, '')}`) : undefined;
+
+                if (isDev) {
+                  if (orig && orig.includes('huggingface.co')) {
+                    orig = orig.replace(/^https:\/\/huggingface\.co\/datasets\/[^\/]+\/[^\/]+\/resolve\/main\//, '/projetos/');
+                  }
+                  if (dub && dub.includes('huggingface.co')) {
+                    dub = dub.replace(/^https:\/\/huggingface\.co\/datasets\/[^\/]+\/[^\/]+\/resolve\/main\//, '/projetos/');
+                  }
+                }
+
+                return {
+                  ...d,
+                  audioOriginalUrl: orig,
+                  audioDubladoUrl: dub,
+                };
+              });
               break;
             }
           } catch (e) {
