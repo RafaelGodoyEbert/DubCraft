@@ -271,7 +271,14 @@ export class LocalStorageRepositoryAdapter {
         sd.projectId === projectId ||
         sd.projectId?.toLowerCase().replace(/^proj_/, '') === cleanProjectId
       ) {
-        dialogueMap.set(sd.id, sd);
+        const baseItem = dialogueMap.get(sd.id);
+        dialogueMap.set(sd.id, {
+          ...baseItem,
+          ...sd,
+          // Garante que URLs de áudio frescas da CDN não sejam sobrescritas por cache antigo
+          audioOriginalUrl: baseItem?.audioOriginalUrl || sd.audioOriginalUrl,
+          audioDubladoUrl: baseItem?.audioDubladoUrl || sd.audioDubladoUrl,
+        });
       }
     }
 
@@ -279,6 +286,10 @@ export class LocalStorageRepositoryAdapter {
   }
 
   public async getDialogueById(id: string, projectId?: string): Promise<Dialogue | null> {
+    const list = projectId ? await this.getDialoguesByProject(projectId) : [];
+    const fromList = list.find((d) => d.id === id);
+    if (fromList) return fromList;
+
     let savedDialogues: Dialogue[] = [];
     try {
       const raw = localStorage.getItem(this.dialoguesKey);
