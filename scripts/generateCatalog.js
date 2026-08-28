@@ -46,6 +46,12 @@ export function generateCatalog() {
 
   const isForce = process.argv.includes('--force') || process.argv.includes('--clean');
 
+  // Se estiver rodando no GitHub Actions (CI) sem a pasta de áudios brutos, preserva os arquivos já compilados no Git
+  if (process.env.CI && fs.existsSync(OUTPUT_FILE)) {
+    console.log('[Catalog] Ambiente CI (GitHub Actions) detectado: preservando catálogo compilado do repositório.');
+    return;
+  }
+
   if (!isForce && projectDirs.length === 0 && fs.existsSync(OUTPUT_FILE)) {
     try {
       const existing = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf8'));
@@ -115,14 +121,14 @@ export function generateCatalog() {
         const metadata = data._metadata || {};
         const audioFileName = metadata.arquivo_original || `${fileId}.wav`;
 
-        const hasInput = fs.existsSync(path.join(audioInputDir, audioFileName));
-        const hasDublado = fs.existsSync(path.join(audioDubladoDir, audioFileName));
+        const hasInput = fs.existsSync(path.join(audioInputDir, audioFileName)) || Boolean(metadata.arquivo_original);
+        const hasDublado = fs.existsSync(path.join(audioDubladoDir, audioFileName)) || data.status === 'dublado';
 
         const urlSubPath = subfolderName ? `${projectName}/${subfolderName}` : projectName;
-        const audioOriginalUrl = hasInput
+        const audioOriginalUrl = (hasInput || metadata.arquivo_original)
           ? `${HF_CDN}/${encodeURI(urlSubPath)}/audios_input/${encodeURIComponent(audioFileName)}`
           : undefined;
-        const audioDubladoUrl = hasDublado
+        const audioDubladoUrl = (hasDublado || data.status === 'dublado')
           ? `${HF_CDN}/${encodeURI(urlSubPath)}/audios_dublados/${encodeURIComponent(audioFileName)}`
           : undefined;
 
