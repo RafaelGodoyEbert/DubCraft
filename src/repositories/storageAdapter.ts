@@ -275,19 +275,10 @@ export class LocalStorageRepositoryAdapter {
         dialogueMap.set(sd.id, {
           ...baseItem,
           ...sd,
-          // Garante que URLs de áudio frescas da CDN não sejam sobrescritas por cache antigo
-          audioOriginalUrl: baseItem?.audioOriginalUrl || sd.audioOriginalUrl,
-          audioDubladoUrl: baseItem?.audioDubladoUrl || sd.audioDubladoUrl,
+          // Preserva URLs do catálogo base
+          audioOriginalUrl: baseItem?.audioOriginalUrl,
+          audioDubladoUrl: baseItem?.audioDubladoUrl,
         });
-      }
-    }
-
-    for (const [id, d] of dialogueMap.entries()) {
-      // Garante que se o status for dublado e tiver audioOriginalUrl, o audioDubladoUrl é resolvido
-      if (d.status === 'dublado' && (!d.audioDubladoUrl || !d.audioDubladoUrl.trim())) {
-        if (d.audioOriginalUrl && d.audioOriginalUrl.includes('/audios_input/')) {
-          d.audioDubladoUrl = d.audioOriginalUrl.replace('/audios_input/', '/audios_dublados/');
-        }
       }
     }
 
