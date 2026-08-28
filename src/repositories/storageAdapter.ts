@@ -282,6 +282,15 @@ export class LocalStorageRepositoryAdapter {
       }
     }
 
+    for (const [id, d] of dialogueMap.entries()) {
+      // Garante que se o status for dublado e tiver audioOriginalUrl, o audioDubladoUrl é resolvido
+      if (d.status === 'dublado' && (!d.audioDubladoUrl || !d.audioDubladoUrl.trim())) {
+        if (d.audioOriginalUrl && d.audioOriginalUrl.includes('/audios_input/')) {
+          d.audioDubladoUrl = d.audioOriginalUrl.replace('/audios_input/', '/audios_dublados/');
+        }
+      }
+    }
+
     return Array.from(dialogueMap.values());
   }
 

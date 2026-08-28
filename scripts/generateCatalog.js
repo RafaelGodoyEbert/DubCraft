@@ -115,14 +115,14 @@ export function generateCatalog() {
         const metadata = data._metadata || {};
         const audioFileName = metadata.arquivo_original || `${fileId}.wav`;
 
-        const hasInput = fs.existsSync(path.join(audioInputDir, audioFileName));
-        const hasDublado = fs.existsSync(path.join(audioDubladoDir, audioFileName));
+        const hasInput = fs.existsSync(path.join(audioInputDir, audioFileName)) || Boolean(metadata.arquivo_original);
+        const hasDublado = fs.existsSync(path.join(audioDubladoDir, audioFileName)) || data.status === 'dublado';
 
         const urlSubPath = subfolderName ? `${projectName}/${subfolderName}` : projectName;
-        const audioOriginalUrl = (hasInput || metadata.arquivo_original)
+        const audioOriginalUrl = (hasInput || audioFileName)
           ? `${HF_CDN}/${encodeURI(urlSubPath)}/audios_input/${encodeURIComponent(audioFileName)}`
           : undefined;
-        const audioDubladoUrl = hasDublado
+        const audioDubladoUrl = (hasDublado || data.status === 'dublado')
           ? `${HF_CDN}/${encodeURI(urlSubPath)}/audios_dublados/${encodeURIComponent(audioFileName)}`
           : undefined;
 
