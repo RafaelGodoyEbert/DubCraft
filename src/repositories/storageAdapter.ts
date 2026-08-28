@@ -113,8 +113,12 @@ export class LocalStorageRepositoryAdapter {
 
     return Array.from(projectMap.values()).map((p) => {
       let cover = p.coverImage;
-      if (import.meta.env.DEV && cover && cover.includes('huggingface.co')) {
-        cover = cover.replace(/^https:\/\/huggingface\.co\/datasets\/[^\/]+\/[^\/]+\/resolve\/main\//, '/projetos/');
+      if (import.meta.env.DEV && cover) {
+        if (cover.includes('raw.githubusercontent.com')) {
+          cover = cover.replace(/^https:\/\/raw\.githubusercontent\.com\/[^\/]+\/[^\/]+\/[^\/]+\/projetos\//, '/projetos/');
+        } else if (cover.includes('huggingface.co')) {
+          cover = cover.replace(/^https:\/\/huggingface\.co\/datasets\/[^\/]+\/[^\/]+\/resolve\/main\//, '/projetos/');
+        }
       }
       return { ...p, coverImage: cover };
     });

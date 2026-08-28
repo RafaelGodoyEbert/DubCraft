@@ -84,12 +84,12 @@ export function generateCatalog() {
     // CDN do Hugging Face para streaming global de áudio de alta velocidade
     const HF_CDN = 'https://huggingface.co/datasets/RafaG/DubCraft/resolve/main';
 
-    // Cover image check
+    // Cover image check - busca direto do repositório GitHub onde as thumbs estão salvas
     let coverImage = 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80';
     for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
       const thumbFile = path.join(projectPath, `thumb.${ext}`);
       if (fs.existsSync(thumbFile)) {
-        coverImage = `${HF_CDN}/${encodeURI(projectName)}/thumb.${ext}`;
+        coverImage = `https://raw.githubusercontent.com/RafaelGodoyEbert/DubCraft/main/projetos/${encodeURI(projectName)}/thumb.${ext}`;
         break;
       }
     }
