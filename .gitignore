@@ -21,6 +21,8 @@ projetos/**/*.aac
 projetos/**/dialogues.json
 projetos/**/*.py
 projetos/**/*.bat
+scripts/*.py
+
 
 
 

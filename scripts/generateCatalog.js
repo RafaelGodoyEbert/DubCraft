@@ -83,7 +83,7 @@ export function generateCatalog() {
     for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
       const thumbFile = path.join(projectPath, `thumb.${ext}`);
       if (fs.existsSync(thumbFile)) {
-        coverImage = `${HF_CDN}/projetos/${encodeURI(projectName)}/thumb.${ext}`;
+        coverImage = `${HF_CDN}/${encodeURI(projectName)}/thumb.${ext}`;
         break;
       }
     }
@@ -120,10 +120,10 @@ export function generateCatalog() {
 
         const urlSubPath = subfolderName ? `${projectName}/${subfolderName}` : projectName;
         const audioOriginalUrl = (hasInput || metadata.arquivo_original)
-          ? `${HF_CDN}/projetos/${encodeURI(urlSubPath)}/audios_input/${encodeURIComponent(audioFileName)}`
+          ? `${HF_CDN}/${encodeURI(urlSubPath)}/audios_input/${encodeURIComponent(audioFileName)}`
           : undefined;
         const audioDubladoUrl = hasDublado
-          ? `${HF_CDN}/projetos/${encodeURI(urlSubPath)}/audios_dublados/${encodeURIComponent(audioFileName)}`
+          ? `${HF_CDN}/${encodeURI(urlSubPath)}/audios_dublados/${encodeURIComponent(audioFileName)}`
           : undefined;
 
         // Determine cutscene / group name
