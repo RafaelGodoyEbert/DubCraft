@@ -35,7 +35,6 @@ export class AudioService {
       }
 
       this.audioElement = new Audio();
-      this.audioElement.crossOrigin = 'anonymous';
       this.audioElement.volume = this.volume;
 
       this.audioElement.addEventListener('timeupdate', () => {
