@@ -28,18 +28,14 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo [3/3] Configurando arquivos para GitHub Pages...
+echo [3/3] Configurando arquivos para GitHub Pages (.nojekyll, 404.html)...
 type nul > "dist\.nojekyll"
 copy /Y "dist\index.html" "dist\404.html" >nul
 
-if exist "projetos" (
-    echo Copiando projetos e audios para dist\projetos...
-    xcopy /E /I /Y /Q "projetos" "dist\projetos" >nul
-)
-
 echo.
 echo ========================================================
-echo   SUCESSO! A pasta dist esta 100%% pronta!
+echo   SUCESSO! Build compilada com sucesso para o Pages!
+echo   Os audios sao transmitidos via Hugging Face CDN.
 echo ========================================================
 echo.
 pause
